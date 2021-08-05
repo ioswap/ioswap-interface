@@ -27,13 +27,13 @@
     "@types/wcag-contrast": "^3.0.0",
     "@typescript-eslint/eslint-plugin": "^2.31.0",
     "@typescript-eslint/parser": "^2.31.0",
-    "@io-swap/governance": "^1.0.0",
-    "@io-swap/liquidity-staker": "^1.0.0",
-    "@io-swap/merkle-distributor": "1.0.0",
-    "@io-swap/sdk": "^1.0.0",
-    "@io-swap/token-list": "^1.0.0",
-    "@io-swap/core": "^1.0.0",
-    "@io-swap/periphery": "^1.0.0",
+    "@io-swap/governance": "^1.0.2",
+    "@io-swap/liquidity-staker": "^1.0.2",
+    "@io-swap/merkle-distributor": "^1.0.2",
+    "@io-swap/sdk": "^1.0.3",
+    "@io-swap/token-list": "^1.0.3",
+    "@io-swap/core": "^1.0.3",
+    "@io-swap/periphery": "^1.0.2",
     "@web3-react/core": "^6.0.9",
     "@web3-react/fortmatic-connector": "^6.0.9",
     "@web3-react/injected-connector": "^6.0.7",
@@ -122,6 +122,6 @@
   },
   "license": "GPL-3.0-or-later",
   "dependencies": {
-    "@io-swap/default-token-list": "^1.0.0"
+    "@io-swap/default-token-list": "^1.0.3"
   }
 }
