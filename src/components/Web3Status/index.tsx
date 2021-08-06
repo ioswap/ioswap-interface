@@ -62,24 +62,23 @@ const Web3StatusConnect = styled(Web3StatusGeneric)<{ faded?: boolean }>`
   border: none;
   color: ${({ theme }) => theme.primaryText1};
   font-weight: 500;
-
-
-
   ${({ faded }) =>
     faded &&
     css`
       background: linear-gradient(90deg, ${({ theme }) => theme.bg6} 0%, ${({ theme }) => theme.bg7 } 100%);
-      
       color: ${({ theme }) => theme.text6};
-      
     `}
 `
 
-const Web3StatusConnected = styled(Web3StatusGeneric)<{ pending?: boolean }>`
-  background-color: ${({ pending, theme }) => (pending ? theme.primary1 : theme.bg2)};
-  border: 1px solid ${({ pending, theme }) => (pending ? theme.primary1 : theme.bg3)};
+const Web3StatusConnected = styled.div<{ pending?: boolean }>`
+  height: 38px;
+  display: flex;
+  align-items: center;
   color: ${({ pending, theme }) => (pending ? theme.white : theme.text1)};
   font-weight: 500;
+  background: ${({ theme }) => theme.bg1};
+  border-radius: 12px;
+  padding-left: 0.75rem;
 `
 
 const Text = styled.p`
@@ -100,6 +99,15 @@ const NetworkIcon = styled(Activity)`
   height: 16px;
 `
 
+const NetworkActive = styled.div`
+  margin-left: 0.25rem;
+  margin-right: 0.5rem;
+  width: 16px;
+  height: 16px;
+  background: linear-gradient(90deg, #a18cd1 0%, #fbc2eb 100%);
+  border-radius: 50%;
+`
+
 // we want the latest one to come first, so return negative if a is after b
 function newTransactionsFirst(a: TransactionDetails, b: TransactionDetails) {
   return b.addedTime - a.addedTime
@@ -113,6 +121,8 @@ const SOCK = (
 
 // eslint-disable-next-line react/prop-types
 function StatusIcon({ connector }: { connector: AbstractConnector }) {
+  return <NetworkActive />
+
   if (connector === injected) {
     return <Identicon />
   } else if (connector === walletconnect) {

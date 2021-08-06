@@ -1,6 +1,5 @@
 import { ChainId, TokenAmount } from '@io-swap/sdk'
 import React, { useState } from 'react'
-import { Text } from 'rebass'
 import { NavLink } from 'react-router-dom'
 import { darken } from 'polished'
 import { useTranslation } from 'react-i18next'
@@ -131,7 +130,7 @@ const AccountElement = styled.div<{ active: boolean }>`
   display: flex;
   flex-direction: row;
   align-items: center;
-  background-color: ${({ theme, active }) => (!active ? theme.bg1 : theme.bg3)};
+  background-color: ${({ theme }) => theme.bg1 };
   border-radius: 12px;
   white-space: nowrap;
   width: 100%;
@@ -184,8 +183,13 @@ const NetworkCard = styled(YellowCard)`
   `};
 `
 
-const BalanceText = styled(Text)`
-  ${({ theme }) => theme.mediaWidth.upToExtraSmall`
+const BalanceText = styled.div`
+  background: ${({ theme }) => theme.bg1};
+  border-radius: 12px;
+  height: 38px;
+  line-height: 38px;
+  padding: 0 0.75rem;
+  ${({ theme }) => theme.mediaWidth.upToSmall`
     display: none;
   `};
 `
@@ -428,16 +432,14 @@ export default function Header() {
               <CardNoise />
             </UNIWrapper>
           )}
-          {false && (
-            <AccountElement active={!!account} style={{ pointerEvents: 'auto' }}>
-              {account && userEthBalance ? (
-                <BalanceText style={{ flexShrink: 0 }} pl='0.75rem' pr='0.5rem' fontWeight={500}>
-                  {userEthBalance?.toSignificant(4)} ETH
-                </BalanceText>
-              ) : null}
-              <Web3Status />
-            </AccountElement>
-          )}
+          <AccountElement active={!!account} style={{ pointerEvents: 'auto' }}>
+            {account && userEthBalance ? (
+              <BalanceText>
+                {userEthBalance?.toSignificant(4)} IOS
+              </BalanceText>
+            ) : null}
+            <Web3Status />
+          </AccountElement>
         </HeaderElement>
         <HeaderElementWrap>
           <Menu />
