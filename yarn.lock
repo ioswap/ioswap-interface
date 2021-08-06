@@ -1757,10 +1757,10 @@
   resolved "https://registry.yarnpkg.com/@io-swap/core/-/core-1.0.3.tgz#8d7aa83e7096f4e5d22862001bda63611505877a"
   integrity sha512-w4XDRnvtK8ihSHOlc6q8b22G+Q1Ev+fYlA0qTSqKQsAOLvGn6BQsRInDlFPOgZZStOBXevhoKsJkIAyTKktejg==
 
-"@io-swap/default-token-list@^1.0.3":
-  version "1.0.3"
-  resolved "https://registry.yarnpkg.com/@io-swap/default-token-list/-/default-token-list-1.0.3.tgz#7828726a9d5f2ed0f57ac806b6d0ab464aac3ddb"
-  integrity sha512-8CxHT+fZu5yzFGxUqz/c5Klq46G3Gv5f+jKw4Mto3varROkwkJBB3jz1ofiXuzuR2XjliTqyUYDmBrbG7le4Kw==
+"@io-swap/default-token-list@^1.0.4":
+  version "1.0.4"
+  resolved "https://registry.yarnpkg.com/@io-swap/default-token-list/-/default-token-list-1.0.4.tgz#0023cbba6034ec15c7670db4b37f8003083a0554"
+  integrity sha512-IxxvgjcPzhN6tp0YeZcJKVriopq0pjX1G+IS69paYPrRKqrxWAIO7lpi3Tj/BEOTrLaowH0zo34nu6mRwFE2XQ==
 
 "@io-swap/governance@^1.0.2":
   version "1.0.2"
@@ -1792,10 +1792,10 @@
     "@io-swap/core" "^1.0.0"
     "@io-swap/lib" "^1.0.0"
 
-"@io-swap/sdk@^1.0.3":
-  version "1.0.3"
-  resolved "https://registry.yarnpkg.com/@io-swap/sdk/-/sdk-1.0.3.tgz#09d810e1dbaae8e49c338265cf47d3bb309ff460"
-  integrity sha512-cN5LCJSgoizsyye7IoKGPlHTCNijjX2ecb3NP0WgCiSP5DtqnNVCFGV5sCXvNr4jkTc2QBvRttBP5kUWTFpwtA==
+"@io-swap/sdk@^1.0.4":
+  version "1.0.4"
+  resolved "https://registry.yarnpkg.com/@io-swap/sdk/-/sdk-1.0.4.tgz#b44dfc65678795e47388e6d4775c0a37cab90f64"
+  integrity sha512-wbxEZBpCQ/OKZ5Dk0BnOqg89HYAGMpjqM754k5tWJyYC3If1S8qijPsTOHhdQ46IkaBFep0y0n01txmiAAmwQw==
   dependencies:
     "@io-swap/core" "^1.0.2"
     big.js "^5.2.2"
