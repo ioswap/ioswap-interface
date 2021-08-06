@@ -87,6 +87,7 @@ export function colors(darkMode: boolean): Colors {
     // blue5: darkMode ? '#153d6f70' : '#EBF4FF',
     bg6: darkMode ? 'rgba(10, 207, 254, 0.3)' : 'rgba(10, 207, 254, 0.3)',
     bg7: darkMode ? 'rgba(73, 90, 255, 0.3)' : 'rgba(73, 90, 255, 0.3)',
+    bg8: darkMode ? '#40444F' : '#F1F5F8',
     text6: darkMode ? '#3285FF' : '#3285FF'
   }
 }
