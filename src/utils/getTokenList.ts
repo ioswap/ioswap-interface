@@ -37,6 +37,7 @@ export default async function getTokenList(
   } else {
     urls = uriToHttp(listUrl)
   }
+
   for (let i = 0; i < urls.length; i++) {
     const url = urls[i]
     const isLast = i === urls.length - 1
