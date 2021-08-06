@@ -7,8 +7,8 @@ import { useTranslation } from 'react-i18next'
 
 import styled from 'styled-components'
 
-import Logo from '../../assets/svg/logo.svg'
-import LogoDark from '../../assets/svg/logo_white.svg'
+import Logo from '../../assets/images/logo.png'
+import LogoDark from '../../assets/images/logo_white.png'
 import { useActiveWeb3React } from '../../hooks'
 import { useDarkModeManager } from '../../state/user/hooks'
 import { useETHBalances, useAggregateUniBalance } from '../../state/wallet/hooks'
@@ -17,7 +17,6 @@ import { CountUp } from 'use-count-up'
 import { TYPE, ExternalLink } from '../../theme'
 
 import { YellowCard } from '../Card'
-import { Moon, Sun } from 'react-feather'
 import Menu from '../Menu'
 
 import Row, { RowFixed } from '../Row'
@@ -33,7 +32,7 @@ import usePrevious from '../../hooks/usePrevious'
 
 const HeaderFrame = styled.div`
   display: grid;
-  grid-template-columns: 1fr 120px;
+  grid-template-columns: 120px 1fr 240px;
   align-items: center;
   justify-content: space-between;
   align-items: center;
@@ -42,12 +41,10 @@ const HeaderFrame = styled.div`
   top: 0;
   position: relative;
   border-bottom: 1px solid rgba(0, 0, 0, 0.1);
-  padding: 1rem;
+  padding: 17px;
   z-index: 2;
   ${({ theme }) => theme.mediaWidth.upToMedium`
-    grid-template-columns: 1fr;
-    padding: 0 1rem;
-    width: calc(100%);
+  grid-template-columns: 120px 1fr;
     position: relative;
   `};
 
@@ -60,7 +57,6 @@ const HeaderControls = styled.div`
   display: flex;
   flex-direction: row;
   align-items: center;
-  justify-self: flex-end;
 
   ${({ theme }) => theme.mediaWidth.upToMedium`
     flex-direction: row;
@@ -85,6 +81,7 @@ const HeaderElement = styled.div`
   align-items: center;
 
   /* addresses safari's lack of support for "gap" */
+
   & > *:not(:first-child) {
     margin-left: 8px;
   }
@@ -105,13 +102,29 @@ const HeaderRow = styled(RowFixed)`
    width: 100%;
   `};
 `
+const HeaderLinksBox = styled.div`
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`
+const HeaderEmptyDiv = styled.div``
 
 const HeaderLinks = styled(Row)`
   justify-content: center;
+  height: 44px;
+  background: ${({ theme }) => theme.bg1};
+  border-radius: 16px;
+  padding: 4px;
   ${({ theme }) => theme.mediaWidth.upToMedium`
     padding: 1rem 0 1rem 1rem;
     justify-content: flex-end;
 `};
+`
+const HeaderRight = styled.div`
+  display: flex;
+  align-items: center;
+  justify-self: right;
 `
 
 const AccountElement = styled.div<{ active: boolean }>`
@@ -186,6 +199,7 @@ const Title = styled.a`
   ${({ theme }) => theme.mediaWidth.upToSmall`
     justify-self: center;
   `};
+
   :hover {
     cursor: pointer;
   }
@@ -193,6 +207,7 @@ const Title = styled.a`
 
 const UniIcon = styled.div`
   transition: transform 0.3s ease;
+
   :hover {
     transform: rotate(-5deg);
   }
@@ -212,18 +227,22 @@ const StyledNavLink = styled(NavLink).attrs({
   color: ${({ theme }) => theme.text2};
   font-size: 1rem;
   width: fit-content;
-  margin: 0 12px;
+  padding: 0 12px;
+  //margin: 0 12px;
   font-weight: 500;
 
   &.${activeClassName} {
+    background: linear-gradient(90deg, #0acffe 0%, #495aff 100%);
     border-radius: 12px;
-    font-weight: 600;
-    color: ${({ theme }) => theme.text1};
+    height: 36px;
+    line-height: 36px;
+    color: #ffffff;
+      //color: ${({ theme }) => theme.text1};
   }
 
   :hover,
   :focus {
-    color: ${({ theme }) => darken(0.1, theme.text1)};
+      // color: ${({ theme }) => darken(0.1, theme.text1)};
   }
 `
 
@@ -267,13 +286,12 @@ export const StyledMenuButton = styled.button`
   margin: 0;
   padding: 0;
   height: 35px;
-  background-color: ${({ theme }) => theme.bg3};
+  background-color: ${({ theme }) => theme.bg1};
   margin-left: 8px;
   padding: 0.15rem 0.5rem;
   border-radius: 0.5rem;
 
-  :hover,
-  :focus {
+  :hover {
     cursor: pointer;
     outline: none;
     background-color: ${({ theme }) => theme.bg4};
@@ -282,6 +300,7 @@ export const StyledMenuButton = styled.button`
   svg {
     margin-top: 2px;
   }
+
   > * {
     stroke: ${({ theme }) => theme.text1};
   }
@@ -300,7 +319,7 @@ export default function Header() {
 
   const userEthBalance = useETHBalances(account ? [account] : [])?.[account ?? '']
   // const [isDark] = useDarkModeManager()
-  const [darkMode, toggleDarkMode] = useDarkModeManager()
+  const [darkMode] = useDarkModeManager()
 
   const toggleClaimModal = useToggleSelfClaimModal()
 
@@ -323,57 +342,67 @@ export default function Header() {
         <UniBalanceContent setShowUniBalanceModal={setShowUniBalanceModal} />
       </Modal>
       <HeaderRow>
-        <Title href=".">
+        <Title>
           <UniIcon>
-            <img width={'24px'} src={darkMode ? LogoDark : Logo} alt="logo" />
+            <img width={'107px'} src={darkMode ? LogoDark : Logo} alt='logo' />
           </UniIcon>
         </Title>
-        <HeaderLinks>
-          <StyledNavLink id={`swap-nav-link`} to={'/swap'}>
-            {t('swap')}
-          </StyledNavLink>
-          <StyledNavLink
-            id={`pool-nav-link`}
-            to={'/pool'}
-            isActive={(match, { pathname }) =>
-              Boolean(match) ||
-              pathname.startsWith('/add') ||
-              pathname.startsWith('/remove') ||
-              pathname.startsWith('/create') ||
-              pathname.startsWith('/find')
-            }
-          >
-            {t('pool')}
-          </StyledNavLink>
-          <StyledNavLink id={`stake-nav-link`} to={'/uni'}>
-            UNI
-          </StyledNavLink>
-          <StyledNavLink id={`stake-nav-link`} to={'/vote'}>
-            Vote
-          </StyledNavLink>
-          <StyledExternalLink id={`stake-nav-link`} href={'https://uniswap.info'}>
-            Charts <span style={{ fontSize: '11px' }}>↗</span>
-          </StyledExternalLink>
-        </HeaderLinks>
       </HeaderRow>
       <HeaderControls>
+        <HeaderLinksBox>
+          <HeaderEmptyDiv>
+            <HeaderLinks>
+              <StyledNavLink id={`swap-nav-link`} to={'/swap'}>
+                {t('swap')}
+              </StyledNavLink>
+              <StyledNavLink
+                id={`pool-nav-link`}
+                to={'/pool'}
+                isActive={(match, { pathname }) =>
+                  Boolean(match) ||
+                  pathname.startsWith('/add') ||
+                  pathname.startsWith('/remove') ||
+                  pathname.startsWith('/create') ||
+                  pathname.startsWith('/find')
+                }
+              >
+                {t('pool')}
+              </StyledNavLink>
+              {false && (
+                <>
+                  <StyledNavLink id={`stake-nav-link`} to={'/uni'}>
+                    UNI
+                  </StyledNavLink>
+                  <StyledNavLink id={`stake-nav-link`} to={'/vote'}>
+                    Vote
+                  </StyledNavLink>
+                  <StyledExternalLink id={`stake-nav-link`} href={'https://uniswap.info'}>
+                    Charts <span style={{ fontSize: '11px' }}>↗</span>
+                  </StyledExternalLink>
+                </>
+              )}
+            </HeaderLinks>
+          </HeaderEmptyDiv>
+        </HeaderLinksBox>
+      </HeaderControls>
+      <HeaderRight>
         <HeaderElement>
           <HideSmall>
             {chainId && NETWORK_LABELS[chainId] && (
               <NetworkCard title={NETWORK_LABELS[chainId]}>{NETWORK_LABELS[chainId]}</NetworkCard>
             )}
           </HideSmall>
-          {availableClaim && !showClaimPopup && (
+          {false && availableClaim && !showClaimPopup && (
             <UNIWrapper onClick={toggleClaimModal}>
               <UNIAmount active={!!account && !availableClaim} style={{ pointerEvents: 'auto' }}>
-                <TYPE.white padding="0 2px">
+                <TYPE.white padding='0 2px'>
                   {claimTxn && !claimTxn?.receipt ? <Dots>Claiming UNI</Dots> : 'Claim UNI'}
                 </TYPE.white>
               </UNIAmount>
               <CardNoise />
             </UNIWrapper>
           )}
-          {!availableClaim && aggregateBalance && (
+          {false && !availableClaim && aggregateBalance && (
             <UNIWrapper onClick={() => setShowUniBalanceModal(true)}>
               <UNIAmount active={!!account && !availableClaim} style={{ pointerEvents: 'auto' }}>
                 {account && (
@@ -399,22 +428,21 @@ export default function Header() {
               <CardNoise />
             </UNIWrapper>
           )}
-          <AccountElement active={!!account} style={{ pointerEvents: 'auto' }}>
-            {account && userEthBalance ? (
-              <BalanceText style={{ flexShrink: 0 }} pl="0.75rem" pr="0.5rem" fontWeight={500}>
-                {userEthBalance?.toSignificant(4)} ETH
-              </BalanceText>
-            ) : null}
-            <Web3Status />
-          </AccountElement>
+          {false && (
+            <AccountElement active={!!account} style={{ pointerEvents: 'auto' }}>
+              {account && userEthBalance ? (
+                <BalanceText style={{ flexShrink: 0 }} pl='0.75rem' pr='0.5rem' fontWeight={500}>
+                  {userEthBalance?.toSignificant(4)} ETH
+                </BalanceText>
+              ) : null}
+              <Web3Status />
+            </AccountElement>
+          )}
         </HeaderElement>
         <HeaderElementWrap>
-          <StyledMenuButton onClick={() => toggleDarkMode()}>
-            {darkMode ? <Moon size={20} /> : <Sun size={20} />}
-          </StyledMenuButton>
           <Menu />
         </HeaderElementWrap>
-      </HeaderControls>
+      </HeaderRight>
     </HeaderFrame>
   )
 }

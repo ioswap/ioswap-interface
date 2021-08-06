@@ -1,6 +1,5 @@
 import { AbstractConnector } from '@web3-react/abstract-connector'
 import { UnsupportedChainIdError, useWeb3React } from '@web3-react/core'
-import { darken, lighten } from 'polished'
 import React, { useMemo } from 'react'
 import { Activity } from 'react-feather'
 import { useTranslation } from 'react-i18next'
@@ -52,9 +51,11 @@ const Web3StatusError = styled(Web3StatusGeneric)`
   border: 1px solid ${({ theme }) => theme.red1};
   color: ${({ theme }) => theme.white};
   font-weight: 500;
-  :hover,
+  :hover {
+    border: 1px solid ${({ theme }) => theme.red2};
+  }
   :focus {
-    background-color: ${({ theme }) => darken(0.1, theme.red1)};
+    border: 1px solid ${({ theme }) => theme.red3};
   }
 `
 
@@ -64,24 +65,15 @@ const Web3StatusConnect = styled(Web3StatusGeneric)<{ faded?: boolean }>`
   color: ${({ theme }) => theme.primaryText1};
   font-weight: 500;
 
-  :hover,
-  :focus {
-    border: 1px solid ${({ theme }) => darken(0.05, theme.primary4)};
-    color: ${({ theme }) => theme.primaryText1};
-  }
+
 
   ${({ faded }) =>
     faded &&
     css`
-      background-color: ${({ theme }) => theme.primary5};
-      border: 1px solid ${({ theme }) => theme.primary5};
-      color: ${({ theme }) => theme.primaryText1};
-
-      :hover,
-      :focus {
-        border: 1px solid ${({ theme }) => darken(0.05, theme.primary4)};
-        color: ${({ theme }) => darken(0.05, theme.primaryText1)};
-      }
+      background: linear-gradient(90deg, ${({ theme }) => theme.bg6} 0%, ${({ theme }) => theme.bg7 } 100%);
+      
+      color: ${({ theme }) => theme.text6};
+      
     `}
 `
 
@@ -90,14 +82,6 @@ const Web3StatusConnected = styled(Web3StatusGeneric)<{ pending?: boolean }>`
   border: 1px solid ${({ pending, theme }) => (pending ? theme.primary1 : theme.bg3)};
   color: ${({ pending, theme }) => (pending ? theme.white : theme.text1)};
   font-weight: 500;
-  :hover,
-  :focus {
-    background-color: ${({ pending, theme }) => (pending ? darken(0.05, theme.primary1) : lighten(0.05, theme.bg2))};
-
-    :focus {
-      border: 1px solid ${({ pending, theme }) => (pending ? darken(0.1, theme.primary1) : darken(0.1, theme.bg3))};
-    }
-  }
 `
 
 const Text = styled.p`
