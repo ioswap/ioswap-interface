@@ -10,13 +10,16 @@ export const Wrapper = styled.div`
   padding: 1rem;
 `
 
-export const ArrowWrapper = styled.div<{ clickable: boolean }>`
-  padding: 2px;
+export const ArrowWrapper = styled.div<{ clickable: boolean, padding?: string }>`
+  position: relative;
+  overflow: visible;
+  padding: ${({padding}) => padding || '2px'};
 
   ${({ clickable }) =>
     clickable
       ? css`
           :hover {
+            z-index: 2;
             cursor: pointer;
             opacity: 0.8;
           }

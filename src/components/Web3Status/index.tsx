@@ -21,6 +21,7 @@ import Loader from '../Loader'
 
 import { RowBetween } from '../Row'
 import WalletModal from '../WalletModal'
+import { darken } from 'polished'
 
 const IconWrapper = styled.div<{ size?: number }>`
   ${({ theme }) => theme.flexColumnNoWrap};
@@ -68,6 +69,20 @@ const Web3StatusConnect = styled(Web3StatusGeneric)<{ faded?: boolean }>`
       background: linear-gradient(90deg, ${({ theme }) => theme.bg6} 0%, ${({ theme }) => theme.bg7 } 100%);
       color: ${({ theme }) => theme.text6};
     `}
+  &:focus {
+    border: 0;
+    box-shadow: 0 0 0 1pt ${({ theme, disabled }) => !disabled && darken(0.03, theme.primary5)};
+    background-color: ${({ theme, disabled }) => !disabled && darken(0.03, theme.primary5)};
+  }
+  &:hover {
+    border: 0;
+    background-color: ${({ theme, disabled }) => !disabled && darken(0.03, theme.primary5)};
+  }
+  &:active {
+    border: 0;
+    box-shadow: 0 0 0 1pt ${({ theme, disabled }) => !disabled && darken(0.05, theme.primary5)};
+    background-color: ${({ theme, disabled }) => !disabled && darken(0.05, theme.primary5)};
+  }
 `
 
 const Web3StatusConnected = styled.div<{ pending?: boolean }>`

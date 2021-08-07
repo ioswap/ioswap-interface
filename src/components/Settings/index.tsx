@@ -46,6 +46,10 @@ const StyledCloseIcon = styled(X)`
   }
 `
 
+const PText = styled(Text)`
+  padding: 6px 0;
+`
+
 const StyledMenuButton = styled.button`
   position: relative;
   width: 100%;
@@ -97,7 +101,7 @@ const MenuFlyout = styled.span`
   font-size: 1rem;
   position: absolute;
   top: 3rem;
-  right: 0rem;
+  right: -2rem;
   z-index: 100;
 
   ${({ theme }) => theme.mediaWidth.upToMedium`
@@ -192,18 +196,18 @@ export default function SettingsTab() {
       {open && (
         <MenuFlyout>
           <AutoColumn gap="md" style={{ padding: '1rem' }}>
-            <Text fontWeight={600} fontSize={14}>
+            <PText fontWeight={600} fontSize={14}>
               Transaction Settings
-            </Text>
+            </PText>
             <TransactionSettings
               rawSlippage={userSlippageTolerance}
               setRawSlippage={setUserslippageTolerance}
               deadline={ttl}
               setDeadline={setTtl}
             />
-            <Text fontWeight={600} fontSize={14}>
+            <PText fontWeight={600} fontSize={14}>
               Interface Settings
-            </Text>
+            </PText>
             <RowBetween>
               <RowFixed>
                 <TYPE.black fontWeight={400} fontSize={14} color={theme.text2}>

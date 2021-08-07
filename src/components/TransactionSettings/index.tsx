@@ -17,6 +17,9 @@ enum SlippageError {
 enum DeadlineError {
   InvalidInput = 'InvalidInput'
 }
+const PRowBetween = styled(RowBetween)`
+  padding-bottom: 6px;
+`
 
 const FancyButton = styled.button`
   color: ${({ theme }) => theme.text1};
@@ -42,7 +45,9 @@ const Option = styled(FancyButton)<{ active: boolean }>`
   :hover {
     cursor: pointer;
   }
-  background-color: ${({ active, theme }) => active && theme.primary1};
+  background: ${({ active, theme }) => active && (
+    'linear-gradient(90deg, '+theme.primary3 + ' 0%, ' + theme.primary2 +' 100%)'
+  )};
   color: ${({ active, theme }) => (active ? theme.white : theme.text1)};
 `
 
@@ -83,6 +88,9 @@ const SlippageEmojiContainer = styled.span`
   ${({ theme }) => theme.mediaWidth.upToSmall`
     display: none;  
   `}
+`
+const PRowFixed = styled(RowFixed)`
+  padding: 6px 0;
 `
 
 export interface SlippageTabsProps {
@@ -147,22 +155,13 @@ export default function SlippageTabs({ rawSlippage, setRawSlippage, deadline, se
   return (
     <AutoColumn gap="md">
       <AutoColumn gap="sm">
-        <RowFixed>
+        <PRowFixed>
           <TYPE.black fontWeight={400} fontSize={14} color={theme.text2}>
             Slippage tolerance
           </TYPE.black>
           <QuestionHelper text="Your transaction will revert if the price changes unfavorably by more than this percentage." />
-        </RowFixed>
-        <RowBetween>
-          <Option
-            onClick={() => {
-              setSlippageInput('')
-              setRawSlippage(10)
-            }}
-            active={rawSlippage === 10}
-          >
-            0.1%
-          </Option>
+        </PRowFixed>
+        <PRowBetween>
           <Option
             onClick={() => {
               setSlippageInput('')
@@ -170,17 +169,35 @@ export default function SlippageTabs({ rawSlippage, setRawSlippage, deadline, se
             }}
             active={rawSlippage === 50}
           >
-            0.5%
+            auto
           </Option>
-          <Option
-            onClick={() => {
-              setSlippageInput('')
-              setRawSlippage(100)
-            }}
-            active={rawSlippage === 100}
-          >
-            1%
-          </Option>
+          {/*<Option*/}
+          {/*  onClick={() => {*/}
+          {/*    setSlippageInput('')*/}
+          {/*    setRawSlippage(10)*/}
+          {/*  }}*/}
+          {/*  active={rawSlippage === 10}*/}
+          {/*>*/}
+          {/*  0.1%*/}
+          {/*</Option>*/}
+          {/*<Option*/}
+          {/*  onClick={() => {*/}
+          {/*    setSlippageInput('')*/}
+          {/*    setRawSlippage(50)*/}
+          {/*  }}*/}
+          {/*  active={rawSlippage === 50}*/}
+          {/*>*/}
+          {/*  0.5%*/}
+          {/*</Option>*/}
+          {/*<Option*/}
+          {/*  onClick={() => {*/}
+          {/*    setSlippageInput('')*/}
+          {/*    setRawSlippage(100)*/}
+          {/*  }}*/}
+          {/*  active={rawSlippage === 100}*/}
+          {/*>*/}
+          {/*  1%*/}
+          {/*</Option>*/}
           <OptionCustom active={![10, 50, 100].includes(rawSlippage)} warning={!slippageInputIsValid} tabIndex={-1}>
             <RowBetween>
               {!!slippageInput &&
@@ -205,7 +222,7 @@ export default function SlippageTabs({ rawSlippage, setRawSlippage, deadline, se
               %
             </RowBetween>
           </OptionCustom>
-        </RowBetween>
+        </PRowBetween>
         {!!slippageError && (
           <RowBetween
             style={{

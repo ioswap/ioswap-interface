@@ -3,7 +3,7 @@ import React, { useCallback, useContext, useEffect, useMemo, useState } from 're
 import { ArrowDown } from 'react-feather'
 import ReactGA from 'react-ga'
 import { Text } from 'rebass'
-import { ThemeContext } from 'styled-components'
+import styled, { ThemeContext } from 'styled-components'
 import AddressInputPanel from '../../components/AddressInputPanel'
 import { ButtonError, ButtonLight, ButtonPrimary, ButtonConfirmed } from '../../components/Button'
 import Card, { GreyCard } from '../../components/Card'
@@ -49,6 +49,26 @@ import { useIsTransactionUnsupported } from 'hooks/Trades'
 import UnsupportedCurrencyFooter from 'components/swap/UnsupportedCurrencyFooter'
 import { isTradeBetter } from 'utils/trades'
 import { RouteComponentProps } from 'react-router-dom'
+
+export const MarginT = styled.div`
+  margin-top: 0.75rem;
+`
+
+export const ArrowDownBox = styled.div`
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 2;
+  width: 29px;
+  height: 29px;
+  border-radius: 50%;
+  background: ${({theme})=>theme.bg8};
+  border: 5px solid ${({theme})=>theme.bg1};
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`
 
 export default function Swap({ history }: RouteComponentProps) {
   const loadedUrlParams = useDefaultsFromURLSearch()
@@ -193,6 +213,8 @@ export default function Swap({ history }: RouteComponentProps) {
 
   const maxAmountInput: CurrencyAmount | undefined = maxAmountSpend(currencyBalances[Field.INPUT])
   const atMaxAmountInput = Boolean(maxAmountInput && parsedAmounts[Field.INPUT]?.equalTo(maxAmountInput))
+  const maxAmountOutput: CurrencyAmount | undefined = maxAmountSpend(currencyBalances[Field.OUTPUT])
+  // const atMaxAmountOutput = Boolean(maxAmountOutput && parsedAmounts[Field.OUTPUT]?.equalTo(maxAmountOutput))
 
   // the callback to execute the swap
   const { callback: swapCallback, error: swapCallbackError } = useSwapCallback(trade, allowedSlippage, recipient)
@@ -326,41 +348,51 @@ export default function Swap({ history }: RouteComponentProps) {
           />
 
           <AutoColumn gap={'md'}>
-            <CurrencyInputPanel
-              label={independentField === Field.OUTPUT && !showWrap && trade ? 'From (estimated)' : 'From'}
-              value={formattedAmounts[Field.INPUT]}
-              showMaxButton={!atMaxAmountInput}
-              currency={currencies[Field.INPUT]}
-              onUserInput={handleTypeInput}
-              onMax={handleMaxInput}
-              onCurrencySelect={handleInputSelect}
-              otherCurrency={currencies[Field.OUTPUT]}
-              id="swap-currency-input"
-            />
+            <MarginT>
+              <CurrencyInputPanel
+                label={independentField === Field.OUTPUT && !showWrap && trade ? 'From (estimated)' : 'From'}
+                value={formattedAmounts[Field.INPUT]}
+                showMaxButton={!atMaxAmountInput}
+                currency={currencies[Field.INPUT]}
+                onUserInput={handleTypeInput}
+                onMax={handleMaxInput}
+                maxAmount={maxAmountInput ? maxAmountInput.toExact() : '-'}
+                onCurrencySelect={handleInputSelect}
+                otherCurrency={currencies[Field.OUTPUT]}
+                id="swap-currency-input"
+              />
+            </MarginT>
             <AutoColumn justify="space-between">
-              <AutoRow justify={isExpertMode ? 'space-between' : 'center'} style={{ padding: '0 1rem' }}>
-                <ArrowWrapper clickable>
-                  <ArrowDown
-                    size="16"
-                    onClick={() => {
-                      setApprovalSubmitted(false) // reset 2 step UI for approvals
-                      onSwitchTokens()
-                    }}
-                    color={currencies[Field.INPUT] && currencies[Field.OUTPUT] ? theme.primary1 : theme.text2}
-                  />
-                </ArrowWrapper>
-                {recipient === null && !showWrap && isExpertMode ? (
-                  <LinkStyledButton id="add-recipient-button" onClick={() => onChangeRecipient('')}>
-                    + Add a send (optional)
-                  </LinkStyledButton>
-                ) : null}
-              </AutoRow>
+              {
+                <AutoRow justify={isExpertMode ? 'space-between' : 'center'} style={{ padding: '0 1rem' }}>
+                  {
+                    <ArrowWrapper clickable padding="2px">
+                      <ArrowDownBox>
+                        <ArrowDown
+                          size="16"
+                          onClick={() => {
+                            setApprovalSubmitted(false) // reset 2 step UI for approvals
+                            onSwitchTokens()
+                          }}
+                          color={currencies[Field.INPUT] && currencies[Field.OUTPUT] ? theme.primary1 : theme.text2}
+                        />
+                      </ArrowDownBox>
+                    </ArrowWrapper>
+                  }
+                  {recipient === null && !showWrap && isExpertMode ? (
+                    <LinkStyledButton id="add-recipient-button" onClick={() => onChangeRecipient('')}>
+                      + Add a send (optional)
+                    </LinkStyledButton>
+                  ) : null}
+                </AutoRow>
+              }
             </AutoColumn>
             <CurrencyInputPanel
               value={formattedAmounts[Field.OUTPUT]}
               onUserInput={handleTypeOutput}
               label={independentField === Field.INPUT && !showWrap && trade ? 'To (estimated)' : 'To'}
               showMaxButton={false}
+              maxAmount={maxAmountOutput ? maxAmountOutput.toExact() : '-'}
               currency={currencies[Field.OUTPUT]}
               onCurrencySelect={handleOutputSelect}
               otherCurrency={currencies[Field.INPUT]}
