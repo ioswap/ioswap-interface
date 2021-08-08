@@ -85,12 +85,14 @@ export function colors(darkMode: boolean): Colors {
     // dont wanna forget these blue yet
     // blue4: darkMode ? '#153d6f70' : '#C4D9F8',
     // blue5: darkMode ? '#153d6f70' : '#EBF4FF',
-    bg6: darkMode ? 'rgba(10, 207, 254, 0.3)' : 'rgba(10, 207, 254, 0.3)',
-    bg7: darkMode ? 'rgba(73, 90, 255, 0.3)' : 'rgba(73, 90, 255, 0.3)',
     bg8: darkMode ? '#40444F' : '#F1F5F8',
     bg9: darkMode ? '#CED0D9' : '#565A69',
     text6: darkMode ? '#3285FF' : '#3285FF',
-    text7: darkMode ? '#ffffff' : '#C3C5CB'
+    text7: darkMode ? '#ffffff' : '#C3C5CB',
+    gradual1: darkMode ? '#0ACFFE' : '#0ACFFE',
+    gradual2: darkMode ? '#495AFF' : '#495AFF',
+    gradual3: darkMode ? 'rgba(10, 207, 254, 0.3)' : 'rgba(10, 207, 254, 0.3)',
+    gradual4: darkMode ? 'rgba(73, 90, 255, 0.3)' : 'rgba(73, 90, 255, 0.3)',
   }
 }
 

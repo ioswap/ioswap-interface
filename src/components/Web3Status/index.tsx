@@ -66,7 +66,7 @@ const Web3StatusConnect = styled(Web3StatusGeneric)<{ faded?: boolean }>`
   ${({ faded }) =>
     faded &&
     css`
-      background: linear-gradient(90deg, ${({ theme }) => theme.bg6} 0%, ${({ theme }) => theme.bg7 } 100%);
+      background: linear-gradient(90deg, ${({ theme }) => theme.gradual3} 0%, ${({ theme }) => theme.gradual4 } 100%);
       color: ${({ theme }) => theme.text6};
     `}
   &:focus {

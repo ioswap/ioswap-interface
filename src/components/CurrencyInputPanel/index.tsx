@@ -182,7 +182,7 @@ export default function CurrencyInputPanel({
         )}
         <InputRow style={hideInput ? { padding: '0', borderRadius: '8px' } : {}} selected={!!currency}>
           <CurrencySelect
-            selected={!!currency}
+            selected={!!currency && !!account}
             className="open-currency-select-button"
             onClick={() => {
               if (!disableCurrencySelect) {
@@ -209,7 +209,7 @@ export default function CurrencyInputPanel({
                     : currency?.symbol) || t('selectToken')}
                 </StyledTokenName>
               )}
-              {!disableCurrencySelect && <StyledDropDown selected={!!currency} />}
+              {!disableCurrencySelect && <StyledDropDown selected={false} />}
             </Aligner>
           </CurrencySelect>
           {!hideInput && (
