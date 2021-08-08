@@ -1,7 +1,8 @@
-import React from 'react'
+import React, { useState } from 'react'
 import styled from 'styled-components'
 import { farmPools } from './config'
 import FarmsCard from '../../components/FarmsCard'
+import FarmsActionModal from '../../components/FarmsActionModal'
 
 export const FlexCenter = styled.div`
   display: flex;
@@ -145,14 +146,13 @@ const FarmsCards = styled.div`
   `}
 `
 
-// upToSmall: 720,
-//   upToMedium: 960,
-//   upToLarge: 1280
-//
 export default function Farms() {
+
+  const [isOpen, setIsOpen] = useState(false)
 
 return (
   <FarmsPage>
+    <FarmsActionModal isOpen={isOpen} onClose={() => setIsOpen(false)}/>
     <FarmsTitle>Stake your LP tokens to earn IOS</FarmsTitle>
     <FarmsBanner>
       <FarmsBannerLeft>

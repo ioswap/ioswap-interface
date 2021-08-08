@@ -23,6 +23,7 @@ export interface Colors {
   bg8: Color
   bg9: Color
   bg10: Color
+  bg11: Color
   text6: Color
   text7: Color
   gradual1: Color

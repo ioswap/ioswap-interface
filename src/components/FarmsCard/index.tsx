@@ -103,7 +103,7 @@ const CardFooter = styled.div`
 const LinkArrow = styled.div`
   width: 20px;
   height: 20px;
-  background: #F1F5F8;
+  background: ${({theme})=>theme.bg11};;
   border-radius: 5px;
   display: flex;
   align-items: center;
