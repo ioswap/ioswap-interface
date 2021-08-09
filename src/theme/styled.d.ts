@@ -33,6 +33,8 @@ export interface Colors {
   gradual5: Color
   gradual6: Color
   gradual7: Color
+  gradual8: Color
+  gradual9: Color
   border1: Color
 
   modalBG: Color

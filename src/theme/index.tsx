@@ -97,6 +97,8 @@ export function colors(darkMode: boolean): Colors {
     gradual5: darkMode ? 'rgb(52,52,52, 1)' : 'rgba(255,255,255,1)',
     gradual6: darkMode ? 'rgba(52,52,52,0.8)' : 'rgba(255,255,255,0.8)',
     gradual7: darkMode ? 'rgba(255,255,255,0)' : 'rgba(255,255,255,0)',
+    gradual8: darkMode ? '#945b5e' : '#FF9A9E',
+    gradual9: darkMode ? '#866d7e' : '#FECFEF',
     border1: darkMode ? '#DAE3EB' : '#DAE3EB'
   }
 }
