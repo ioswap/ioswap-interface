@@ -1757,10 +1757,10 @@
   resolved "https://registry.yarnpkg.com/@io-swap/core/-/core-1.0.3.tgz#8d7aa83e7096f4e5d22862001bda63611505877a"
   integrity sha512-w4XDRnvtK8ihSHOlc6q8b22G+Q1Ev+fYlA0qTSqKQsAOLvGn6BQsRInDlFPOgZZStOBXevhoKsJkIAyTKktejg==
 
-"@io-swap/default-token-list@^1.0.7":
-  version "1.0.7"
-  resolved "https://registry.yarnpkg.com/@io-swap/default-token-list/-/default-token-list-1.0.7.tgz#3fc5b98dac5333d9dee4aabc07263e9e9f65b83b"
-  integrity sha512-QOuHf6EOx4ZhnMHKZX4sFwE+1blM5nS8WKltLfassNdSnpxD8NJ5MUOEiE204MNmnRNEo72p1ToluHFoeduEzw==
+"@io-swap/default-token-list@^1.0.8":
+  version "1.0.8"
+  resolved "https://registry.yarnpkg.com/@io-swap/default-token-list/-/default-token-list-1.0.8.tgz#f4b5024abe997a3e0b2328bbd3462719ae3906b7"
+  integrity sha512-aq1dVT8ndMZejrSotdxnptFNmTD7JxNkTttwcNBOcHoQYic0TIcb6yNZ0GI2voHa2VHPXOa96taLyH+xtdwC8g==
 
 "@io-swap/governance@^1.0.2":
   version "1.0.2"

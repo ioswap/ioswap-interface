@@ -122,6 +122,6 @@
   },
   "license": "GPL-3.0-or-later",
   "dependencies": {
-    "@io-swap/default-token-list": "^1.0.7"
+    "@io-swap/default-token-list": "^1.0.8"
   }
 }
