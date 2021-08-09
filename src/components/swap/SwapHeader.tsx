@@ -2,7 +2,7 @@ import React from 'react'
 import styled from 'styled-components'
 import Settings from '../Settings'
 import { RowBetween } from '../Row'
-import { TYPE } from '../../theme'
+import ExchangeTime from '../ExchangeTime'
 
 const StyledSwapHeader = styled.div`
   padding: 12px 1rem 0px 1.5rem;
@@ -11,13 +11,22 @@ const StyledSwapHeader = styled.div`
   max-width: 420px;
   color: ${({ theme }) => theme.text2};
 `
-
+const TitleText = styled.div`
+  color: ${({ theme }) => theme.text1};
+`
+const TitleMenu = styled.div`
+  display: flex;
+  align-items: center;
+`
 export default function SwapHeader() {
   return (
     <StyledSwapHeader>
       <RowBetween>
-        <TYPE.black fontWeight={500}>Swap</TYPE.black>
-        <Settings />
+        <TitleText>Exchange</TitleText>
+        <TitleMenu>
+          <Settings />
+          <ExchangeTime />
+        </TitleMenu>
       </RowBetween>
     </StyledSwapHeader>
   )

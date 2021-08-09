@@ -1,4 +1,3 @@
-import { transparentize } from 'polished'
 import React, { useMemo } from 'react'
 import styled, {
   ThemeProvider as StyledComponentsThemeProvider,
@@ -85,10 +84,17 @@ export function colors(darkMode: boolean): Colors {
     // dont wanna forget these blue yet
     // blue4: darkMode ? '#153d6f70' : '#C4D9F8',
     // blue5: darkMode ? '#153d6f70' : '#EBF4FF',
-    bg6: darkMode ? 'rgba(10, 207, 254, 0.3)' : 'rgba(10, 207, 254, 0.3)',
-    bg7: darkMode ? 'rgba(73, 90, 255, 0.3)' : 'rgba(73, 90, 255, 0.3)',
     bg8: darkMode ? '#40444F' : '#F1F5F8',
-    text6: darkMode ? '#3285FF' : '#3285FF'
+    bg9: darkMode ? '#CED0D9' : '#565A69',
+    bg10: darkMode ? '#2C2F36' : '#EAF2FB',
+    bg11: darkMode ? '#c7cccd' : '#F1F5F8',
+    text6: darkMode ? '#3285FF' : '#3285FF',
+    text7: darkMode ? '#C3C5CB' : '#ffffff',
+    gradual1: darkMode ? '#065163' : '#0ACFFE',
+    gradual2: darkMode ? '#222a71' : '#495AFF',
+    gradual3: darkMode ? 'rgba(10, 207, 254, 0.3)' : 'rgba(10, 207, 254, 0.3)',
+    gradual4: darkMode ? 'rgba(73, 90, 255, 0.3)' : 'rgba(73, 90, 255, 0.3)',
+    border1: darkMode ? '#DAE3EB' : '#DAE3EB'
   }
 }
 
@@ -224,17 +230,12 @@ export const FixedGlobalStyle = createGlobalStyle`
 export const ThemedGlobalStyle = createGlobalStyle`
   html {
     color: ${({ theme }) => theme.text1};
-    background-color: ${({ theme }) => theme.bg2};
+    background-color: ${({ theme }) => theme.bg10};
   }
 
   body {
     min-height: 100vh;
     background-position: 0 -30vh;
-    background-repeat: no-repeat;
-    background-image: ${({ theme }) =>
-            `radial-gradient(50% 50% at 50% 50%, ${transparentize(0.9, theme.primary1)} 0%, ${transparentize(
-                    1,
-                    theme.bg1
-            )} 100%)`};
+    background: ${({ theme }) => theme.bg10};
   }
 `

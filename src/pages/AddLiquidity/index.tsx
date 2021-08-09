@@ -6,7 +6,7 @@ import { Plus } from 'react-feather'
 import ReactGA from 'react-ga'
 import { RouteComponentProps } from 'react-router-dom'
 import { Text } from 'rebass'
-import { ThemeContext } from 'styled-components'
+import styled, { ThemeContext } from 'styled-components'
 import { ButtonError, ButtonLight, ButtonPrimary } from '../../components/Button'
 import { BlueCard, LightCard } from '../../components/Card'
 import { AutoColumn, ColumnCenter } from '../../components/Column'
@@ -40,7 +40,21 @@ import { currencyId } from '../../utils/currencyId'
 import { PoolPriceBar } from './PoolPriceBar'
 import { useIsTransactionUnsupported } from 'hooks/Trades'
 import UnsupportedCurrencyFooter from 'components/swap/UnsupportedCurrencyFooter'
+import { ArrowDownBox } from '../Swap'
 
+const MColumnCenter = styled(ColumnCenter)`
+  margin-bottom: 10px;
+`
+const PlusView = styled.div`
+  position: relative;
+  padding: 2px 0;
+`
+const MLightCard = styled(LightCard)`
+  margin: 10px 0;
+`
+const MG = styled.div`
+  margin: 10px 0;
+`
 export default function AddLiquidity({
   match: {
     params: { currencyIdA, currencyIdB }
@@ -333,7 +347,7 @@ export default function AddLiquidity({
           <AutoColumn gap="20px">
             {noLiquidity ||
               (isCreate ? (
-                <ColumnCenter>
+                <MColumnCenter>
                   <BlueCard>
                     <AutoColumn gap="10px">
                       <TYPE.link fontWeight={600} color={'primaryText1'}>
@@ -347,9 +361,9 @@ export default function AddLiquidity({
                       </TYPE.link>
                     </AutoColumn>
                   </BlueCard>
-                </ColumnCenter>
+                </MColumnCenter>
               ) : (
-                <ColumnCenter>
+                <MColumnCenter>
                   <BlueCard>
                     <AutoColumn gap="10px">
                       <TYPE.link fontWeight={400} color={'primaryText1'}>
@@ -359,7 +373,7 @@ export default function AddLiquidity({
                       </TYPE.link>
                     </AutoColumn>
                   </BlueCard>
-                </ColumnCenter>
+                </MColumnCenter>
               ))}
             <CurrencyInputPanel
               value={formattedAmounts[Field.CURRENCY_A]}
@@ -367,6 +381,7 @@ export default function AddLiquidity({
               onMax={() => {
                 onFieldAInput(maxAmounts[Field.CURRENCY_A]?.toExact() ?? '')
               }}
+              maxAmount={maxAmounts[Field.CURRENCY_A]?.toExact() ?? '-'}
               onCurrencySelect={handleCurrencyASelect}
               showMaxButton={!atMaxAmounts[Field.CURRENCY_A]}
               currency={currencies[Field.CURRENCY_A]}
@@ -374,7 +389,11 @@ export default function AddLiquidity({
               showCommonBases
             />
             <ColumnCenter>
-              <Plus size="16" color={theme.text2} />
+              <PlusView>
+                <ArrowDownBox>
+                  <Plus size="16" color={theme.text2} />
+                </ArrowDownBox>
+              </PlusView>
             </ColumnCenter>
             <CurrencyInputPanel
               value={formattedAmounts[Field.CURRENCY_B]}
@@ -383,6 +402,7 @@ export default function AddLiquidity({
               onMax={() => {
                 onFieldBInput(maxAmounts[Field.CURRENCY_B]?.toExact() ?? '')
               }}
+              maxAmount={maxAmounts[Field.CURRENCY_B]?.toExact() ?? '-'}
               showMaxButton={!atMaxAmounts[Field.CURRENCY_B]}
               currency={currencies[Field.CURRENCY_B]}
               id="add-liquidity-input-tokenb"
@@ -390,7 +410,7 @@ export default function AddLiquidity({
             />
             {currencies[Field.CURRENCY_A] && currencies[Field.CURRENCY_B] && pairState !== PairState.INVALID && (
               <>
-                <LightCard padding="0px" borderRadius={'20px'}>
+                <MLightCard padding="0px" borderRadius={'20px'}>
                   <RowBetween padding="1rem">
                     <TYPE.subHeader fontWeight={500} fontSize={14}>
                       {noLiquidity ? 'Initial prices' : 'Prices'} and pool share
@@ -404,22 +424,22 @@ export default function AddLiquidity({
                       price={price}
                     />
                   </LightCard>
-                </LightCard>
+                </MLightCard>
               </>
             )}
-
-            {addIsUnsupported ? (
-              <ButtonPrimary disabled={true}>
-                <TYPE.main mb="4px">Unsupported Asset</TYPE.main>
-              </ButtonPrimary>
-            ) : !account ? (
-              <ButtonLight onClick={toggleWalletModal}>Connect Wallet</ButtonLight>
-            ) : (
-              <AutoColumn gap={'md'}>
-                {(approvalA === ApprovalState.NOT_APPROVED ||
-                  approvalA === ApprovalState.PENDING ||
-                  approvalB === ApprovalState.NOT_APPROVED ||
-                  approvalB === ApprovalState.PENDING) &&
+            <MG>
+              {addIsUnsupported ? (
+                <ButtonPrimary disabled={true}>
+                  <TYPE.main mb="4px">Unsupported Asset</TYPE.main>
+                </ButtonPrimary>
+              ) : !account ? (
+                <ButtonLight onClick={toggleWalletModal}>Connect Wallet</ButtonLight>
+              ) : (
+                <AutoColumn gap={'md'}>
+                  {(approvalA === ApprovalState.NOT_APPROVED ||
+                    approvalA === ApprovalState.PENDING ||
+                    approvalB === ApprovalState.NOT_APPROVED ||
+                    approvalB === ApprovalState.PENDING) &&
                   isValid && (
                     <RowBetween>
                       {approvalA !== ApprovalState.APPROVED && (
@@ -450,19 +470,20 @@ export default function AddLiquidity({
                       )}
                     </RowBetween>
                   )}
-                <ButtonError
-                  onClick={() => {
-                    expertMode ? onAdd() : setShowConfirm(true)
-                  }}
-                  disabled={!isValid || approvalA !== ApprovalState.APPROVED || approvalB !== ApprovalState.APPROVED}
-                  error={!isValid && !!parsedAmounts[Field.CURRENCY_A] && !!parsedAmounts[Field.CURRENCY_B]}
-                >
-                  <Text fontSize={20} fontWeight={500}>
-                    {error ?? 'Supply'}
-                  </Text>
-                </ButtonError>
-              </AutoColumn>
-            )}
+                  <ButtonError
+                    onClick={() => {
+                      expertMode ? onAdd() : setShowConfirm(true)
+                    }}
+                    disabled={!isValid || approvalA !== ApprovalState.APPROVED || approvalB !== ApprovalState.APPROVED}
+                    error={!isValid && !!parsedAmounts[Field.CURRENCY_A] && !!parsedAmounts[Field.CURRENCY_B]}
+                  >
+                    <Text fontSize={20} fontWeight={500}>
+                      {error ?? 'Supply'}
+                    </Text>
+                  </ButtonError>
+                </AutoColumn>
+              )}
+            </MG>
           </AutoColumn>
         </Wrapper>
       </AppBody>

@@ -20,12 +20,23 @@ import AppBody from '../AppBody'
 import { Dots } from '../Pool/styleds'
 import { BlueCard } from '../../components/Card'
 import { TYPE } from '../../theme'
+import styled from 'styled-components'
+import { ArrowDownBox } from '../Swap'
 
 enum Fields {
   TOKEN0 = 0,
   TOKEN1 = 1
 }
-
+const MBlueCard = styled(BlueCard)`
+  margin-bottom: 10px;
+`
+const PlusView = styled(ColumnCenter)`
+  position: relative;
+  padding: 2px 0;
+`
+const ButtonDropdownLightGray = styled(ButtonDropdownLight)`
+  background: ${({theme})=>theme.bg8};
+`
 export default function PoolFinder() {
   const { account } = useActiveWeb3React()
 
@@ -71,7 +82,7 @@ export default function PoolFinder() {
   }, [setShowSearch])
 
   const prerequisiteMessage = (
-    <LightCard padding="45px 10px">
+    <LightCard padding="45px 10px" marginTop="10px">
       <Text textAlign="center">
         {!account ? 'Connect to a wallet to find pools' : 'Select a token to find your liquidity.'}
       </Text>
@@ -82,38 +93,42 @@ export default function PoolFinder() {
     <AppBody>
       <FindPoolTabs />
       <AutoColumn style={{ padding: '1rem' }} gap="md">
-        <BlueCard>
+        <MBlueCard>
           <AutoColumn gap="10px">
             <TYPE.link fontWeight={400} color={'primaryText1'}>
               <b>Tip:</b> Use this tool to find pairs that don&apos;t automatically appear in the interface.
             </TYPE.link>
           </AutoColumn>
-        </BlueCard>
-        <ButtonDropdownLight
-          onClick={() => {
-            setShowSearch(true)
-            setActiveField(Fields.TOKEN0)
-          }}
-        >
-          {currency0 ? (
-            <Row>
-              <CurrencyLogo currency={currency0} />
+        </MBlueCard>
+        {
+          <ButtonDropdownLightGray
+            onClick={() => {
+              setShowSearch(true)
+              setActiveField(Fields.TOKEN0)
+            }}
+          >
+            {currency0 ? (
+              <Row>
+                <CurrencyLogo currency={currency0} />
+                <Text fontWeight={500} fontSize={20} marginLeft={'12px'}>
+                  {currency0.symbol}
+                </Text>
+              </Row>
+            ) : (
               <Text fontWeight={500} fontSize={20} marginLeft={'12px'}>
-                {currency0.symbol}
+                Select a Token
               </Text>
-            </Row>
-          ) : (
-            <Text fontWeight={500} fontSize={20} marginLeft={'12px'}>
-              Select a Token
-            </Text>
-          )}
-        </ButtonDropdownLight>
+            )}
+          </ButtonDropdownLightGray>
+        }
 
-        <ColumnCenter>
-          <Plus size="16" color="#888D9B" />
-        </ColumnCenter>
+        <PlusView>
+          <ArrowDownBox>
+            <Plus size="16" color="#888D9B" />
+          </ArrowDownBox>
+        </PlusView>
 
-        <ButtonDropdownLight
+        <ButtonDropdownLightGray
           onClick={() => {
             setShowSearch(true)
             setActiveField(Fields.TOKEN1)
@@ -131,7 +146,7 @@ export default function PoolFinder() {
               Select a Token
             </Text>
           )}
-        </ButtonDropdownLight>
+        </ButtonDropdownLightGray>
 
         {hasPosition && (
           <ColumnCenter

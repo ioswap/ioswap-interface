@@ -61,7 +61,8 @@ const MenuItem = styled(ExternalLink)`
   flex: 1;
   padding: 0.5rem 0.5rem;
   font-size: 16px;
-  color: ${({ theme }) => theme.text4};
+  color: ${({ theme }) => theme.text2};
+  white-space: nowrap;
   :hover {
     color: ${({ theme }) => theme.text1};
     cursor: pointer;
@@ -76,6 +77,7 @@ const MenuItemSty = styled.div`
   display: flex;
   align-items: center;
   padding: 0.5rem 0.5rem;
+  white-space: nowrap;
   color: ${({ theme }) => theme.text2};
   :hover {
     color: ${({ theme }) => theme.text1};
