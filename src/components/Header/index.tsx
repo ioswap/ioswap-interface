@@ -375,6 +375,9 @@ export default function Header() {
               <StyledNavLink id={`swap-nav-link`} to={'/farms'}>
                 Farms
               </StyledNavLink>
+              <StyledNavLink id={`swap-nav-link`} to={'/tradeBonus'}>
+                Trade Bonus
+              </StyledNavLink>
               {false && (
                 <>
                   <StyledNavLink id={`stake-nav-link`} to={'/uni'}>

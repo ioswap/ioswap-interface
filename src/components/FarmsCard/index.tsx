@@ -1,7 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
 import { FlexCenterH } from '../../pages/Farms'
-import ArrowSvg from '../../assets/svg/farms/arrow.svg'
+import ArrowSvg from '../../assets/svg/pools/arrow.svg'
 
 const CardView = styled.div`
   background: ${({theme}) => theme.bg1};
@@ -10,7 +10,7 @@ const CardView = styled.div`
   height: 452px;
   box-shadow: 0px 10px 30px rgba(30, 68, 89, 0.12);
   border-radius: 12px;
-  padding: 16px;
+  padding: 16px 0;
 `
 const CardIcon = styled.img`
   display: block;
@@ -118,56 +118,66 @@ const CardFooterLine = styled.div`
     font-weight: 600;
   }
 `
+
+const PaddingLR = styled.div`
+  padding: 0 16px;
+`
+
 export default function FarmsCard({farmPool}: any){
   const isApprove = true
   return (
     <CardView>
-      <CardIcon src={farmPool.icon}/>
-      <CardTitle>{farmPool.title}</CardTitle>
-      <APYView>APY：8888%</APYView>
-      <EarnedName>{farmPool.earnedName}</EarnedName>
-      <LineView>
-        <LineViewAmount>888.888</LineViewAmount>
-        <FlexCenterH>
-          <LineViewBtn>Harvest</LineViewBtn>
-        </FlexCenterH>
-      </LineView>
-      <EarnedName>{farmPool.stakedName} STAKED</EarnedName>
-      {
-        isApprove ? (
-          <LineView>
-            <LineViewAmount>888.888</LineViewAmount>
-            <FlexCenterH>
-              <LineViewBtnNum>-</LineViewBtnNum>
-              <LineViewBtnNum>+</LineViewBtnNum>
-            </FlexCenterH>
-          </LineView>
-        ) : (
-          <ApprovalButton>
+      <PaddingLR>
+        <CardIcon src={farmPool.icon}/>
+        <CardTitle>{farmPool.title}</CardTitle>
+        <APYView>APY：8888%</APYView>
+        <EarnedName>{farmPool.earnedName}</EarnedName>
+        <LineView>
+          <LineViewAmount>888.888</LineViewAmount>
+          <FlexCenterH>
+            <LineViewBtn>Harvest</LineViewBtn>
+          </FlexCenterH>
+        </LineView>
+        <EarnedName>{farmPool.stakedName} STAKED</EarnedName>
+        {
+          isApprove ? (
+            <LineView>
+              <LineViewAmount>888.888</LineViewAmount>
+              <FlexCenterH>
+                <LineViewBtnNum>-</LineViewBtnNum>
+                <LineViewBtnNum>+</LineViewBtnNum>
+              </FlexCenterH>
+            </LineView>
+          ) : (
+            <ApprovalButton>
               Approve Contract
-          </ApprovalButton>
-        )
-      }
+            </ApprovalButton>
+          )
+        }
+      </PaddingLR>
+      
       <CardFooter>
-        <CardFooterLine>
-          <LineView>
-            <LineViewText>Stake</LineViewText>
-            <FlexCenterH>
-              <span>OKT-USDT LP</span>
-              <LinkArrow>
-                <img src={ArrowSvg} alt='' />
-              </LinkArrow>
-            </FlexCenterH>
-          </LineView>
-        </CardFooterLine>
-        <CardFooterLine>
-          <LineView>
-            <LineViewText>Total Liquidity</LineViewText>
-            <FlexCenterH>
-              <span>$12345</span>
-            </FlexCenterH>
-          </LineView>
-        </CardFooterLine>
+        <PaddingLR>
+          <CardFooterLine>
+            <LineView>
+              <LineViewText>Stake</LineViewText>
+              <FlexCenterH>
+                <span>OKT-USDT LP</span>
+                <LinkArrow>
+                  <img src={ArrowSvg} alt='' />
+                </LinkArrow>
+              </FlexCenterH>
+            </LineView>
+          </CardFooterLine>
+          <CardFooterLine>
+            <LineView>
+              <LineViewText>Total Liquidity</LineViewText>
+              <FlexCenterH>
+                <span>$12345</span>
+              </FlexCenterH>
+            </LineView>
+          </CardFooterLine>
+        </PaddingLR>
       </CardFooter>
     </CardView>
   )

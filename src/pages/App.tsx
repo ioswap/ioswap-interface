@@ -31,6 +31,7 @@ import { OpenClaimAddressModalAndRedirectToSwap, RedirectPathToSwapOnly, Redirec
 import Vote from './Vote'
 import VotePage from './Vote/VotePage'
 import Farms from './Farms'
+import TradeBonus from './TradeBonus'
 
 const AppWrapper = styled.div`
   display: flex;
@@ -92,6 +93,7 @@ export default function App() {
             <Switch>
               <Route exact strict path="/swap" component={Swap} />
               <Route exact strict path="/farms" component={Farms} />
+              <Route exact strict path="/tradeBonus" component={TradeBonus} />
               <Route exact strict path="/claim" component={OpenClaimAddressModalAndRedirectToSwap} />
               <Route exact strict path="/swap/:outputCurrency" component={RedirectToSwap} />
               <Route exact strict path="/send" component={RedirectPathToSwapOnly} />
