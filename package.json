@@ -30,7 +30,7 @@
     "@io-swap/governance": "^1.0.2",
     "@io-swap/liquidity-staker": "^1.0.2",
     "@io-swap/merkle-distributor": "^1.0.2",
-    "@io-swap/sdk": "^1.0.5",
+    "@io-swap/sdk": "^1.0.6",
     "@io-swap/token-list": "^1.0.3",
     "@io-swap/core": "^1.0.3",
     "@io-swap/periphery": "^1.0.2",

@@ -1792,10 +1792,10 @@
     "@io-swap/core" "^1.0.0"
     "@io-swap/lib" "^1.0.0"
 
-"@io-swap/sdk@^1.0.5":
-  version "1.0.5"
-  resolved "https://registry.yarnpkg.com/@io-swap/sdk/-/sdk-1.0.5.tgz#2c122ac03f3951cd2e87ac7c78c9bbf68b4facfb"
-  integrity sha512-EIdwB2M0YwEgLIaxKLgdcjF+lgR9znfIsaF1odr3uXQJplHYeSid4b3n4jTM1D7VtAhPHk147vi/wpnihMGc0Q==
+"@io-swap/sdk@^1.0.6":
+  version "1.0.6"
+  resolved "https://registry.yarnpkg.com/@io-swap/sdk/-/sdk-1.0.6.tgz#96daef0a8881a051b6ce647b4c70869c72add8d0"
+  integrity sha512-x3Bl0QhlwhqsFnUre7hZ1q62mzbdszq+wa8bYa7g9C2zn2PKcrivQ5OpaDNsfsHy2NnfTQ7peDzxrk7KAbsCfA==
   dependencies:
     "@io-swap/core" "^1.0.2"
     big.js "^5.2.2"
