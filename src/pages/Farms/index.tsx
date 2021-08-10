@@ -50,6 +50,7 @@ const FarmsBannerLeft = styled.div`
   border-radius: 12px;
   ${({ theme }) => theme.mediaWidth.upToMedium`
   height: 145px;
+  margin-right: 0;
   `}
   ${({ theme }) => theme.mediaWidth.upToExtraSmall`
    height: 145px;

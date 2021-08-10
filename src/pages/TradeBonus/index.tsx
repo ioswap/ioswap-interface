@@ -53,6 +53,7 @@ const TradeBonusBannerLeft = styled.div`
   background-blend-mode: normal;
   ${({ theme }) => theme.mediaWidth.upToMedium`
   height: 145px;
+  margin-right: 0;
   `}
   ${({ theme }) => theme.mediaWidth.upToExtraSmall`
    height: 145px;

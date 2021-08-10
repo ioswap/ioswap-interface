@@ -1,5 +1,5 @@
 import React, { useRef } from 'react'
-import { Code, Moon, Sun } from 'react-feather'
+import { BookOpen, Code, Moon, Sun } from 'react-feather'
 import styled from 'styled-components'
 import { ReactComponent as MenuIcon } from '../../assets/images/menu.svg'
 
@@ -99,7 +99,6 @@ export default function Menu() {
   useOnClickOutside(node, open ? toggle : undefined)
 
   return (
-    // https://github.com/DefinitelyTyped/DefinitelyTyped/issues/30451
     <StyledMenu ref={node as any}>
       <StyledMenuButton onClick={toggle}>
         <StyledMenuIcon />
@@ -107,6 +106,10 @@ export default function Menu() {
 
       {open && (
         <MenuFlyout>
+          <MenuItem id="link" href="https://ioswap.gitbook.io/ioswap/">
+            <BookOpen size={14} />
+            Docs
+          </MenuItem>
           <MenuItem id="link" href={CODE_LINK}>
             <Code size={14} />
             Code
