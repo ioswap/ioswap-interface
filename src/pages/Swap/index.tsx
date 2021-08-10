@@ -49,6 +49,8 @@ import { useIsTransactionUnsupported } from 'hooks/Trades'
 import UnsupportedCurrencyFooter from 'components/swap/UnsupportedCurrencyFooter'
 import { isTradeBetter } from 'utils/trades'
 import { RouteComponentProps } from 'react-router-dom'
+import { useTranslation } from 'react-i18next'
+import { LANGUAGES } from '../../i18n'
 
 export const MarginT = styled.div`
   margin-top: 0.75rem;
@@ -69,10 +71,21 @@ export const ArrowDownBox = styled.div`
   align-items: center;
   justify-content: center;
 `
-
+const LanguageView = styled.p`
+  line-height: 0;
+  font-weight: 600;
+  font-size: 12px;
+  color: ${({theme})=>theme.text2};
+  padding-bottom: 16px;
+  transform: translateY(-16px);
+  span{
+    cursor: pointer;
+    color: ${({theme})=>theme.text6};
+  }
+`
 export default function Swap({ history }: RouteComponentProps) {
   const loadedUrlParams = useDefaultsFromURLSearch()
-
+  const { i18n } = useTranslation()
   // token warning stuff
   const [loadedInputCurrency, loadedOutputCurrency] = [
     useCurrency(loadedUrlParams?.inputCurrencyId),
@@ -321,6 +334,7 @@ export default function Swap({ history }: RouteComponentProps) {
 
   const swapIsUnsupported = useIsTransactionUnsupported(currencies?.INPUT, currencies?.OUTPUT)
 
+  const languageName = LANGUAGES.find(i => i.key === i18n.language)
   return (
     <>
       <TokenWarningModal
@@ -553,6 +567,9 @@ export default function Swap({ history }: RouteComponentProps) {
       ) : (
         <UnsupportedCurrencyFooter show={swapIsUnsupported} currencies={[currencies.INPUT, currencies.OUTPUT]} />
       )}
+      <LanguageView>
+        iOSwap availabel in: <span onClick={() => i18n.changeLanguage(i18n.language === 'en' ? 'zh-CN' : 'en')}>{languageName && languageName.name}</span>
+      </LanguageView>
     </>
   )
 }

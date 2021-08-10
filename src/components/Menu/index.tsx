@@ -1,5 +1,5 @@
-import React, { useRef } from 'react'
-import { BookOpen, Code, Moon, Sun } from 'react-feather'
+import React, { useEffect, useRef, useState } from 'react'
+import { BookOpen, Code, Moon, Sun, Globe } from 'react-feather'
 import styled from 'styled-components'
 import { ReactComponent as MenuIcon } from '../../assets/images/menu.svg'
 
@@ -9,6 +9,8 @@ import { useModalOpen, useToggleModal } from '../../state/application/hooks'
 
 import { ExternalLink } from '../../theme'
 import { useDarkModeManager } from '../../state/user/hooks'
+import { useTranslation } from 'react-i18next'
+import { LANGUAGES } from '../../i18n'
 
 const StyledMenuIcon = styled(MenuIcon)`
   path {
@@ -89,35 +91,54 @@ const MenuItemSty = styled.div`
   }
 `
 
-const CODE_LINK = 'https://github.com/ioswap'
-
 export default function Menu() {
   const node = useRef<HTMLDivElement>()
   const open = useModalOpen(ApplicationModal.MENU)
   const toggle = useToggleModal(ApplicationModal.MENU)
   const [darkMode, toggleDarkMode] = useDarkModeManager()
   useOnClickOutside(node, open ? toggle : undefined)
-
+  const [showLanguage, setShowLanguage] = useState(false)
+  const { i18n } = useTranslation()
+  const changeLanguage = (key: string) => {
+    setShowLanguage(false)
+    i18n.changeLanguage(key)
+  }
+  useEffect(() => {
+    setShowLanguage(false)
+  }, [open])
+  const languageName = LANGUAGES.find(i => i.key === i18n.language)
   return (
     <StyledMenu ref={node as any}>
       <StyledMenuButton onClick={toggle}>
         <StyledMenuIcon />
       </StyledMenuButton>
-
       {open && (
         <MenuFlyout>
           <MenuItem id="link" href="https://ioswap.gitbook.io/ioswap/">
             <BookOpen size={14} />
             Docs
           </MenuItem>
-          <MenuItem id="link" href={CODE_LINK}>
+          <MenuItem id="link" href="https://github.com/ioswap">
             <Code size={14} />
             Code
           </MenuItem>
+          <MenuItemSty id="link" onClick={() => setShowLanguage(true)}>
+            <Globe size={20} />
+            ({languageName && languageName.name})
+          </MenuItemSty>
           <MenuItemSty id="link" onClick={toggleDarkMode}>
             {darkMode ? <Moon size={20} /> : <Sun size={20} />}
             {darkMode ? 'Light Theme' : 'Dark Theme'}
           </MenuItemSty>
+        </MenuFlyout>
+      )}
+      {showLanguage && (
+        <MenuFlyout>
+          {LANGUAGES.map(item => (
+            <MenuItemSty key={item.key} onClick={() => changeLanguage(item.key)}>
+              {item.name}
+            </MenuItemSty>
+          ))}
         </MenuFlyout>
       )}
     </StyledMenu>
