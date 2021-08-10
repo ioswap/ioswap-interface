@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react'
-import { BookOpen, Code, Moon, Sun, Globe } from 'react-feather'
+import { BookOpen, Code, Moon, Sun, Globe, ChevronLeft } from 'react-feather'
 import styled from 'styled-components'
 import { ReactComponent as MenuIcon } from '../../assets/images/menu.svg'
 
@@ -48,7 +48,7 @@ const MenuFlyout = styled.span`
   width: 182px;
   padding: 22px;
   background-color: ${({ theme }) => theme.bg8};
-  box-shadow: 0px 10px 30px rgba(30, 68, 89, 0.12);
+  box-shadow: 0px 10px 20px ${({ theme }) => theme.shaw1};
   border-radius: 12px;
   display: flex;
   flex-direction: column;
@@ -61,6 +61,8 @@ const MenuFlyout = styled.span`
 
 const MenuItem = styled(ExternalLink)`
   flex: 1;
+  display: flex;
+  align-items: center;
   padding: 0.5rem 0.5rem;
   font-size: 16px;
   color: ${({ theme }) => theme.text2};
@@ -90,6 +92,12 @@ const MenuItemSty = styled.div`
     margin-right: 8px;
   }
 `
+const BackIcon = styled.span`
+  position: absolute;
+  left: 10px;
+  top: 10px;
+  cursor: pointer;
+`
 
 export default function Menu() {
   const node = useRef<HTMLDivElement>()
@@ -115,16 +123,16 @@ export default function Menu() {
       {open && (
         <MenuFlyout>
           <MenuItem id="link" href="https://ioswap.gitbook.io/ioswap/">
-            <BookOpen size={14} />
+            <BookOpen size={19} />
             Docs
           </MenuItem>
           <MenuItem id="link" href="https://github.com/ioswap">
-            <Code size={14} />
+            <Code size={19} />
             Code
           </MenuItem>
           <MenuItemSty id="link" onClick={() => setShowLanguage(true)}>
-            <Globe size={20} />
-            ({languageCheck && languageCheck.name})
+            <Globe size={19} />
+            {languageCheck && languageCheck.name}
           </MenuItemSty>
           <MenuItemSty id="link" onClick={toggleDarkMode}>
             {darkMode ? <Moon size={20} /> : <Sun size={20} />}
@@ -134,6 +142,9 @@ export default function Menu() {
       )}
       {showLanguage && (
         <MenuFlyout>
+          <BackIcon onClick={() => setShowLanguage(false)}>
+            <ChevronLeft size={20} />
+          </BackIcon>
           {LANGUAGES.map(item => (
             <MenuItemSty key={item.key} onClick={() => changeLanguage(item.key)}>
               {item.name}

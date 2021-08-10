@@ -22,6 +22,7 @@ const CardTitle = styled.div`
   color: ${({theme}) => theme.text1};
   font-size: 20px;
   line-height: 28px;
+  font-weight: 600;
 `
 
 const APYView = styled.button`
@@ -49,6 +50,7 @@ const LineView = styled.div`
 `
 const LineViewAmount = styled.div`
   flex: 1;
+  font-weight: 600;
 `
 const LineViewBtn = styled.button`
   width: 120px;

@@ -32,11 +32,12 @@ const PoolsTitle = styled.div`
   font-size: 14px;
   line-height: 20px;
   margin-bottom: 20px;
-  color: ${({theme})=>theme.text1};
+  font-weight: 600;
+  color: ${({ theme }) => theme.text1};
 `
 const PoolsBanner = styled.div`
-  background: ${({theme})=>theme.bg1};
-  color: ${({theme})=>theme.text1};
+  background: ${({ theme }) => theme.bg1};
+  color: ${({ theme }) => theme.text1};
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
   width: 100%;
@@ -57,14 +58,14 @@ const PoolsBannerItem = styled(FlexCenter)`
   `}
 `
 const PoolsBannerItemTitle = styled.div`
-  color: ${({theme})=>theme.text2};
+  color: ${({ theme }) => theme.text2};
   font-weight: 600;
   font-size: 16px;
   line-height: 22px;
   margin-top: 20px;
 `
 const PoolsBannerItemValue = styled.div`
-  color: ${({theme})=>theme.text1};
+  color: ${({ theme }) => theme.text1};
   font-weight: 600;
   font-size: 26px;
   line-height: 36px;
@@ -87,13 +88,15 @@ const PoolsCards = styled.div`
 const TipsView = styled.span`
   position: relative;
   cursor: pointer;
-  img{
+
+  img {
     width: 14px;
     height: 14px;
     margin-left: 12px;
     transform: translateY(2px);
   }
-  :hover div{
+
+  :hover div {
     display: block;
   }
 `
@@ -129,43 +132,47 @@ export default function Dividends() {
 
   const [isOpen, setIsOpen] = useState(false)
 
-return (
-  <PoolsPage>
-    <PoolsActionModal isOpen={isOpen} onClose={() => setIsOpen(false)}/>
-    <PoolsTitle>
-      Stake Your IOS to earn platform dividends.You can choose to get USDT, OKT or BTC.
-      <TipsView>
-        <img src={Tips} alt=''/>
-        <TipsBody>
-            The transaction fee of the swaps on the iOSwap platform is 0.3%, and 100% transaction fee will be put into the dividend pools to reward the users staking IOS. Staking rewards are distributed in three forms by USDT pool, OKT pool and BTC pool. Users can choose to stake their IOS to three different pools to harvest rewards. The smart contract will automatically send 10% of the funds in the staking mining pool to users at correspondent ratio.
-        </TipsBody>
-      </TipsView>
-    </PoolsTitle>
-    <PoolsBanner>
-      <PoolsBannerItem>
+  return (
+    <PoolsPage>
+      <PoolsActionModal isOpen={isOpen} onClose={() => setIsOpen(false)} />
+      <PoolsTitle>
+        Stake Your IOS to earn platform dividends.You can choose to get USDT, OKT or BTC.
+        <TipsView>
+          <img src={Tips} alt='' />
+          <TipsBody>
+            The transaction fee of the swaps on the iOSwap platform is 0.3%, and 100% transaction fee will be put into
+            the dividend pools to reward the users staking IOS. Staking rewards are distributed in three forms by USDT
+            pool, OKT pool and BTC pool. Users can choose to stake their IOS to three different pools to harvest
+            rewards. The smart contract will automatically send 10% of the funds in the staking mining pool to users at
+            correspondent ratio.
+          </TipsBody>
+        </TipsView>
+      </PoolsTitle>
+      <PoolsBanner>
+        <PoolsBannerItem>
           <div>
             <PoolsBannerItemTitle>Total Fees</PoolsBannerItemTitle>
             <PoolsBannerItemValue>88,888,888</PoolsBannerItemValue>
           </div>
-      </PoolsBannerItem>
-      <PoolsBannerItem>
-        <div>
-          <PoolsBannerItemTitle>Fees Unallocated</PoolsBannerItemTitle>
-          <PoolsBannerItemValue>88,888,888</PoolsBannerItemValue>
-        </div>
-      </PoolsBannerItem>
-      <PoolsBannerItem>
-        <div>
-          <PoolsBannerItemTitle>IOS Staked</PoolsBannerItemTitle>
-          <PoolsBannerItemValue>88,888,888</PoolsBannerItemValue>
-        </div>
-      </PoolsBannerItem>
-    </PoolsBanner>
-    <PoolsCards>
-      {
-        poolsConfig.map((poolData: any, index: number) => <PoolsCard  key={index} poolData={poolData}/>)
-      }
-    </PoolsCards>
-  </PoolsPage>
-)
+        </PoolsBannerItem>
+        <PoolsBannerItem>
+          <div>
+            <PoolsBannerItemTitle>Fees Unallocated</PoolsBannerItemTitle>
+            <PoolsBannerItemValue>88,888,888</PoolsBannerItemValue>
+          </div>
+        </PoolsBannerItem>
+        <PoolsBannerItem>
+          <div>
+            <PoolsBannerItemTitle>IOS Staked</PoolsBannerItemTitle>
+            <PoolsBannerItemValue>88,888,888</PoolsBannerItemValue>
+          </div>
+        </PoolsBannerItem>
+      </PoolsBanner>
+      <PoolsCards>
+        {
+          poolsConfig.map((poolData: any, index: number) => <PoolsCard key={index} poolData={poolData} />)
+        }
+      </PoolsCards>
+    </PoolsPage>
+  )
 }

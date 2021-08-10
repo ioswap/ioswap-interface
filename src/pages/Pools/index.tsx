@@ -31,16 +31,18 @@ const PoolsTitle = styled.div`
   font-size: 14px;
   line-height: 20px;
   margin-bottom: 20px;
-  color: ${({theme})=>theme.text1};
+  font-weight: 600;
+  color: ${({ theme }) => theme.text1};
 `
 const PoolsBanner = styled.div`
   display: flex;
   flex-wrap: wrap;
+  font-weight: 600;
 `
 
 const PoolsBannerLeft = styled.div`
-  background: linear-gradient(90deg, ${({theme})=>theme.gradual8} 0%, ${({theme})=>theme.gradual9} 100%);
-  color: ${({theme})=>theme.white};
+  background: linear-gradient(90deg, ${({ theme }) => theme.gradual8} 0%, ${({ theme }) => theme.gradual9} 100%);
+  color: ${({ theme }) => theme.white};
   flex: 1;
   display: flex;
   flex-wrap: wrap;
@@ -88,7 +90,7 @@ const PoolsBannerRight = styled.div`
   margin-right: 12px;
   height: 110px;
   border-radius: 12px;
-  background: ${({theme})=>theme.bg1};
+  background: ${({ theme }) => theme.bg1};
   display: flex;
   flex-direction: column;
   padding: 15px 22px;
@@ -116,22 +118,23 @@ const UpToMediumShow = styled(PoolsBannerRight)`
 `
 
 const PoolsBannerRightT = styled(PoolsBannerLeftFT)`
-  color: ${({theme})=>theme.text1};
+  color: ${({ theme }) => theme.text1};
 `
 const PoolsBannerRightB = styled(PoolsBannerLeftFB)`
-  color: ${({theme})=>theme.text2};
+  color: ${({ theme }) => theme.text2};
 `
 const HarvestView = styled(FlexCenter)``
 const HarvestBtn = styled(FlexCenter)`
-  background: ${({theme})=>theme.bg1};
+  background: ${({ theme }) => theme.bg1};
   border-radius: 12px;
-  color: ${({theme})=>theme.text6};
+  color: ${({ theme }) => theme.text6};
   width: 180px;
   font-weight: 600;
   height: 58px;
   cursor: pointer;
+
   :hover {
-    color: ${({theme})=>theme.gradual2};
+    color: ${({ theme }) => theme.gradual2};
   }
 `
 const PoolsCards = styled.div`
@@ -152,38 +155,38 @@ export default function Pools() {
 
   const [isOpen, setIsOpen] = useState(false)
 
-return (
-  <PoolsPage>
-    <PoolsActionModal isOpen={isOpen} onClose={() => setIsOpen(false)}/>
-    <PoolsTitle>Deposit single asset to earn IOS without risk!</PoolsTitle>
-    <PoolsBanner>
-      <PoolsBannerLeft>
-        <PoolsBannerLeftF>
-          <PoolsBannerLeftFT>
-            My Pools Earning:
-          </PoolsBannerLeftFT>
-          <PoolsBannerLeftFB>
-            88,888,888,888 IOS
-          </PoolsBannerLeftFB>
-        </PoolsBannerLeftF>
-        <HarvestView>
-          <HarvestBtn>
-            Claim All
-          </HarvestBtn>
-        </HarvestView>
-      </PoolsBannerLeft>
-      <UpToMediumHidden>
-        <PoolsBannerRight>
-          <PoolsBannerRightT>
-            TVL (iOS Pools)
-          </PoolsBannerRightT>
-          <PoolsBannerRightB>
-            $ 88
-          </PoolsBannerRightB>
-        </PoolsBannerRight>
-      </UpToMediumHidden>
-    </PoolsBanner>
-    <UpToMediumShow>
+  return (
+    <PoolsPage>
+      <PoolsActionModal isOpen={isOpen} onClose={() => setIsOpen(false)} />
+      <PoolsTitle>Deposit single asset to earn IOS without risk!</PoolsTitle>
+      <PoolsBanner>
+        <PoolsBannerLeft>
+          <PoolsBannerLeftF>
+            <PoolsBannerLeftFT>
+              My Pools Earning:
+            </PoolsBannerLeftFT>
+            <PoolsBannerLeftFB>
+              88,888,888,888 IOS
+            </PoolsBannerLeftFB>
+          </PoolsBannerLeftF>
+          <HarvestView>
+            <HarvestBtn>
+              Claim All
+            </HarvestBtn>
+          </HarvestView>
+        </PoolsBannerLeft>
+        <UpToMediumHidden>
+          <PoolsBannerRight>
+            <PoolsBannerRightT>
+              TVL (iOS Pools)
+            </PoolsBannerRightT>
+            <PoolsBannerRightB>
+              $ 88
+            </PoolsBannerRightB>
+          </PoolsBannerRight>
+        </UpToMediumHidden>
+      </PoolsBanner>
+      <UpToMediumShow>
 
         <PoolsBannerRightT>
           TVL (Liquidity Pools)
@@ -191,12 +194,12 @@ return (
         <PoolsBannerRightB>
           $ 88
         </PoolsBannerRightB>
-    </UpToMediumShow>
-    <PoolsCards>
-      {
-        poolsConfig.map((poolData: any, index: number) => <PoolsCard  key={index} poolData={poolData}/>)
-      }
-    </PoolsCards>
-  </PoolsPage>
-)
+      </UpToMediumShow>
+      <PoolsCards>
+        {
+          poolsConfig.map((poolData: any, index: number) => <PoolsCard key={index} poolData={poolData} />)
+        }
+      </PoolsCards>
+    </PoolsPage>
+  )
 }

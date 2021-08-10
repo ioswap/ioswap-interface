@@ -37,6 +37,7 @@ export interface Colors {
   gradual9: Color
   border1: Color
   border2: Color
+  shaw1: Color
 
   modalBG: Color
   advancedBG: Color

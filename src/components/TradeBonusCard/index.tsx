@@ -4,7 +4,7 @@ import { FlexCenterH } from '../../pages/Farms'
 import { FlexCenter } from '../../pages/TradeBonus'
 
 const CardView = styled.div`
-  background: ${({theme}) => theme.bg1};
+  background: ${({ theme }) => theme.bg1};
   margin-top: 20px;
   width: 330px;
   height: 452px;
@@ -14,12 +14,12 @@ const CardView = styled.div`
 `
 const CardIcon = styled.img`
   display: block;
-  margin: 6px auto;
-  width: 58px;
+  margin: 6px auto 10px auto;
+  height: 50px;
 `
 const CardTitle = styled.div`
   text-align: center;
-  color: ${({theme}) => theme.text1};
+  color: ${({ theme }) => theme.text1};
   font-size: 20px;
   line-height: 28px;
 `
@@ -31,21 +31,23 @@ const APYView = styled.button`
   display: block;
   height: 42px;
   padding: 10px 38px;
-  border: 1px solid ${({theme})=>theme.text6};
-  color: ${({theme})=>theme.text6};
+  border: 1px solid ${({ theme }) => theme.text6};
+  color: ${({ theme }) => theme.text6};
   box-sizing: border-box;
   border-radius: 12px;
-  margin: 20px auto 14px auto;
+  margin: 20px auto 0 auto;
 `
 const TradeButton = styled.button`
   height: 42px;
   width: 112px;
-  background: linear-gradient(90deg, ${({ theme }) => theme.gradual3} 0%, ${({ theme }) => theme.gradual4 } 100%);
-  color: ${({theme})=>theme.text6};
+  background: linear-gradient(90deg, ${({ theme }) => theme.gradual3} 0%, ${({ theme }) => theme.gradual4} 100%);
+  color: ${({ theme }) => theme.text6};
   border-radius: 12px;
   border: 0;
   cursor: pointer;
-  :hover{
+  font-weight: 600;
+  margin-top: 20px;
+  :hover {
     opacity: 0.9;
   }
 `
@@ -53,34 +55,34 @@ const TradeButton = styled.button`
 const LineView = styled.div`
   display: flex;
   align-items: center;
-  color: ${({theme})=>theme.text1};
+  color: ${({ theme }) => theme.text1};
   margin: 16px 0;
 `
 const LineViewTitle = styled.div`
   flex: 1;
   font-size: 14px;
   line-height: 20px;
-  color: ${({theme})=>theme.text2};
+  color: ${({ theme }) => theme.text2};
 `
 const LineViewValue = styled(FlexCenterH)`
   width: 113px;
   font-size: 14px;
   line-height: 20px;
   font-weight: 600;
-  color: ${({theme})=>theme.text2};
+  color: ${({ theme }) => theme.text2};
   flex-direction: row-reverse;
 `
 
 const CardFooter = styled.div`
-  border-top: 1px solid ${({theme})=>theme.border1};
+  border-top: 1px solid ${({ theme }) => theme.border1};
   padding-top: 4px;
   margin-top: 20px;
 `
 
-export default function TradeBonusCard({farmPool}: any){
+export default function TradeBonusCard({ farmPool }: any) {
   return (
     <CardView>
-      <CardIcon src={farmPool.icon}/>
+      <CardIcon src={farmPool.icon} />
       <CardTitle>{farmPool.title}</CardTitle>
       <PaddingLR>
         <FlexCenter>

@@ -30,8 +30,9 @@ const FarmsPage = styled.div`
 const FarmsTitle = styled.div`
   font-size: 14px;
   line-height: 20px;
+  font-weight: 600;
   margin-bottom: 20px;
-  color: ${({theme})=>theme.text1};
+  color: ${({ theme }) => theme.text1};
 `
 const FarmsBanner = styled.div`
   display: flex;
@@ -39,8 +40,8 @@ const FarmsBanner = styled.div`
 `
 
 const FarmsBannerLeft = styled.div`
-  background: linear-gradient(90deg, ${({theme})=>theme.gradual1} 0%, ${({theme})=>theme.gradual2} 100%);
-  color: ${({theme})=>theme.white};
+  background: linear-gradient(90deg, ${({ theme }) => theme.gradual1} 0%, ${({ theme }) => theme.gradual2} 100%);
+  color: ${({ theme }) => theme.white};
   flex: 1;
   display: flex;
   flex-wrap: wrap;
@@ -80,6 +81,7 @@ const FarmsBannerLeftFB = styled.div`
   display: flex;
   align-items: center;
   font-size: 26px;
+  font-weight: 600;
   line-height: 36px;
 `
 
@@ -88,7 +90,7 @@ const FarmsBannerRight = styled.div`
   margin-right: 12px;
   height: 110px;
   border-radius: 12px;
-  background: ${({theme})=>theme.bg1};
+  background: ${({ theme }) => theme.bg1};
   display: flex;
   flex-direction: column;
   padding: 15px 22px;
@@ -116,21 +118,24 @@ const UpToMediumShow = styled(FarmsBannerRight)`
 `
 
 const FarmsBannerRightT = styled(FarmsBannerLeftFT)`
-  color: ${({theme})=>theme.text1};
+  color: ${({ theme }) => theme.text1};
 `
 const FarmsBannerRightB = styled(FarmsBannerLeftFB)`
-  color: ${({theme})=>theme.text1};
+  color: ${({ theme }) => theme.text1};
+  font-weight: 600;
 `
 const HarvestView = styled(FlexCenter)``
 const HarvestBtn = styled(FlexCenter)`
-  background: ${({theme})=>theme.bg1};
+  background: ${({ theme }) => theme.bg1};
   border-radius: 12px;
-  color: ${({theme})=>theme.text6};
+  color: ${({ theme }) => theme.text6};
   width: 180px;
   height: 58px;
   cursor: pointer;
+  font-weight: 600;
+
   :hover {
-    color: ${({theme})=>theme.gradual2};
+    color: ${({ theme }) => theme.gradual2};
   }
 `
 const FarmsCards = styled.div`
@@ -151,38 +156,38 @@ export default function Farms() {
 
   const [isOpen, setIsOpen] = useState(false)
 
-return (
-  <FarmsPage>
-    <FarmsActionModal isOpen={isOpen} onClose={() => setIsOpen(false)}/>
-    <FarmsTitle>Stake your LP tokens to earn IOS</FarmsTitle>
-    <FarmsBanner>
-      <FarmsBannerLeft>
-        <FarmsBannerLeftF>
-          <FarmsBannerLeftFT>
-            My Total Crops:
-          </FarmsBannerLeftFT>
-          <FarmsBannerLeftFB>
-            88,888,888,888 IOS
-          </FarmsBannerLeftFB>
-        </FarmsBannerLeftF>
-        <HarvestView>
-          <HarvestBtn>
-            Harvest All
-          </HarvestBtn>
-        </HarvestView>
-      </FarmsBannerLeft>
-      <UpToMediumHidden>
-        <FarmsBannerRight>
-          <FarmsBannerRightT>
-            TVL (Liquidity Pools)
-          </FarmsBannerRightT>
-          <FarmsBannerRightB>
-            $ 88
-          </FarmsBannerRightB>
-        </FarmsBannerRight>
-      </UpToMediumHidden>
-    </FarmsBanner>
-    <UpToMediumShow>
+  return (
+    <FarmsPage>
+      <FarmsActionModal isOpen={isOpen} onClose={() => setIsOpen(false)} />
+      <FarmsTitle>Stake your LP tokens to earn IOS</FarmsTitle>
+      <FarmsBanner>
+        <FarmsBannerLeft>
+          <FarmsBannerLeftF>
+            <FarmsBannerLeftFT>
+              My Total Crops:
+            </FarmsBannerLeftFT>
+            <FarmsBannerLeftFB>
+              88,888,888,888 IOS
+            </FarmsBannerLeftFB>
+          </FarmsBannerLeftF>
+          <HarvestView>
+            <HarvestBtn>
+              Harvest All
+            </HarvestBtn>
+          </HarvestView>
+        </FarmsBannerLeft>
+        <UpToMediumHidden>
+          <FarmsBannerRight>
+            <FarmsBannerRightT>
+              TVL (Liquidity Pools)
+            </FarmsBannerRightT>
+            <FarmsBannerRightB>
+              $ 88
+            </FarmsBannerRightB>
+          </FarmsBannerRight>
+        </UpToMediumHidden>
+      </FarmsBanner>
+      <UpToMediumShow>
 
         <FarmsBannerRightT>
           TVL (Liquidity Pools)
@@ -190,12 +195,12 @@ return (
         <FarmsBannerRightB>
           $ 88
         </FarmsBannerRightB>
-    </UpToMediumShow>
-    <FarmsCards>
-      {
-        farmPools.map((farmPool: any, index: number) => <FarmsCard  key={index} farmPool={farmPool}/>)
-      }
-    </FarmsCards>
-  </FarmsPage>
-)
+      </UpToMediumShow>
+      <FarmsCards>
+        {
+          farmPools.map((farmPool: any, index: number) => <FarmsCard key={index} farmPool={farmPool} />)
+        }
+      </FarmsCards>
+    </FarmsPage>
+  )
 }
