@@ -106,7 +106,7 @@ export default function Menu() {
   useEffect(() => {
     setShowLanguage(false)
   }, [open])
-  const languageName = LANGUAGES.find(i => i.key === i18n.language)
+  const languageCheck = LANGUAGES.find(i => i.key === i18n.language)
   return (
     <StyledMenu ref={node as any}>
       <StyledMenuButton onClick={toggle}>
@@ -124,7 +124,7 @@ export default function Menu() {
           </MenuItem>
           <MenuItemSty id="link" onClick={() => setShowLanguage(true)}>
             <Globe size={20} />
-            ({languageName && languageName.name})
+            ({languageCheck && languageCheck.name})
           </MenuItemSty>
           <MenuItemSty id="link" onClick={toggleDarkMode}>
             {darkMode ? <Moon size={20} /> : <Sun size={20} />}

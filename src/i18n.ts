@@ -31,9 +31,9 @@ export const LANGUAGES = [
   {
     name: '中文(简体)',
     key: 'zh-CN'
-  },
-  {
-    name: '中文(繁體)',
-    key: 'zh-TW'
   }
+  // {
+  //   name: '中文(繁體)',
+  //   key: 'zh-TW'
+  // }
 ]
