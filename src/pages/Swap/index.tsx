@@ -75,9 +75,8 @@ const LanguageView = styled.p`
   font-weight: 600;
   font-size: 12px;
   color: ${({ theme }) => theme.text2};
-  padding-bottom: 16px;
-  transform: translateY(-16px);
-
+  margin: 16px;
+  //transform: translateY(-16px);
   span {
     cursor: pointer;
     color: ${({ theme }) => theme.text6};
@@ -407,6 +406,7 @@ export default function Swap({ history }: RouteComponentProps) {
               currency={currencies[Field.OUTPUT]}
               onCurrencySelect={handleOutputSelect}
               otherCurrency={currencies[Field.INPUT]}
+              showMax={false}
               id='swap-currency-output'
             />
 

@@ -126,7 +126,8 @@ interface CurrencyInputPanelProps {
   id: string
   showCommonBases?: boolean
   customBalanceText?: string,
-  maxAmount?: string
+  maxAmount?: string,
+  showMax?: boolean
 }
 
 export default function CurrencyInputPanel({
@@ -145,7 +146,8 @@ export default function CurrencyInputPanel({
   id,
   showCommonBases,
   customBalanceText,
-  maxAmount
+  maxAmount,
+  showMax = true
 }: CurrencyInputPanelProps) {
   const { t } = useTranslation()
 
@@ -231,7 +233,7 @@ export default function CurrencyInputPanel({
             <ShowBalance>
               Balance: {maxAmount} {currency.name}
               {
-                label !== 'To' && <StyledBalanceMax onClick={onMax}>(Max)</StyledBalanceMax>
+                label !== 'To' && showMax && <StyledBalanceMax onClick={onMax}>(Max)</StyledBalanceMax>
               }
             </ShowBalance>
           )}

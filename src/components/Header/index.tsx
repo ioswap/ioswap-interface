@@ -395,13 +395,7 @@ export default function Header() {
 
               {false && (
                 <>
-                  <StyledNavLink id={`stake-nav-link`} to={'/uni'}>
-                    UNI
-                  </StyledNavLink>
-                  <StyledNavLink id={`stake-nav-link`} to={'/vote'}>
-                    Vote
-                  </StyledNavLink>
-                  <StyledExternalLink id={`stake-nav-link`} href={'https://uniswap.info'}>
+                  <StyledExternalLink id={`stake-nav-link`} href={'https://ioswap.info'}>
                     Charts <span style={{ fontSize: '11px' }}>↗</span>
                   </StyledExternalLink>
                 </>
