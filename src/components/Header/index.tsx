@@ -31,7 +31,7 @@ import usePrevious from '../../hooks/usePrevious'
 
 const HeaderFrame = styled.div`
   display: grid;
-  grid-template-columns: 120px 1fr 240px;
+  grid-template-columns: 120px 1fr 120px;
   align-items: center;
   justify-content: space-between;
   align-items: center;
@@ -42,6 +42,10 @@ const HeaderFrame = styled.div`
   border-bottom: 1px solid rgba(0, 0, 0, 0.1);
   padding: 17px;
   z-index: 2;
+  ${({ theme }) => theme.mediaWidth.upToLarge`
+  grid-template-columns: 120px 1fr 300px;
+    position: relative;
+  `};
   ${({ theme }) => theme.mediaWidth.upToMedium`
   grid-template-columns: 120px 1fr;
     position: relative;
@@ -189,7 +193,7 @@ const BalanceText = styled.div`
   border-radius: 12px;
   height: 38px;
   line-height: 38px;
-  padding: 0 0.75rem;
+  padding-left: 0.75rem;
   ${({ theme }) => theme.mediaWidth.upToSmall`
     display: none;
   `};

@@ -74,7 +74,7 @@
   "enterTokenCont": "输入通证地址并继续",
   "availabel": "iOSwap可用：",
   "farms": "农场",
-  "tradeBonus": "交易红利",
-  "pools": "池子",
-  "dividends": "质押分红"
+  "tradeBonus": "交易挖矿",
+  "pools": "单币质押 ",
+  "dividends": "分红池 "
 }
