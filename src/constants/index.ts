@@ -1,5 +1,6 @@
 import { ChainId, JSBI, Percent, Token, WETH } from '@io-swap/sdk'
 import { AbstractConnector } from '@web3-react/abstract-connector'
+import IOSIcon from '../assets/images/ios_icon.svg'
 
 import { injected, walletconnect, walletlink } from '../connectors'
 
@@ -36,6 +37,7 @@ export const GOVERNANCE_ADDRESS = '0x5e4be8Bc9637f0EAA1A755019e06A68ce081D58F'
 export const TIMELOCK_ADDRESS = '0x73b50dA49C400e4081e92dCBCB397A01dF3497e4'
 
 const UNI_ADDRESS = '0x59d226bb0a4d74274d4354ebb6a0e1a1aa5175b6'
+// 展示在UIN的Breakdown一个弹窗,投票授权弹窗，管理投票页面,交易成功右边提示框，pool展示流动性列表
 export const UNI: { [chainId in ChainId]: Token } = {
   [ChainId.MAINNET]: new Token(ChainId.MAINNET, UNI_ADDRESS, 18, 'UNI', 'Uniswap'),
   [ChainId.RINKEBY]: new Token(ChainId.RINKEBY, UNI_ADDRESS, 18, 'UNI', 'Uniswap'),
@@ -44,7 +46,7 @@ export const UNI: { [chainId in ChainId]: Token } = {
   [ChainId.KOVAN]: new Token(ChainId.KOVAN, UNI_ADDRESS, 18, 'UNI', 'Uniswap'),
   [ChainId.OKT]: new Token(ChainId.OKT, UNI_ADDRESS, 18, 'UNI', 'Uniswap')
 }
-
+// 用在投票页面
 export const COMMON_CONTRACT_NAMES: { [address: string]: string } = {
   [UNI_ADDRESS]: 'UNI',
   [GOVERNANCE_ADDRESS]: 'Governance',
@@ -52,6 +54,7 @@ export const COMMON_CONTRACT_NAMES: { [address: string]: string } = {
 }
 
 // TODO: specify merkle distributor for mainnet
+// useContract使用
 export const MERKLE_DISTRIBUTOR_ADDRESS: { [chainId in ChainId]?: string } = {
   [ChainId.MAINNET]: '0x090D4613473dEE047c3f2706764f49E0821D256e'
 }
@@ -65,7 +68,7 @@ const WETH_ONLY: ChainTokenList = {
   [ChainId.OKT]: [WETH[ChainId.OKT]]
 }
 
-// used to construct intermediary pairs for trading
+// 组合用于构造用交易的中介对
 export const BASES_TO_CHECK_TRADES_AGAINST: ChainTokenList = {
   ...WETH_ONLY,
   [ChainId.MAINNET]: [...WETH_ONLY[ChainId.MAINNET], DAI, USDC, USDT, WBTC]
@@ -208,3 +211,9 @@ export const BLOCKED_ADDRESSES: string[] = [
   '0xA7e5d5A720f06526557c513402f2e6B5fA20b008',
   '0x8576aCC5C05D6Ce88f4e49bf65BdF0C62F91353C'
 ]
+export const IOS_TOKEN_INFO = {
+  icon: IOSIcon,
+  address: '0x0E0Be65E1Fe2b4a7E68cE7f0ACCfa884D0956A2c',
+  symbol: 'IOS',
+  decimals: 18
+}
