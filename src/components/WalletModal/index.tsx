@@ -19,6 +19,8 @@ import AccountDetails from '../AccountDetails'
 import Modal from '../Modal'
 import Option from './Option'
 import PendingView from './PendingView'
+import { changeNetwork } from '../../utils/connectWall'
+import { ChainId } from '@io-swap/sdk'
 
 const CloseIcon = styled.div`
   position: absolute;
@@ -153,6 +155,14 @@ export default function WalletModal({
       setWalletView(WALLET_VIEWS.ACCOUNT)
     }
   }, [walletModalOpen])
+
+  useEffect(() => {
+    if (error instanceof UnsupportedChainIdError && walletModalOpen) {
+      changeNetwork(ChainId.OKT).then(() => {
+        toggleWalletModal()
+      })
+    }
+  }, [error, walletModalOpen])
 
   // close modal when a connection is successful
   const activePrevious = usePrevious(active)
@@ -293,7 +303,7 @@ export default function WalletModal({
           <HeaderRow>{error instanceof UnsupportedChainIdError ? 'Wrong Network' : 'Error connecting'}</HeaderRow>
           <ContentWrapper>
             {error instanceof UnsupportedChainIdError ? (
-              <h5>Please connect to the appropriate Ethereum network.</h5>
+              <h5>Please connect to the appropriate OKExChain network.</h5>
             ) : (
               'Error connecting. Try refreshing the page.'
             )}

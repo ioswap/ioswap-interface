@@ -31,7 +31,7 @@ import usePrevious from '../../hooks/usePrevious'
 
 const HeaderFrame = styled.div`
   display: grid;
-  grid-template-columns: 120px 1fr 240px;
+  grid-template-columns: 120px 1fr 120px;
   align-items: center;
   justify-content: space-between;
   align-items: center;
@@ -42,6 +42,10 @@ const HeaderFrame = styled.div`
   border-bottom: 1px solid rgba(0, 0, 0, 0.1);
   padding: 17px;
   z-index: 2;
+  ${({ theme }) => theme.mediaWidth.upToLarge`
+  grid-template-columns: 120px 1fr 300px;
+    position: relative;
+  `};
   ${({ theme }) => theme.mediaWidth.upToMedium`
   grid-template-columns: 120px 1fr;
     position: relative;
@@ -69,7 +73,7 @@ const HeaderControls = styled.div`
     left: 0px;
     width: 100%;
     z-index: 99;
-    height: 72px;
+    min-height: 72px;
     border-radius: 12px 12px 0 0;
     background-color: ${({ theme }) => theme.bg1};
   `};
@@ -111,13 +115,14 @@ const HeaderEmptyDiv = styled.div``
 
 const HeaderLinks = styled(Row)`
   justify-content: center;
-  height: 44px;
+  max-width: 100vw;
+  flex-wrap: wrap;
+  min-height: 44px;
   background: ${({ theme }) => theme.bg1};
   border-radius: 16px;
   padding: 4px;
   ${({ theme }) => theme.mediaWidth.upToMedium`
-    padding: 1rem 0 1rem 1rem;
-    justify-content: flex-end;
+    justify-content: flex-start;
 `};
 `
 const HeaderRight = styled.div`
@@ -188,7 +193,7 @@ const BalanceText = styled.div`
   border-radius: 12px;
   height: 38px;
   line-height: 38px;
-  padding: 0 0.75rem;
+  padding-left: 0.75rem;
   ${({ theme }) => theme.mediaWidth.upToSmall`
     display: none;
   `};
@@ -248,6 +253,13 @@ const StyledNavLink = styled(NavLink).attrs({
   :focus {
       // color: ${({ theme }) => darken(0.1, theme.text1)};
   }
+  ${({ theme }) => theme.mediaWidth.upToMedium`
+    margin-top: 10px;
+  `};
+
+  ${({ theme }) => theme.mediaWidth.upToExtraSmall`
+        margin-top: 10px;
+  `}
 `
 
 const StyledExternalLink = styled(ExternalLink).attrs({
@@ -373,20 +385,21 @@ export default function Header() {
                 {t('pool')}
               </StyledNavLink>
               <StyledNavLink id={`swap-nav-link`} to={'/farms'}>
-                Farms
+                {t('farms')}
               </StyledNavLink>
               <StyledNavLink id={`swap-nav-link`} to={'/tradeBonus'}>
-                Trade Bonus
+                {t('tradeBonus')}
               </StyledNavLink>
+              <StyledNavLink id={`swap-nav-link`} to={'/pools'}>
+                {t('pools')}
+              </StyledNavLink>
+              <StyledNavLink id={`swap-nav-link`} to={'/dividends'}>
+                {t('dividends')}
+              </StyledNavLink>
+
               {false && (
                 <>
-                  <StyledNavLink id={`stake-nav-link`} to={'/uni'}>
-                    UNI
-                  </StyledNavLink>
-                  <StyledNavLink id={`stake-nav-link`} to={'/vote'}>
-                    Vote
-                  </StyledNavLink>
-                  <StyledExternalLink id={`stake-nav-link`} href={'https://uniswap.info'}>
+                  <StyledExternalLink id={`stake-nav-link`} href={'https://ioswap.info'}>
                     Charts <span style={{ fontSize: '11px' }}>↗</span>
                   </StyledExternalLink>
                 </>

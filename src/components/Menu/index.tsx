@@ -1,5 +1,5 @@
-import React, { useRef } from 'react'
-import { Code, Moon, Sun } from 'react-feather'
+import React, { useEffect, useRef, useState } from 'react'
+import { BookOpen, Code, Moon, Sun, Globe, ChevronLeft } from 'react-feather'
 import styled from 'styled-components'
 import { ReactComponent as MenuIcon } from '../../assets/images/menu.svg'
 
@@ -9,6 +9,8 @@ import { useModalOpen, useToggleModal } from '../../state/application/hooks'
 
 import { ExternalLink } from '../../theme'
 import { useDarkModeManager } from '../../state/user/hooks'
+import { useTranslation } from 'react-i18next'
+import { LANGUAGES } from '../../i18n'
 
 const StyledMenuIcon = styled(MenuIcon)`
   path {
@@ -46,7 +48,7 @@ const MenuFlyout = styled.span`
   width: 182px;
   padding: 22px;
   background-color: ${({ theme }) => theme.bg8};
-  box-shadow: 0px 10px 30px rgba(30, 68, 89, 0.12);
+  box-shadow: 0px 10px 20px ${({ theme }) => theme.shaw1};
   border-radius: 12px;
   display: flex;
   flex-direction: column;
@@ -59,6 +61,8 @@ const MenuFlyout = styled.span`
 
 const MenuItem = styled(ExternalLink)`
   flex: 1;
+  display: flex;
+  align-items: center;
   padding: 0.5rem 0.5rem;
   font-size: 16px;
   color: ${({ theme }) => theme.text2};
@@ -88,8 +92,12 @@ const MenuItemSty = styled.div`
     margin-right: 8px;
   }
 `
-
-const CODE_LINK = 'https://github.com/ioswap'
+const BackIcon = styled.span`
+  position: absolute;
+  left: 10px;
+  top: 10px;
+  cursor: pointer;
+`
 
 export default function Menu() {
   const node = useRef<HTMLDivElement>()
@@ -97,24 +105,51 @@ export default function Menu() {
   const toggle = useToggleModal(ApplicationModal.MENU)
   const [darkMode, toggleDarkMode] = useDarkModeManager()
   useOnClickOutside(node, open ? toggle : undefined)
-
+  const [showLanguage, setShowLanguage] = useState(false)
+  const { i18n } = useTranslation()
+  const changeLanguage = (key: string) => {
+    setShowLanguage(false)
+    i18n.changeLanguage(key)
+  }
+  useEffect(() => {
+    setShowLanguage(false)
+  }, [open])
+  const languageCheck = LANGUAGES.find(i => i.key === i18n.language)
   return (
-    // https://github.com/DefinitelyTyped/DefinitelyTyped/issues/30451
     <StyledMenu ref={node as any}>
       <StyledMenuButton onClick={toggle}>
         <StyledMenuIcon />
       </StyledMenuButton>
-
       {open && (
         <MenuFlyout>
-          <MenuItem id="link" href={CODE_LINK}>
-            <Code size={14} />
+          <MenuItem id="link" href="https://ioswap.gitbook.io/ioswap/">
+            <BookOpen size={19} />
+            Docs
+          </MenuItem>
+          <MenuItem id="link" href="https://github.com/ioswap">
+            <Code size={19} />
             Code
           </MenuItem>
+          <MenuItemSty id="link" onClick={() => setShowLanguage(true)}>
+            <Globe size={19} />
+            {languageCheck && languageCheck.name}
+          </MenuItemSty>
           <MenuItemSty id="link" onClick={toggleDarkMode}>
             {darkMode ? <Moon size={20} /> : <Sun size={20} />}
             {darkMode ? 'Light Theme' : 'Dark Theme'}
           </MenuItemSty>
+        </MenuFlyout>
+      )}
+      {showLanguage && (
+        <MenuFlyout>
+          <BackIcon onClick={() => setShowLanguage(false)}>
+            <ChevronLeft size={20} />
+          </BackIcon>
+          {LANGUAGES.map(item => (
+            <MenuItemSty key={item.key} onClick={() => changeLanguage(item.key)}>
+              {item.name}
+            </MenuItemSty>
+          ))}
         </MenuFlyout>
       )}
     </StyledMenu>

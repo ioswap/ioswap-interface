@@ -49,6 +49,7 @@ import { useIsTransactionUnsupported } from 'hooks/Trades'
 import UnsupportedCurrencyFooter from 'components/swap/UnsupportedCurrencyFooter'
 import { isTradeBetter } from 'utils/trades'
 import { RouteComponentProps } from 'react-router-dom'
+import { useTranslation } from 'react-i18next'
 
 export const MarginT = styled.div`
   margin-top: 0.75rem;
@@ -63,16 +64,27 @@ export const ArrowDownBox = styled.div`
   width: 29px;
   height: 29px;
   border-radius: 50%;
-  background: ${({theme})=>theme.bg8};
-  border: 5px solid ${({theme})=>theme.bg1};
+  background: ${({ theme }) => theme.bg8};
+  border: 5px solid ${({ theme }) => theme.bg1};
   display: flex;
   align-items: center;
   justify-content: center;
 `
-
+const LanguageView = styled.p`
+  line-height: 0;
+  font-weight: 600;
+  font-size: 12px;
+  color: ${({ theme }) => theme.text2};
+  margin: 16px;
+  //transform: translateY(-16px);
+  span {
+    cursor: pointer;
+    color: ${({ theme }) => theme.text6};
+  }
+`
 export default function Swap({ history }: RouteComponentProps) {
   const loadedUrlParams = useDefaultsFromURLSearch()
-
+  const { t, i18n } = useTranslation()
   // token warning stuff
   const [loadedInputCurrency, loadedOutputCurrency] = [
     useCurrency(loadedUrlParams?.inputCurrencyId),
@@ -139,13 +151,12 @@ export default function Swap({ history }: RouteComponentProps) {
 
   const parsedAmounts = showWrap
     ? {
-        [Field.INPUT]: parsedAmount,
-        [Field.OUTPUT]: parsedAmount
-      }
-    : {
-        [Field.INPUT]: independentField === Field.INPUT ? parsedAmount : trade?.inputAmount,
-        [Field.OUTPUT]: independentField === Field.OUTPUT ? parsedAmount : trade?.outputAmount
-      }
+      [Field.INPUT]: parsedAmount,
+      [Field.OUTPUT]: parsedAmount
+    } : {
+      [Field.INPUT]: independentField === Field.INPUT ? parsedAmount : trade?.inputAmount,
+      [Field.OUTPUT]: independentField === Field.OUTPUT ? parsedAmount : trade?.outputAmount
+    }
 
   const { onSwitchTokens, onCurrencySelection, onUserInput, onChangeRecipient } = useSwapActionHandlers()
   const isValid = !swapInputError
@@ -320,7 +331,6 @@ export default function Swap({ history }: RouteComponentProps) {
   ])
 
   const swapIsUnsupported = useIsTransactionUnsupported(currencies?.INPUT, currencies?.OUTPUT)
-
   return (
     <>
       <TokenWarningModal
@@ -332,7 +342,7 @@ export default function Swap({ history }: RouteComponentProps) {
       <SwapPoolTabs active={'swap'} />
       <AppBody>
         <SwapHeader />
-        <Wrapper id="swap-page">
+        <Wrapper id='swap-page'>
           <ConfirmSwapModal
             isOpen={showConfirm}
             trade={trade}
@@ -359,17 +369,17 @@ export default function Swap({ history }: RouteComponentProps) {
                 maxAmount={maxAmountInput ? maxAmountInput.toExact() : '-'}
                 onCurrencySelect={handleInputSelect}
                 otherCurrency={currencies[Field.OUTPUT]}
-                id="swap-currency-input"
+                id='swap-currency-input'
               />
             </MarginT>
-            <AutoColumn justify="space-between">
+            <AutoColumn justify='space-between'>
               {
                 <AutoRow justify={isExpertMode ? 'space-between' : 'center'} style={{ padding: '0 1rem' }}>
                   {
-                    <ArrowWrapper clickable padding="2px">
+                    <ArrowWrapper clickable padding='2px'>
                       <ArrowDownBox>
                         <ArrowDown
-                          size="16"
+                          size='16'
                           onClick={() => {
                             setApprovalSubmitted(false) // reset 2 step UI for approvals
                             onSwitchTokens()
@@ -380,7 +390,7 @@ export default function Swap({ history }: RouteComponentProps) {
                     </ArrowWrapper>
                   }
                   {recipient === null && !showWrap && isExpertMode ? (
-                    <LinkStyledButton id="add-recipient-button" onClick={() => onChangeRecipient('')}>
+                    <LinkStyledButton id='add-recipient-button' onClick={() => onChangeRecipient('')}>
                       + Add a send (optional)
                     </LinkStyledButton>
                   ) : null}
@@ -396,28 +406,29 @@ export default function Swap({ history }: RouteComponentProps) {
               currency={currencies[Field.OUTPUT]}
               onCurrencySelect={handleOutputSelect}
               otherCurrency={currencies[Field.INPUT]}
-              id="swap-currency-output"
+              showMax={false}
+              id='swap-currency-output'
             />
 
             {recipient !== null && !showWrap ? (
               <>
-                <AutoRow justify="space-between" style={{ padding: '0 1rem' }}>
+                <AutoRow justify='space-between' style={{ padding: '0 1rem' }}>
                   <ArrowWrapper clickable={false}>
-                    <ArrowDown size="16" color={theme.text2} />
+                    <ArrowDown size='16' color={theme.text2} />
                   </ArrowWrapper>
-                  <LinkStyledButton id="remove-recipient-button" onClick={() => onChangeRecipient(null)}>
+                  <LinkStyledButton id='remove-recipient-button' onClick={() => onChangeRecipient(null)}>
                     - Remove send
                   </LinkStyledButton>
                 </AutoRow>
-                <AddressInputPanel id="recipient" value={recipient} onChange={onChangeRecipient} />
+                <AddressInputPanel id='recipient' value={recipient} onChange={onChangeRecipient} />
               </>
             ) : null}
 
             {showWrap ? null : (
               <Card padding={showWrap ? '.25rem 1rem 0 1rem' : '0px'} borderRadius={'20px'}>
-                <AutoColumn gap="8px" style={{ padding: '0 16px' }}>
+                <AutoColumn gap='8px' style={{ padding: '0 16px' }}>
                   {Boolean(trade) && (
-                    <RowBetween align="center">
+                    <RowBetween align='center'>
                       <Text fontWeight={500} fontSize={14} color={theme.text2}>
                         Price
                       </Text>
@@ -429,7 +440,7 @@ export default function Swap({ history }: RouteComponentProps) {
                     </RowBetween>
                   )}
                   {allowedSlippage !== INITIAL_ALLOWED_SLIPPAGE && (
-                    <RowBetween align="center">
+                    <RowBetween align='center'>
                       <ClickableText fontWeight={500} fontSize={14} color={theme.text2} onClick={toggleSettings}>
                         Slippage Tolerance
                       </ClickableText>
@@ -445,32 +456,32 @@ export default function Swap({ history }: RouteComponentProps) {
           <BottomGrouping>
             {swapIsUnsupported ? (
               <ButtonPrimary disabled={true}>
-                <TYPE.main mb="4px">Unsupported Asset</TYPE.main>
+                <TYPE.main mb='4px'>Unsupported Asset</TYPE.main>
               </ButtonPrimary>
             ) : !account ? (
               <ButtonLight onClick={toggleWalletModal}>Connect Wallet</ButtonLight>
             ) : showWrap ? (
               <ButtonPrimary disabled={Boolean(wrapInputError)} onClick={onWrap}>
                 {wrapInputError ??
-                  (wrapType === WrapType.WRAP ? 'Wrap' : wrapType === WrapType.UNWRAP ? 'Unwrap' : null)}
+                (wrapType === WrapType.WRAP ? 'Wrap' : wrapType === WrapType.UNWRAP ? 'Unwrap' : null)}
               </ButtonPrimary>
             ) : noRoute && userHasSpecifiedInputOutput ? (
               <GreyCard style={{ textAlign: 'center' }}>
-                <TYPE.main mb="4px">Insufficient liquidity for this trade.</TYPE.main>
-                {singleHopOnly && <TYPE.main mb="4px">Try enabling multi-hop trades.</TYPE.main>}
+                <TYPE.main mb='4px'>Insufficient liquidity for this trade.</TYPE.main>
+                {singleHopOnly && <TYPE.main mb='4px'>Try enabling multi-hop trades.</TYPE.main>}
               </GreyCard>
             ) : showApproveFlow ? (
               <RowBetween>
                 <ButtonConfirmed
                   onClick={approveCallback}
                   disabled={approval !== ApprovalState.NOT_APPROVED || approvalSubmitted}
-                  width="48%"
+                  width='48%'
                   altDisabledStyle={approval === ApprovalState.PENDING} // show solid button while waiting
                   confirmed={approval === ApprovalState.APPROVED}
                 >
                   {approval === ApprovalState.PENDING ? (
-                    <AutoRow gap="6px" justify="center">
-                      Approving <Loader stroke="white" />
+                    <AutoRow gap='6px' justify='center'>
+                      Approving <Loader stroke='white' />
                     </AutoRow>
                   ) : approvalSubmitted && approval === ApprovalState.APPROVED ? (
                     'Approved'
@@ -492,8 +503,8 @@ export default function Swap({ history }: RouteComponentProps) {
                       })
                     }
                   }}
-                  width="48%"
-                  id="swap-button"
+                  width='48%'
+                  id='swap-button'
                   disabled={
                     !isValid || approval !== ApprovalState.APPROVED || (priceImpactSeverity > 3 && !isExpertMode)
                   }
@@ -521,7 +532,7 @@ export default function Swap({ history }: RouteComponentProps) {
                     })
                   }
                 }}
-                id="swap-button"
+                id='swap-button'
                 disabled={!isValid || (priceImpactSeverity > 3 && !isExpertMode) || !!swapCallbackError}
                 error={isValid && priceImpactSeverity > 2 && !swapCallbackError}
               >
@@ -529,8 +540,8 @@ export default function Swap({ history }: RouteComponentProps) {
                   {swapInputError
                     ? swapInputError
                     : priceImpactSeverity > 3 && !isExpertMode
-                    ? `Price Impact Too High`
-                    : `Swap${priceImpactSeverity > 2 ? ' Anyway' : ''}`}
+                      ? `Price Impact Too High`
+                      : `Swap${priceImpactSeverity > 2 ? ' Anyway' : ''}`}
                 </Text>
               </ButtonError>
             )}
@@ -553,6 +564,14 @@ export default function Swap({ history }: RouteComponentProps) {
       ) : (
         <UnsupportedCurrencyFooter show={swapIsUnsupported} currencies={[currencies.INPUT, currencies.OUTPUT]} />
       )}
+      <LanguageView>
+        {t('availabel')}
+        <span onClick={() => i18n.changeLanguage(i18n.language === 'en' ? 'zh-CN' : 'en')}>
+        {
+          i18n.language === 'en' ? '中文(简体)' : 'English'
+        }
+      </span>
+      </LanguageView>
     </>
   )
 }

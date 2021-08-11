@@ -1,8 +1,8 @@
 import React, { useState } from 'react'
 import styled from 'styled-components'
-import { farmPools } from './config'
-import FarmsCard from '../../components/FarmsCard'
-import FarmsActionModal from '../../components/FarmsActionModal'
+import { poolsConfig } from './config'
+import PoolsCard from '../../components/PoolsCard'
+import PoolsActionModal from '../../components/FarmsActionModal'
 
 export const FlexCenter = styled.div`
   display: flex;
@@ -14,7 +14,7 @@ export const FlexCenterH = styled.div`
   align-items: center;
 `
 
-const FarmsPage = styled.div`
+const PoolsPage = styled.div`
   width: 1020px;
   max-width: 1020px;
   margin: auto;
@@ -27,20 +27,21 @@ const FarmsPage = styled.div`
   max-width: 100%;
   `}
 `
-const FarmsTitle = styled.div`
+const PoolsTitle = styled.div`
   font-size: 14px;
   line-height: 20px;
-  font-weight: 600;
   margin-bottom: 20px;
+  font-weight: 600;
   color: ${({ theme }) => theme.text1};
 `
-const FarmsBanner = styled.div`
+const PoolsBanner = styled.div`
   display: flex;
   flex-wrap: wrap;
+  font-weight: 600;
 `
 
-const FarmsBannerLeft = styled.div`
-  background: linear-gradient(90deg, ${({ theme }) => theme.gradual1} 0%, ${({ theme }) => theme.gradual2} 100%);
+const PoolsBannerLeft = styled.div`
+  background: linear-gradient(90deg, ${({ theme }) => theme.gradual8} 0%, ${({ theme }) => theme.gradual9} 100%);
   color: ${({ theme }) => theme.white};
   flex: 1;
   display: flex;
@@ -57,7 +58,7 @@ const FarmsBannerLeft = styled.div`
    height: 145px;
   `}
 `
-const FarmsBannerLeftF = styled.div`
+const PoolsBannerLeftF = styled.div`
   flex: 1;
   display: flex;
   flex-direction: column;
@@ -70,22 +71,21 @@ const FarmsBannerLeftF = styled.div`
   max-width: 100%;
   `}
 `
-const FarmsBannerLeftFT = styled.div`
+const PoolsBannerLeftFT = styled.div`
   display: flex;
   align-items: center;
   font-size: 16px;
   line-height: 22px;
 `
-const FarmsBannerLeftFB = styled.div`
+const PoolsBannerLeftFB = styled.div`
   flex: 1;
   display: flex;
   align-items: center;
   font-size: 26px;
-  font-weight: 600;
   line-height: 36px;
 `
 
-const FarmsBannerRight = styled.div`
+const PoolsBannerRight = styled.div`
   width: 280px;
   margin-right: 12px;
   height: 110px;
@@ -104,7 +104,7 @@ const UpToMediumHidden = styled.div`
   `}
 `
 
-const UpToMediumShow = styled(FarmsBannerRight)`
+const UpToMediumShow = styled(PoolsBannerRight)`
   display: none;
   margin-top: 10px;
   width: 100%;
@@ -117,12 +117,11 @@ const UpToMediumShow = styled(FarmsBannerRight)`
   `}
 `
 
-const FarmsBannerRightT = styled(FarmsBannerLeftFT)`
+const PoolsBannerRightT = styled(PoolsBannerLeftFT)`
   color: ${({ theme }) => theme.text1};
 `
-const FarmsBannerRightB = styled(FarmsBannerLeftFB)`
-  color: ${({ theme }) => theme.text1};
-  font-weight: 600;
+const PoolsBannerRightB = styled(PoolsBannerLeftFB)`
+  color: ${({ theme }) => theme.text2};
 `
 const HarvestView = styled(FlexCenter)``
 const HarvestBtn = styled(FlexCenter)`
@@ -130,15 +129,15 @@ const HarvestBtn = styled(FlexCenter)`
   border-radius: 12px;
   color: ${({ theme }) => theme.text6};
   width: 180px;
+  font-weight: 600;
   height: 58px;
   cursor: pointer;
-  font-weight: 600;
 
   :hover {
     color: ${({ theme }) => theme.gradual2};
   }
 `
-const FarmsCards = styled.div`
+const PoolsCards = styled.div`
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
   margin-top: 10px;
@@ -152,55 +151,55 @@ const FarmsCards = styled.div`
   `}
 `
 
-export default function Farms() {
+export default function Pools() {
 
   const [isOpen, setIsOpen] = useState(false)
 
   return (
-    <FarmsPage>
-      <FarmsActionModal isOpen={isOpen} onClose={() => setIsOpen(false)} />
-      <FarmsTitle>Stake your LP tokens to earn IOS</FarmsTitle>
-      <FarmsBanner>
-        <FarmsBannerLeft>
-          <FarmsBannerLeftF>
-            <FarmsBannerLeftFT>
-              My Total Crops:
-            </FarmsBannerLeftFT>
-            <FarmsBannerLeftFB>
+    <PoolsPage>
+      <PoolsActionModal isOpen={isOpen} onClose={() => setIsOpen(false)} />
+      <PoolsTitle>Deposit single asset to earn IOS without risk!</PoolsTitle>
+      <PoolsBanner>
+        <PoolsBannerLeft>
+          <PoolsBannerLeftF>
+            <PoolsBannerLeftFT>
+              My Pools Earning:
+            </PoolsBannerLeftFT>
+            <PoolsBannerLeftFB>
               88,888,888,888 IOS
-            </FarmsBannerLeftFB>
-          </FarmsBannerLeftF>
+            </PoolsBannerLeftFB>
+          </PoolsBannerLeftF>
           <HarvestView>
             <HarvestBtn>
-              Harvest All
+              Claim All
             </HarvestBtn>
           </HarvestView>
-        </FarmsBannerLeft>
+        </PoolsBannerLeft>
         <UpToMediumHidden>
-          <FarmsBannerRight>
-            <FarmsBannerRightT>
-              TVL (Liquidity Pools)
-            </FarmsBannerRightT>
-            <FarmsBannerRightB>
+          <PoolsBannerRight>
+            <PoolsBannerRightT>
+              TVL (iOS Pools)
+            </PoolsBannerRightT>
+            <PoolsBannerRightB>
               $ 88
-            </FarmsBannerRightB>
-          </FarmsBannerRight>
+            </PoolsBannerRightB>
+          </PoolsBannerRight>
         </UpToMediumHidden>
-      </FarmsBanner>
+      </PoolsBanner>
       <UpToMediumShow>
 
-        <FarmsBannerRightT>
+        <PoolsBannerRightT>
           TVL (Liquidity Pools)
-        </FarmsBannerRightT>
-        <FarmsBannerRightB>
+        </PoolsBannerRightT>
+        <PoolsBannerRightB>
           $ 88
-        </FarmsBannerRightB>
+        </PoolsBannerRightB>
       </UpToMediumShow>
-      <FarmsCards>
+      <PoolsCards>
         {
-          farmPools.map((farmPool: any, index: number) => <FarmsCard key={index} farmPool={farmPool} />)
+          poolsConfig.map((poolData: any, index: number) => <PoolsCard key={index} poolData={poolData} />)
         }
-      </FarmsCards>
-    </FarmsPage>
+      </PoolsCards>
+    </PoolsPage>
   )
 }

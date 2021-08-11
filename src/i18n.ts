@@ -17,7 +17,23 @@ i18next
     fallbackLng: 'en',
     preload: ['en'],
     keySeparator: false,
-    interpolation: { escapeValue: false }
+    interpolation: { escapeValue: false },
   })
 
 export default i18next
+
+// supported
+export const LANGUAGES = [
+  {
+    name: 'English',
+    key: 'en'
+  },
+  {
+    name: '中文(简体)',
+    key: 'zh-CN'
+  }
+  // {
+  //   name: '中文(繁體)',
+  //   key: 'zh-TW'
+  // }
+]

@@ -91,9 +91,9 @@ const Web3StatusConnected = styled.div<{ pending?: boolean }>`
   align-items: center;
   color: ${({ pending, theme }) => (pending ? theme.white : theme.text1)};
   font-weight: 500;
-  background: ${({ theme }) => theme.bg1};
+  background: ${({ theme, pending }) => pending ? ('linear-gradient(90deg, ' + theme.gradual8 + ' 0%,' + theme.gradual9 + ' 100%)') : theme.bg1};
   border-radius: 12px;
-  padding-left: 0.75rem;
+  padding: 0 0.75rem;
 `
 
 const Text = styled.p`
@@ -116,7 +116,6 @@ const NetworkIcon = styled(Activity)`
 
 const NetworkActive = styled.div`
   margin-left: 0.25rem;
-  margin-right: 0.5rem;
   width: 16px;
   height: 16px;
   background: linear-gradient(90deg, #a18cd1 0%, #fbc2eb 100%);

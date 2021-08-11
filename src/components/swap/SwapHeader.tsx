@@ -25,7 +25,9 @@ export default function SwapHeader() {
         <TitleText>Exchange</TitleText>
         <TitleMenu>
           <Settings />
-          <ExchangeTime />
+          {
+            false && <ExchangeTime />
+          }
         </TitleMenu>
       </RowBetween>
     </StyledSwapHeader>
