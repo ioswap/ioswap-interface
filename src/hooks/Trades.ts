@@ -70,6 +70,7 @@ function useAllCommonPairs(currencyA?: Currency, currencyB?: Currency): Pair[] {
         : [],
     [tokenA, tokenB, bases, basePairs, chainId]
   )
+  console.log('allPairCombinations', allPairCombinations)
 
   const allPairs = usePairs(allPairCombinations)
 

@@ -1,9 +1,8 @@
-import { getTokenLogoURL } from './../components/CurrencyLogo/index'
 import { wrappedCurrency } from 'utils/wrappedCurrency'
 import { Currency, Token } from '@io-swap/sdk'
 import { useCallback, useState } from 'react'
 import { useActiveWeb3React } from 'hooks'
-
+import { IOS_TOKEN_INFO } from '../constants'
 export default function useAddTokenToMetamask(
   currencyToAdd: Currency | undefined
 ): { addToken: () => void; success: boolean | undefined } {
@@ -23,10 +22,10 @@ export default function useAddTokenToMetamask(
             //@ts-ignore // need this for incorrect ethers provider type
             type: 'ERC20',
             options: {
-              address: token.address,
-              symbol: token.symbol,
-              decimals: token.decimals,
-              image: getTokenLogoURL(token.address)
+              address: IOS_TOKEN_INFO.address,
+              symbol: IOS_TOKEN_INFO.symbol,
+              decimals: IOS_TOKEN_INFO.decimals,
+              image: IOS_TOKEN_INFO.icon
             }
           }
         })
