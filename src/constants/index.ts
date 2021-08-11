@@ -1,7 +1,7 @@
 import { ChainId, JSBI, Percent, Token, WETH } from '@io-swap/sdk'
 import { AbstractConnector } from '@web3-react/abstract-connector'
 import IOSIcon from '../assets/images/ios_icon.svg'
-
+import IOSAbi from './abis/ios.json'
 import { injected, walletconnect, walletlink } from '../connectors'
 
 export const ROUTER_ADDRESS = '0x4AD7f7a124a78E3e0d0eF9764022B9353B011D75'
@@ -213,7 +213,8 @@ export const BLOCKED_ADDRESSES: string[] = [
 ]
 export const IOS_TOKEN_INFO = {
   icon: IOSIcon,
-  address: '0x0E0Be65E1Fe2b4a7E68cE7f0ACCfa884D0956A2c',
+  address: '0x6299b03a3B121E450BB173dE69186d54981e6cef',
   symbol: 'IOS',
-  decimals: 18
+  decimals: 18,
+  abi: IOSAbi
 }

@@ -1,10 +1,10 @@
-import { UNI } from './../../constants/index'
+import { IOS_TOKEN_INFO, UNI } from './../../constants/index'
 import { Currency, CurrencyAmount, ETHER, JSBI, Token, TokenAmount } from '@io-swap/sdk'
 import { useMemo } from 'react'
 import ERC20_INTERFACE from '../../constants/abis/erc20'
 import { useAllTokens } from '../../hooks/Tokens'
 import { useActiveWeb3React } from '../../hooks'
-import { useMulticallContract } from '../../hooks/useContract'
+import { useAssignMulticallContract, useMulticallContract } from '../../hooks/useContract'
 import { isAddress } from '../../utils'
 import { useSingleContractMultipleData, useMultipleContractSingleData } from '../multicall/hooks'
 import { useUserUnclaimedAmount } from '../claim/hooks'
@@ -32,6 +32,39 @@ export function useETHBalances(
   const results = useSingleContractMultipleData(
     multicallContract,
     'getEthBalance',
+    addresses.map(address => [address])
+  )
+
+  return useMemo(
+    () =>
+      addresses.reduce<{ [address: string]: CurrencyAmount }>((memo, address, i) => {
+        const value = results?.[i]?.result?.[0]
+        if (value) memo[address] = CurrencyAmount.ether(JSBI.BigInt(value.toString()))
+        return memo
+      }, {}),
+    [addresses, results]
+  )
+}
+
+export function useContractBalances(
+  uncheckedAddresses?: (string | undefined)[]
+): { [address: string]: CurrencyAmount | undefined } {
+  const multicallContract = useAssignMulticallContract(IOS_TOKEN_INFO.address)
+
+  const addresses: string[] = useMemo(
+    () =>
+      uncheckedAddresses
+        ? uncheckedAddresses
+          .map(isAddress)
+          .filter((a): a is string => a !== false)
+          .sort()
+        : [],
+    [uncheckedAddresses]
+  )
+
+  const results = useSingleContractMultipleData(
+    multicallContract,
+    'balanceOf',
     addresses.map(address => [address])
   )
 

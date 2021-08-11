@@ -34,6 +34,7 @@ export default function CommonBases({
   selectedCurrency?: Currency | null
   onSelect: (currency: Currency) => void
 }) {
+  console.log('ETHER', ETHER)
   return (
     <AutoColumn gap="md">
       <AutoRow>
@@ -53,7 +54,7 @@ export default function CommonBases({
         >
           <CurrencyLogo currency={ETHER} style={{ marginRight: 8 }} />
           <Text fontWeight={500} fontSize={16}>
-            ETH
+            OKT
           </Text>
         </BaseWrapper>
         {(chainId ? SUGGESTED_BASES[chainId] : []).map((token: Token) => {

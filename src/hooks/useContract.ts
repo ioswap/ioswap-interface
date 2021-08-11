@@ -102,6 +102,10 @@ export function useMulticallContract(): Contract | null {
   return useContract(chainId && MULTICALL_NETWORKS[chainId], MULTICALL_ABI, false)
 }
 
+export function useAssignMulticallContract(address: string): Contract | null {
+  return useContract(address, ERC20_ABI, false)
+}
+
 export function useMerkleDistributorContract(): Contract | null {
   const { chainId } = useActiveWeb3React()
   return useContract(chainId ? MERKLE_DISTRIBUTOR_ADDRESS[chainId] : undefined, MERKLE_DISTRIBUTOR_ABI, true)

@@ -63,10 +63,8 @@ export default function AddLiquidity({
                                      }: RouteComponentProps<{ currencyIdA?: string; currencyIdB?: string }>) {
   const { account, chainId, library } = useActiveWeb3React()
   const theme = useContext(ThemeContext)
-
   const currencyA = useCurrency(currencyIdA)
   const currencyB = useCurrency(currencyIdB)
-
   const oneCurrencyIsWETH = Boolean(
     chainId &&
     ((currencyA && currencyEquals(currencyA, WETH[chainId])) ||
@@ -304,7 +302,7 @@ export default function AddLiquidity({
           history.push(`/add/${newCurrencyIdB}`)
         }
       } else {
-        history.push(`/add/${currencyIdA ? currencyIdA : 'ETH'}/${newCurrencyIdB}`)
+        history.push(`/add/${currencyIdA ? currencyIdA : 'OKT'}/${newCurrencyIdB}`)
       }
     },
     [currencyIdA, history, currencyIdB]
