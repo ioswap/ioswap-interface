@@ -3,7 +3,7 @@ import { AbstractConnector } from '@web3-react/abstract-connector'
 
 import { injected, walletconnect, walletlink } from '../connectors'
 
-export const ROUTER_ADDRESS = '0x9f843d9ba2a386bda2845507450fd47934fb3d03'
+export const ROUTER_ADDRESS = '0x4AD7f7a124a78E3e0d0eF9764022B9353B011D75'
 
 export const ZERO_ADDRESS = '0x0000000000000000000000000000000000000000'
 
@@ -33,16 +33,16 @@ export const PROPOSAL_LENGTH_IN_SECS = AVERAGE_BLOCK_TIME_IN_SECS * PROPOSAL_LEN
 
 export const GOVERNANCE_ADDRESS = '0x5e4be8Bc9637f0EAA1A755019e06A68ce081D58F'
 
-export const TIMELOCK_ADDRESS = '0x1a9C8182C09F50C8318d769245beA52c32BE35BC'
+export const TIMELOCK_ADDRESS = '0x73b50dA49C400e4081e92dCBCB397A01dF3497e4'
 
-const UNI_ADDRESS = '0x3212606f74cc59656e1ec6f587fca61ba3b85eb0'
+const UNI_ADDRESS = '0x59d226bb0a4d74274d4354ebb6a0e1a1aa5175b6'
 export const UNI: { [chainId in ChainId]: Token } = {
   [ChainId.MAINNET]: new Token(ChainId.MAINNET, UNI_ADDRESS, 18, 'UNI', 'Uniswap'),
   [ChainId.RINKEBY]: new Token(ChainId.RINKEBY, UNI_ADDRESS, 18, 'UNI', 'Uniswap'),
   [ChainId.ROPSTEN]: new Token(ChainId.ROPSTEN, UNI_ADDRESS, 18, 'UNI', 'Uniswap'),
   [ChainId.GÖRLI]: new Token(ChainId.GÖRLI, UNI_ADDRESS, 18, 'UNI', 'Uniswap'),
   [ChainId.KOVAN]: new Token(ChainId.KOVAN, UNI_ADDRESS, 18, 'UNI', 'Uniswap'),
-  [ChainId.OKT]: new Token(ChainId.OKT, UNI_ADDRESS, 18, 'AI', 'Uniswap')
+  [ChainId.OKT]: new Token(ChainId.OKT, UNI_ADDRESS, 18, 'UNI', 'Uniswap')
 }
 
 export const COMMON_CONTRACT_NAMES: { [address: string]: string } = {
