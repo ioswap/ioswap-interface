@@ -21,6 +21,10 @@ export const USDC = new Token(ChainId.OKT, '0xc946daf81b08146b1c7a8da2a851ddf2b3
 export const USDT = new Token(ChainId.OKT, '0x382bb369d343125bfb2117af9c149795c6c65c50', 6, 'USDT', 'Tether USD')
 export const WBTC = new Token(ChainId.OKT, '0x54e4622dc504176b3bb432dccaf504569699a7ff', 8, 'WBTC', 'Wrapped BTC')
 export const WLTC = new Token(ChainId.OKT, '0xfa520efc34c81bfc1e3dd48b7fe9ff326049f986', 8, 'WLTC', 'Wrapped LTC')
+
+export const OKB = new Token(ChainId.OKT, '0xdf54b6c6195ea4d948d03bfd818d365cf175cfc2', 18, 'OKB', 'OKB')
+export const ETH = new Token(ChainId.OKT, '0xef71ca2ee68f45b9ad6f72fbdb33d707b872315c', 18, 'WETH', 'Wrapped ETH')
+export const USDK = new Token(ChainId.OKT, '0xdcac52e001f5bd413aa6ea83956438f29098166b', 18, 'USDK', 'USDK')
 // export const FEI = new Token(ChainId.OKT, '0x956F47F50A910163D8BF957Cf5846D573E7f87CA', 18, 'FEI', 'Fei USD')
 // export const TRIBE = new Token(ChainId.OKT, '0xc7283b66Eb1EB5FB86327f08e1B5816b0720212B', 18, 'TRIBE', 'Tribe')
 // export const FRAX = new Token(ChainId.OKT, '0x853d955aCEf822Db058eb8505911ED77F175b99e', 18, 'FRAX', 'Frax')
@@ -71,7 +75,7 @@ const WETH_ONLY: ChainTokenList = {
 // 组合用于构造用交易的中介对
 export const BASES_TO_CHECK_TRADES_AGAINST: ChainTokenList = {
   ...WETH_ONLY,
-  [ChainId.OKT]: [...WETH_ONLY[ChainId.OKT], DAI, USDC, USDT, WBTC]
+  [ChainId.OKT]: [...WETH_ONLY[ChainId.OKT], DAI, USDC, USDT, WBTC, ETH, USDK, OKB]
 }
 
 export const ADDITIONAL_BASES: { [chainId in ChainId]?: { [tokenAddress: string]: Token[] } } = {
@@ -94,15 +98,15 @@ export const CUSTOM_BASES: { [chainId in ChainId]?: { [tokenAddress: string]: To
 // used for display in the default list when adding liquidity
 export const SUGGESTED_BASES: ChainTokenList = {
   ...WETH_ONLY,
-  [ChainId.OKT]: [...WETH_ONLY[ChainId.OKT], DAI, USDC, USDT, WBTC]
+  [ChainId.OKT]: [...WETH_ONLY[ChainId.OKT], DAI, USDC, USDT, WBTC, ETH, USDK, OKB]
 }
 
 // used to construct the list of all pairs we consider by default in the frontend
 export const BASES_TO_TRACK_LIQUIDITY_FOR: ChainTokenList = {
   ...WETH_ONLY,
-  [ChainId.OKT]: [...WETH_ONLY[ChainId.OKT], DAI, USDC, USDT, WBTC]
+  [ChainId.OKT]: [...WETH_ONLY[ChainId.OKT], DAI, USDC, USDT, WBTC, ETH, USDK, OKB]
 }
-console.log(BASES_TO_TRACK_LIQUIDITY_FOR)
+
 export const PINNED_PAIRS: { readonly [chainId in ChainId]?: [Token, Token][] } = {
   [ChainId.OKT]: [
     [
