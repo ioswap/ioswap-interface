@@ -399,7 +399,7 @@ export default function Header() {
 
               {false && (
                 <>
-                  <StyledExternalLink id={`stake-nav-link`} href={'https://ioswap.info'}>
+                  <StyledExternalLink id={`stake-nav-link`} href={'https://info.ioswap.io'}>
                     Charts <span style={{ fontSize: '11px' }}>↗</span>
                   </StyledExternalLink>
                 </>

@@ -134,7 +134,9 @@ export default function Dividends() {
 
   return (
     <PoolsPage>
-      <PoolsActionModal isOpen={isOpen} onClose={() => setIsOpen(false)} />
+      {
+        false && <PoolsActionModal isOpen={isOpen} onClose={() => setIsOpen(false)} />
+      }
       <PoolsTitle>
         Stake Your IOS to earn platform dividends.You can choose to get USDT, OKT or BTC.
         <TipsView>

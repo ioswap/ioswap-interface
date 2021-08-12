@@ -3,6 +3,9 @@ import USDTSvg from '../../assets/svg/pools/usdt.svg'
 import OKBSvg from '../../assets/svg/pools/okb.svg'
 import BTCKSvg from '../../assets/svg/pools/btck.svg'
 import ETHSvg from '../../assets/svg/pools/eth.svg'
+import IOSAbi from '../../constants/abis/IOSPools.json'
+import { IOS_TOKEN_INFO } from '../../constants'
+import { ChainId } from '@io-swap/sdk'
 
 export const poolsConfig = [
   {
@@ -13,7 +16,14 @@ export const poolsConfig = [
     themeColor: {
       light: '#3285FF',
       dark: '#2172E5'
-    }
+    },
+    address: '0xF8b37Bb3C9559A070664530778529d6F4A01Ed6E',
+    MLP: IOS_TOKEN_INFO.address,
+    mlpDecimal: 18,
+    rewards1Address: IOS_TOKEN_INFO.address, // 单池奖励都是ios
+    abi: IOSAbi,
+    networkId: ChainId.OKT,
+    mineMountainAddress: '0xd8c33866645B1B4856d1A1A15123ecb138c7A5A7' // 矿山的地址
   },
   {
     title: 'USDT Pool',
@@ -23,7 +33,14 @@ export const poolsConfig = [
     themeColor: {
       light: '#26A17B',
       dark: '#17614a'
-    }
+    },
+    address: '0x994bb05D12Ef35F65C235Bf8e151E7F5E26aF19f',
+    MLP: '0x382bB369d343125BfB2117af9c149795C6C65C50', // 单池属性usdt/...
+    mlpDecimal: 18,
+    rewards1Address: IOS_TOKEN_INFO.address, // 单池奖励都是ios
+    abi: IOSAbi,
+    networkId: ChainId.OKT,
+    mineMountainAddress: '0xd8c33866645B1B4856d1A1A15123ecb138c7A5A7' // 矿山的地址
   },
   {
     title: 'WOKT Pool',
@@ -33,7 +50,14 @@ export const poolsConfig = [
     themeColor: {
       light: '#4494F7',
       dark: '#2a5a95'
-    }
+    },
+    address: '0x7DdCE55Fccd3BBF8DBef27EF90C7b83931F8bD27',
+    MLP: '0x8f8526dbfd6e38e3d8307702ca8469bae6c56c15', // 单池属性
+    mlpDecimal: 18,
+    rewards1Address: IOS_TOKEN_INFO.address, // 单池奖励都是ios
+    abi: IOSAbi,
+    networkId: ChainId.OKT,
+    mineMountainAddress: '0xd8c33866645B1B4856d1A1A15123ecb138c7A5A7' // 矿山的地址
   },
   {
     title: 'OKB Pool',
@@ -43,7 +67,14 @@ export const poolsConfig = [
     themeColor: {
       light: '#4494F7',
       dark: '#2a5a95'
-    }
+    },
+    address: '0x61EA0f1b2cca3fA01F22e3ebB8eb99Cf49E59EdC',
+    MLP: '0xdf54b6c6195ea4d948d03bfd818d365cf175cfc2', // 单池属性
+    mlpDecimal: 18,
+    rewards1Address: IOS_TOKEN_INFO.address, // 单池奖励都是ios
+    abi: IOSAbi,
+    networkId: ChainId.OKT,
+    mineMountainAddress: '0xd8c33866645B1B4856d1A1A15123ecb138c7A5A7' // 矿山的地址
   },
   {
     title: 'BTCK Pool',
@@ -53,16 +84,30 @@ export const poolsConfig = [
     themeColor: {
       light: '#F7931A',
       dark: '#a86513'
-    }
+    },
+    address: '0xd89726063D0Ae3F8DcCE47A8F8766d562220EFb2',
+    MLP: '0x54e4622dc504176b3bb432dccaf504569699a7ff', // 单池属性
+    mlpDecimal: 18,
+    rewards1Address: IOS_TOKEN_INFO.address, // 单池奖励都是ios
+    abi: IOSAbi,
+    networkId: ChainId.OKT,
+    mineMountainAddress: '0xd8c33866645B1B4856d1A1A15123ecb138c7A5A7' // 矿山的地址
   },
   {
-    title: 'ETH Pool',
+    title: 'ETHK Pool',
     icon: ETHSvg,
-    coin: 'ETH',
+    coin: 'ETHK',
     earnedName: 'IOS EARNED',
     themeColor: {
-      light: '#F7931A',
-      dark: '#a86513'
-    }
+      light: '#627EEA',
+      dark: '#5066ba'
+    },
+    address: '0x081D7295D3102Bf6A0602943269BfA9E3A7AC21b',
+    MLP: '0xef71ca2ee68f45b9ad6f72fbdb33d707b872315c', // 单池属性
+    mlpDecimal: 18,
+    rewards1Address: IOS_TOKEN_INFO.address, // 单池奖励都是ios
+    abi: IOSAbi,
+    networkId: ChainId.OKT,
+    mineMountainAddress: '0xd8c33866645B1B4856d1A1A15123ecb138c7A5A7' // 矿山的地址
   },
 ]

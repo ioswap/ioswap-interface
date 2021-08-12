@@ -163,7 +163,9 @@ export default function TradeBonus() {
 
   return (
     <TradeBonusPage>
-      <TradeBonusActionModal isOpen={isOpen} onClose={() => setIsOpen(false)} />
+      {
+        false && <TradeBonusActionModal isOpen={isOpen} onClose={() => setIsOpen(false)} />
+      }
       <TradeBonusBanner>
         <TradeBonusBannerLeft>
           {/*<img src={IMG0101} alt='' />*/}

@@ -158,7 +158,9 @@ export default function Farms() {
 
   return (
     <FarmsPage>
-      <FarmsActionModal isOpen={isOpen} onClose={() => setIsOpen(false)} />
+      {
+        false && <FarmsActionModal isOpen={isOpen} onClose={() => setIsOpen(false)} />
+      }
       <FarmsTitle>Stake your LP tokens to earn IOS</FarmsTitle>
       <FarmsBanner>
         <FarmsBannerLeft>

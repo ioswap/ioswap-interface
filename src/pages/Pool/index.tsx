@@ -208,7 +208,7 @@ export default function Pool() {
               <>
                 <ButtonSecondary>
                   <RowBetween>
-                    <ExternalLink href={'https://ioswap.info/account/' + account}>
+                    <ExternalLink href={'https://info.ioswap.io/account/' + account}>
                       Account analytics and accrued fees
                     </ExternalLink>
                     <span> ↗</span>

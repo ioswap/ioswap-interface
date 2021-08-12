@@ -5,7 +5,7 @@ import { ChainId } from '@io-swap/sdk'
 export const injected = new InjectedConnector({
   supportedChainIds: [ChainId.OKT]
 })
-const networkConf = {
+export const networkConf = {
   [ChainId.OKT]: {
     chainId: '0x42',
     chainName: 'OKExChain Mainnet',

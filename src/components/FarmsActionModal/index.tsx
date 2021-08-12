@@ -1,9 +1,12 @@
 import React, { useState } from 'react'
-
+import { getWeb3Contract, useBalance } from '../../constants/web3/index'
 import styled from 'styled-components'
 import { ReactComponent as Close } from '../../assets/images/x.svg'
 
 import Modal from '../Modal'
+import { useActiveWeb3React } from '../../hooks'
+import { numToWei } from '../../utils/format'
+import LoadingIcon from '../LoadingIcon/LoadingIcon'
 
 const CloseIcon = styled.div`
   position: absolute;
@@ -136,6 +139,9 @@ const CancelBtn = styled.button`
   cursor: pointer;
 `
 const ConfigBtn = styled.button`
+  display: flex;
+  align-items: center;
+  justify-content: center;
   width: 214px;
   height: 48px;
   border: 0;
@@ -143,12 +149,38 @@ const ConfigBtn = styled.button`
   background: linear-gradient(90deg, ${({ theme }) => theme.gradual1}, ${({ theme }) => theme.gradual2});
   border-radius: 12px;
   cursor: pointer;
+  :hover{
+    opacity: 0.9;
+  }
 `
 
-export default function FarmsActionModal({isOpen, onClose}: any) {
-
+export default function FarmsActionModal({ isOpen, onClose, poolData, upUpdateNum }: any) {
+  const { library, account } = useActiveWeb3React()
   const [inputValue, setInputValue] = useState('')
-
+  const [stakeLoading, setStakeLoading] = useState(false)
+  const balance = useBalance(poolData.MLP)
+  if (!isOpen) {
+    return null
+  }
+  const onConfirm = () => {
+    if (stakeLoading || !inputValue || isNaN(Number(inputValue))) {
+      return
+    }
+    setStakeLoading(true)
+    const contract = getWeb3Contract(library, poolData.abi, poolData.address)
+    contract.methods
+      .stake(numToWei(`${inputValue}`, poolData.mlpDecimal))
+      .send({
+        from: account
+      })
+      .on('receipt', () => {
+        upUpdateNum && upUpdateNum()
+        setStakeLoading(false)
+      })
+      .on('error', () => {
+        setStakeLoading(false)
+      })
+  }
   return (
     <Modal isOpen={isOpen} onDismiss={onClose} minHeight={false} maxHeight={90}>
       <UpperSection>
@@ -156,26 +188,29 @@ export default function FarmsActionModal({isOpen, onClose}: any) {
           <CloseColor />
         </CloseIcon>
         <HeaderRow>
-          <HoverText>Unstake LP tokens</HoverText>
+          <HoverText>Stake {poolData.coin} tokens</HoverText>
         </HeaderRow>
         <ModalContentPD>
           <ModalContent>
             <NameInputView>
-              <NameTag>OKT/USDT LP</NameTag>
+              <NameTag>{poolData.coin}</NameTag>
               <ValueInputBox>
                 <ValueInput placeholder="0.0" value={inputValue} onChange={e => setInputValue(e.target.value)}>
                 </ValueInput>
               </ValueInputBox>
             </NameInputView>
             <DescView>
-              0.1235OKT/USDT LP Available
-              <DescViewMax>(max)</DescViewMax>
+              {balance} {poolData.coin} Available
+              <DescViewMax onClick={() => setInputValue(balance)}>(max)</DescViewMax>
             </DescView>
           </ModalContent>
         </ModalContentPD>
         <FooterBtnGroup>
-          <CancelBtn>Cancel</CancelBtn>
-          <ConfigBtn>Config</ConfigBtn>
+          <CancelBtn onClick={onClose}>Cancel</CancelBtn>
+          <ConfigBtn onClick={onConfirm}>
+            {stakeLoading && <LoadingIcon />}
+            Confirm
+          </ConfigBtn>
         </FooterBtnGroup>
       </UpperSection>
     </Modal>

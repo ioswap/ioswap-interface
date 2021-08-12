@@ -1,8 +1,7 @@
-import React, { useState } from 'react'
+import React  from 'react'
 import styled from 'styled-components'
 import { poolsConfig } from './config'
 import PoolsCard from '../../components/PoolsCard'
-import PoolsActionModal from '../../components/FarmsActionModal'
 
 export const FlexCenter = styled.div`
   display: flex;
@@ -152,12 +151,8 @@ const PoolsCards = styled.div`
 `
 
 export default function Pools() {
-
-  const [isOpen, setIsOpen] = useState(false)
-
   return (
     <PoolsPage>
-      <PoolsActionModal isOpen={isOpen} onClose={() => setIsOpen(false)} />
       <PoolsTitle>Deposit single asset to earn IOS without risk!</PoolsTitle>
       <PoolsBanner>
         <PoolsBannerLeft>
@@ -187,7 +182,6 @@ export default function Pools() {
         </UpToMediumHidden>
       </PoolsBanner>
       <UpToMediumShow>
-
         <PoolsBannerRightT>
           TVL (Liquidity Pools)
         </PoolsBannerRightT>
@@ -197,7 +191,7 @@ export default function Pools() {
       </UpToMediumShow>
       <PoolsCards>
         {
-          poolsConfig.map((poolData: any, index: number) => <PoolsCard key={index} poolData={poolData} />)
+          poolsConfig.map((pool: any, index: number) => <PoolsCard key={index} pool={pool}/>)
         }
       </PoolsCards>
     </PoolsPage>

@@ -122,6 +122,11 @@
   },
   "license": "GPL-3.0-or-later",
   "dependencies": {
-    "@io-swap/default-token-list": "^1.0.12"
+    "@ethersproject/providers": "^5.4.3",
+    "@io-swap/default-token-list": "^1.0.12",
+    "bignumber.js": "^9.0.1",
+    "ethers-multicall-x": "^0.2.2",
+    "lodash": "^4.17.21",
+    "web3": "^1.5.1"
   }
 }
