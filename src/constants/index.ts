@@ -17,10 +17,10 @@ type ChainTokenList = {
 
 // export const AMPL = new Token(ChainId.OKT, '0xD46bA6D942050d489DBd938a2C909A5d5039A161', 9, 'AMPL', 'Ampleforth')
 export const DAI = new Token(ChainId.OKT, '0x21cde7e32a6caf4742d00d44b07279e7596d26b9', 18, 'DAI', 'Dai Stablecoin')
-export const USDC = new Token(ChainId.OKT, '0xc946daf81b08146b1c7a8da2a851ddf2b3eaaf85', 6, 'USDC', 'USD//C')
-export const USDT = new Token(ChainId.OKT, '0x382bb369d343125bfb2117af9c149795c6c65c50', 6, 'USDT', 'Tether USD')
-export const WBTC = new Token(ChainId.OKT, '0x54e4622dc504176b3bb432dccaf504569699a7ff', 8, 'WBTC', 'Wrapped BTC')
-export const WLTC = new Token(ChainId.OKT, '0xfa520efc34c81bfc1e3dd48b7fe9ff326049f986', 8, 'WLTC', 'Wrapped LTC')
+export const USDC = new Token(ChainId.OKT, '0xc946daf81b08146b1c7a8da2a851ddf2b3eaaf85', 18, 'USDC', 'USD//C')
+export const USDT = new Token(ChainId.OKT, '0x382bb369d343125bfb2117af9c149795c6c65c50', 18, 'USDT', 'Tether USD')
+export const WBTC = new Token(ChainId.OKT, '0x54e4622dc504176b3bb432dccaf504569699a7ff', 18, 'WBTC', 'Wrapped BTC')
+export const WLTC = new Token(ChainId.OKT, '0xfa520efc34c81bfc1e3dd48b7fe9ff326049f986', 18, 'WLTC', 'Wrapped LTC')
 
 export const OKB = new Token(ChainId.OKT, '0xdf54b6c6195ea4d948d03bfd818d365cf175cfc2', 18, 'OKB', 'OKB')
 export const ETH = new Token(ChainId.OKT, '0xef71ca2ee68f45b9ad6f72fbdb33d707b872315c', 18, 'WETH', 'Wrapped ETH')
