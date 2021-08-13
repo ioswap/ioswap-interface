@@ -176,6 +176,7 @@ export default function FarmsActionModal({ isOpen, onClose, poolData, upUpdateNu
       .on('receipt', () => {
         upUpdateNum && upUpdateNum()
         setStakeLoading(false)
+        onClose()
       })
       .on('error', () => {
         setStakeLoading(false)

@@ -1,8 +1,7 @@
-import React, { useState } from 'react'
+import React  from 'react'
 import styled from 'styled-components'
 import { farmPools } from './config'
 import FarmsCard from '../../components/FarmsCard'
-import FarmsActionModal from '../../components/FarmsActionModal'
 
 export const FlexCenter = styled.div`
   display: flex;
@@ -121,7 +120,7 @@ const FarmsBannerRightT = styled(FarmsBannerLeftFT)`
   color: ${({ theme }) => theme.text1};
 `
 const FarmsBannerRightB = styled(FarmsBannerLeftFB)`
-  color: ${({ theme }) => theme.text1};
+  color: ${({ theme }) => theme.text2};
   font-weight: 600;
 `
 const HarvestView = styled(FlexCenter)``
@@ -153,14 +152,8 @@ const FarmsCards = styled.div`
 `
 
 export default function Farms() {
-
-  const [isOpen, setIsOpen] = useState(false)
-
   return (
     <FarmsPage>
-      {
-        false && <FarmsActionModal isOpen={isOpen} onClose={() => setIsOpen(false)} />
-      }
       <FarmsTitle>Stake your LP tokens to earn IOS</FarmsTitle>
       <FarmsBanner>
         <FarmsBannerLeft>
@@ -200,7 +193,7 @@ export default function Farms() {
       </UpToMediumShow>
       <FarmsCards>
         {
-          farmPools.map((farmPool: any, index: number) => <FarmsCard key={index} farmPool={farmPool} />)
+          farmPools.map((pool: any, index: number) => <FarmsCard key={index} pool={pool} />)
         }
       </FarmsCards>
     </FarmsPage>
