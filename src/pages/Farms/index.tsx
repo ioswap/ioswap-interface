@@ -3,7 +3,6 @@ import styled from 'styled-components'
 import { farmPools } from './config'
 import FarmsCard from '../../components/FarmsCard'
 import { formatAmount } from '../../utils/format'
-import { poolsConfig } from '../Pools/config'
 import { Contract } from 'ethers-multicall-x'
 import { useActiveWeb3React } from '../../hooks'
 import { getMultiCallProvider } from '../../constants/web3'
@@ -183,7 +182,7 @@ export default function Farms() {
   const claimAll = async () => {
     if (library) {
       const multicall = getMultiCallProvider(library.getSigner(), chainId)
-      const callList = poolsConfig.map(pool => {
+      const callList = farmPools.map(pool => {
         const contract = new Contract(pool.address, pool.abi)
         return contract.getRewardA(account)
       })
