@@ -160,7 +160,7 @@ const LinkArrow = styled.div`
   cursor: pointer;
 `
 
-export default function PoolsCard({ pool }: any) {
+export default function PoolsCard({ pool, updateBannerData }: any) {
   const { account, library } = useActiveWeb3React()
   const [isDark] = useDarkModeManager()
   const [poolData, setPoolData] = useState(pool)
@@ -173,7 +173,6 @@ export default function PoolsCard({ pool }: any) {
 
   // 矿池所有的LPT总价值 = (矿池的总质押(totalSupply) / LPT总发行(LPT.totalSupply)) * LPT含有token0 或 token1的量(LPT.getReserves) * 2 * 转为USDC的价值(price)
   const [apr, setApr] = useState('-')
-  const [price, setPrice] = useState('0')
 
   const upUpdateNum = () => {
     setUpdateNum(updateNum + 1)
@@ -184,7 +183,12 @@ export default function PoolsCard({ pool }: any) {
       setPoolData(resPool)
       getApr(resPool, 2).then(data => {
         setApr(data.apr)
-        setPrice(data.price)
+        const newPoolData = {
+          ...resPool,
+          totalSupplyValue: formatTotalPrice(resPool.totalSupply, data.price, 2)
+        }
+        setPoolData(newPoolData)
+        updateBannerData(newPoolData)
       })
     })
   }, [account, blockNumber, updateNum])
@@ -297,7 +301,7 @@ export default function PoolsCard({ pool }: any) {
             <CardFooterLine>
               <LineView>
                 <LineViewText>Total Deposited</LineViewText>
-                <LineViewValue>{poolData.totalSupply}(${formatTotalPrice(poolData.totalSupply, price, 2)})</LineViewValue>
+                <LineViewValue>{poolData.totalSupply}(${poolData.totalSupplyValue})</LineViewValue>
               </LineView>
             </CardFooterLine>
           </PaddingLR>

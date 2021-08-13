@@ -1,7 +1,8 @@
-import React  from 'react'
+import React, { useState } from 'react'
 import styled from 'styled-components'
 import { farmPools } from './config'
 import FarmsCard from '../../components/FarmsCard'
+import { formatAmount } from '../../utils/format'
 
 export const FlexCenter = styled.div`
   display: flex;
@@ -151,7 +152,30 @@ const FarmsCards = styled.div`
   `}
 `
 
+const poolMap: any = {}
 export default function Farms() {
+  const [harvestTotal, setHarvestTotal] = useState('-')
+  const [liquidityTotal, setLiquidityTotal] = useState('-')
+
+  const updateBannerData = (poolData: any) => {
+    poolMap[poolData.address] = poolData
+    const len = Object.keys(poolMap).length
+    if (len === farmPools.length) {
+      let harvestTotal_ = 0
+      let liquidityTotal_ = 0
+      for (const i in poolMap) {
+        const totalSupplyValue = Number(poolMap[i].totalSupplyValue)
+        if (!isNaN(totalSupplyValue)) {
+          harvestTotal_ += Number(formatAmount(poolMap[i].earned || '0'))
+          liquidityTotal_ += totalSupplyValue
+        }
+      }
+      console.log('poolMap', poolMap)
+      setHarvestTotal(String(harvestTotal_))
+      setLiquidityTotal(String(liquidityTotal_))
+    }
+  }
+
   return (
     <FarmsPage>
       <FarmsTitle>Stake your LP tokens to earn IOS</FarmsTitle>
@@ -162,7 +186,7 @@ export default function Farms() {
               My Total Crops:
             </FarmsBannerLeftFT>
             <FarmsBannerLeftFB>
-              88,888,888,888 IOS
+              {harvestTotal} IOS
             </FarmsBannerLeftFB>
           </FarmsBannerLeftF>
           <HarvestView>
@@ -177,7 +201,7 @@ export default function Farms() {
               TVL (Liquidity Pools)
             </FarmsBannerRightT>
             <FarmsBannerRightB>
-              $ 88
+              $ {liquidityTotal}
             </FarmsBannerRightB>
           </FarmsBannerRight>
         </UpToMediumHidden>
@@ -188,12 +212,13 @@ export default function Farms() {
           TVL (Liquidity Pools)
         </FarmsBannerRightT>
         <FarmsBannerRightB>
-          $ 88
+          $ {liquidityTotal}
         </FarmsBannerRightB>
       </UpToMediumShow>
       <FarmsCards>
         {
-          farmPools.map((pool: any, index: number) => <FarmsCard key={index} pool={pool} />)
+          farmPools.map((pool: any, index: number) => <FarmsCard key={index} pool={pool}
+                                                                 updateBannerData={updateBannerData} />)
         }
       </FarmsCards>
     </FarmsPage>

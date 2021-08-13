@@ -1,7 +1,8 @@
-import React  from 'react'
+import React, { useState } from 'react'
 import styled from 'styled-components'
 import { poolsConfig } from './config'
 import PoolsCard from '../../components/PoolsCard'
+import { formatAmount } from '../../utils/format'
 
 export const FlexCenter = styled.div`
   display: flex;
@@ -149,8 +150,28 @@ const PoolsCards = styled.div`
       justify-items: center;
   `}
 `
-
+const poolMap: any = {}
 export default function Pools() {
+  const [earningTotal, setEarningTotal] = useState('-')
+  const [totalDeposited, setTotalDeposited] = useState('-')
+
+  const updateBannerData = (poolData: any) => {
+    poolMap[poolData.address] = poolData
+    const len = Object.keys(poolMap).length
+    if (len === poolsConfig.length) {
+      let earningTotal_ = 0
+      let totalDeposited_ = 0
+      for (const i in poolMap) {
+        const totalSupplyValue = Number(poolMap[i].totalSupplyValue)
+        if (!isNaN(totalSupplyValue)) {
+          earningTotal_ += Number(formatAmount(poolMap[i].earned || '0'))
+          totalDeposited_ += totalSupplyValue
+        }
+      }
+      setEarningTotal(String(earningTotal_))
+      setTotalDeposited(String(totalDeposited_))
+    }
+  }
   return (
     <PoolsPage>
       <PoolsTitle>Deposit single asset to earn IOS without risk!</PoolsTitle>
@@ -161,7 +182,7 @@ export default function Pools() {
               My Pools Earning:
             </PoolsBannerLeftFT>
             <PoolsBannerLeftFB>
-              88,888,888,888 IOS
+              {earningTotal} IOS
             </PoolsBannerLeftFB>
           </PoolsBannerLeftF>
           <HarvestView>
@@ -176,7 +197,7 @@ export default function Pools() {
               TVL (iOS Pools)
             </PoolsBannerRightT>
             <PoolsBannerRightB>
-              $ 88
+              $ {totalDeposited}
             </PoolsBannerRightB>
           </PoolsBannerRight>
         </UpToMediumHidden>
@@ -186,12 +207,12 @@ export default function Pools() {
           TVL (Liquidity Pools)
         </PoolsBannerRightT>
         <PoolsBannerRightB>
-          $ 88
+          $ {totalDeposited}
         </PoolsBannerRightB>
       </UpToMediumShow>
       <PoolsCards>
         {
-          poolsConfig.map((pool: any, index: number) => <PoolsCard key={index} pool={pool}/>)
+          poolsConfig.map((pool: any, index: number) => <PoolsCard key={index} pool={pool} updateBannerData={updateBannerData}/>)
         }
       </PoolsCards>
     </PoolsPage>

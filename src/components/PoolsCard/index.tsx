@@ -163,7 +163,7 @@ const ExitButton = styled.div<any>`
   justify-content: center;
 `
 
-export default function PoolsCard({ pool }: any) {
+export default function PoolsCard({ pool, updateBannerData }: any) {
   const { account, library } = useActiveWeb3React()
   const [isDark] = useDarkModeManager()
   const [poolData, setPoolData] = useState(pool)
@@ -175,7 +175,6 @@ export default function PoolsCard({ pool }: any) {
   const [exitLoading, setExitLoading] = useState(false)
   
   const [apr, setApr] = useState('-')
-  const [price, setPrice] = useState('0')
 
   const upUpdateNum = () => {
     setUpdateNum(updateNum + 1)
@@ -185,9 +184,14 @@ export default function PoolsCard({ pool }: any) {
     getPoolInfo(pool, account).then((resPool) => {
       setPoolData(resPool)
       getApr(resPool, 1).then(data => {
-        console.log('data', data)
         setApr(data.apr)
-        setPrice(data.price)
+        const newPoolData = {
+          ...resPool,
+          balanceOfValue: formatTotalPrice(resPool.balanceOf, data.price, 2),
+          totalSupplyValue: formatTotalPrice(resPool.totalSupply, data.price, 2)
+        }
+        setPoolData(newPoolData)
+        updateBannerData(newPoolData)
       })
     })
   }, [account, blockNumber, updateNum])
@@ -283,13 +287,13 @@ export default function PoolsCard({ pool }: any) {
             <CardFooterLine>
               <LineView>
                 <LineViewText>Your Deposited</LineViewText>
-                <LineViewValue>{poolData.balanceOf}(${formatTotalPrice(poolData.balanceOf, price, 2)})</LineViewValue>
+                <LineViewValue>{poolData.balanceOf}(${poolData.balanceOfValue})</LineViewValue>
               </LineView>
             </CardFooterLine>
             <CardFooterLine>
               <LineView>
                 <LineViewText>Total Deposited</LineViewText>
-                <LineViewValue>{poolData.totalSupply}(${formatTotalPrice(poolData.totalSupply, price, 2)})</LineViewValue>
+                <LineViewValue>{poolData.totalSupply}(${poolData.totalSupplyValue})</LineViewValue>
               </LineView>
             </CardFooterLine>
           </PaddingLR>
