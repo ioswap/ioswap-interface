@@ -6,6 +6,7 @@ import { formatAmount } from '../../utils/format'
 import { Contract } from 'ethers-multicall-x'
 import { useActiveWeb3React } from '../../hooks'
 import { getMultiCallProvider } from '../../constants/web3'
+import LoadingIcon from '../../components/LoadingIcon/LoadingIcon'
 
 export const FlexCenter = styled.div`
   display: flex;
@@ -160,6 +161,7 @@ export default function Farms() {
   const { library, chainId, account } = useActiveWeb3React()
   const [harvestTotal, setHarvestTotal] = useState('-')
   const [liquidityTotal, setLiquidityTotal] = useState('-')
+  const [claimAllLoading, setClaimAllLoading] = useState(false)
 
   const updateBannerData = (poolData: any) => {
     poolMap[poolData.address] = poolData
@@ -180,13 +182,20 @@ export default function Farms() {
   }
 
   const claimAll = async () => {
-    if (library) {
+    if (library && !claimAllLoading) {
       const multicall = getMultiCallProvider(library.getSigner(), chainId)
       const callList = farmPools.map(pool => {
         const contract = new Contract(pool.address, pool.abi)
         return contract.getRewardA(account)
       })
-      await multicall.allSend(callList)
+      setClaimAllLoading(true)
+      // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
+      // @ts-ignore
+      await multicall.allSend(callList).then(() => {
+        setClaimAllLoading(false)
+      }).catch(() => {
+        setClaimAllLoading(false)
+      })
     }
   }
 
@@ -200,7 +209,10 @@ export default function Farms() {
             <FarmsBannerLeftFB>{harvestTotal} IOS</FarmsBannerLeftFB>
           </FarmsBannerLeftF>
           <HarvestView>
-            <HarvestBtn onClick={claimAll}>Harvest All</HarvestBtn>
+            <HarvestBtn onClick={claimAll}>
+              {claimAllLoading && <LoadingIcon />}
+              Harvest All
+            </HarvestBtn>
           </HarvestView>
         </FarmsBannerLeft>
         <UpToMediumHidden>
