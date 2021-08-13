@@ -168,7 +168,7 @@ export default function Pools() {
           totalDeposited_ += totalSupplyValue
         }
       }
-      setEarningTotal(String(earningTotal_))
+      setEarningTotal(String(earningTotal_ === 0 ? 0 : earningTotal_.toFixed(6)))
       setTotalDeposited(String(totalDeposited_))
     }
   }

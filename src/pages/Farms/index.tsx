@@ -170,8 +170,7 @@ export default function Farms() {
           liquidityTotal_ += totalSupplyValue
         }
       }
-      console.log('poolMap', poolMap)
-      setHarvestTotal(String(harvestTotal_))
+      setHarvestTotal(String(harvestTotal_ === 0 ? 0 : harvestTotal_.toFixed(6)))
       setLiquidityTotal(String(liquidityTotal_))
     }
   }

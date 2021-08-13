@@ -182,7 +182,6 @@ export default function PoolsCard({ pool, updateBannerData }: any) {
   const blockNumber = useBlockNumber()
   useMemo(() => {
     getPoolInfo(pool, account).then((resPool) => {
-      setPoolData(resPool)
       getApr(resPool, 1).then(data => {
         setApr(data.apr)
         const newPoolData = {
