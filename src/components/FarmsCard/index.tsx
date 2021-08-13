@@ -296,7 +296,7 @@ export default function PoolsCard({ pool, updateBannerData }: any) {
             <CardFooterLine>
               <LineView>
                 <LineViewText>Stake</LineViewText>
-                <LinkArrowBox href={'https://info.ioswap.io/pair/' + poolData.address.toLowerCase()}>
+                <LinkArrowBox href={'https://info.ioswap.io/pair/' + poolData.MLP.toLowerCase()}>
                   <LineViewValue>
                     <span>{poolData.coin.replace('/', '-')}</span>
                     <LinkArrow>
