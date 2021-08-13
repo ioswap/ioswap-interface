@@ -181,21 +181,23 @@ export default function PoolsCard({ pool, updateBannerData }: any) {
   }
   const blockNumber = useBlockNumber()
   useMemo(() => {
-    getPoolInfo(pool, account).then((resPool) => {
-      getApr(resPool, 1).then(data => {
-        setApr(data.apr)
-        const newPoolData = {
-          ...resPool,
-          balanceOfValue: formatTotalPrice(resPool.balanceOf, data.price, 2),
-          totalSupplyValue: formatTotalPrice(resPool.totalSupply, data.price, 2)
-        }
-        setPoolData(newPoolData)
-        updateBannerData(newPoolData)
+    if (account) {
+      getPoolInfo(pool, account).then((resPool) => {
+        getApr(resPool, 1).then(data => {
+          setApr(data.apr)
+          const newPoolData = {
+            ...resPool,
+            balanceOfValue: formatTotalPrice(resPool.balanceOf, data.price, 2),
+            totalSupplyValue: formatTotalPrice(resPool.totalSupply, data.price, 2)
+          }
+          setPoolData(newPoolData)
+          updateBannerData(newPoolData)
+        })
       })
-    })
+    }
   }, [account, blockNumber, updateNum])
   const onApprove = () => {
-    if (approveLoading) {
+    if (approveLoading || !account) {
       return
     }
     setApproveLoading(true)
@@ -210,7 +212,7 @@ export default function PoolsCard({ pool, updateBannerData }: any) {
     })
   }
   const onClaim_ = () => {
-    if (claimLoading || poolData.earned == '0') {
+    if (claimLoading || poolData.earned == '0' || !account) {
       return
     }
     setClaimLoading(true)
@@ -225,7 +227,7 @@ export default function PoolsCard({ pool, updateBannerData }: any) {
     })
   }
   const onExit_ = () => {
-    if (poolData.balanceOf <= 0 || exitLoading) {
+    if (poolData.balanceOf <= 0 || exitLoading || !account) {
       return
     }
     setExitLoading(true)

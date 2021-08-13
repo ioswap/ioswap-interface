@@ -61,7 +61,7 @@ export const useBalance = (address, abi = ERC20_ABI, decimals = 18, owner = null
   const blockNumber = useBlockNumber()
   const { account, library } = useActiveWeb3React()
   useMemo(() => {
-    if (blockNumber !== 0) {
+    if (blockNumber !== 0 && account) {
       // console.log(active, address, account)
       owner = !owner ? account : owner
       const contract = getWeb3Contract(library, abi, address)
