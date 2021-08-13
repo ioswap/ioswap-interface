@@ -56,12 +56,7 @@ export const getWeb3Contract = (library, abi, address) => {
   return new web3.eth.Contract(abi, address)
 }
 
-export const useBalance = (
-  address,
-  abi = ERC20_ABI,
-  decimals = 18,
-  owner = null,
-) => {
+export const useBalance = (address, abi = ERC20_ABI, decimals = 18, owner = null) => {
   const [balance, setBalance] = useState('0')
   const blockNumber = useBlockNumber()
   const { account, library } = useActiveWeb3React()

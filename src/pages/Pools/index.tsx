@@ -1,7 +1,10 @@
-import React  from 'react'
+import React from 'react'
 import styled from 'styled-components'
 import { poolsConfig } from './config'
 import PoolsCard from '../../components/PoolsCard'
+import { useActiveWeb3React } from '../../hooks'
+import { getMultiCallProvider } from '../../constants/web3'
+import { Contract } from 'ethers-multicall-x'
 
 export const FlexCenter = styled.div`
   display: flex;
@@ -151,48 +154,46 @@ const PoolsCards = styled.div`
 `
 
 export default function Pools() {
+  const { library, chainId } = useActiveWeb3React()
+  const claimAll = async () => {
+    if (library) {
+      const multicall = getMultiCallProvider(library.getSigner(), chainId)
+      const callList = poolsConfig.slice(0, 1).map(pool => {
+        const contract = new Contract(pool.address, pool.abi)
+        return contract.getReward()
+      })
+      console.log(callList)
+      await multicall.allSend(callList)
+    }
+  }
   return (
     <PoolsPage>
       <PoolsTitle>Deposit single asset to earn IOS without risk!</PoolsTitle>
       <PoolsBanner>
         <PoolsBannerLeft>
           <PoolsBannerLeftF>
-            <PoolsBannerLeftFT>
-              My Pools Earning:
-            </PoolsBannerLeftFT>
-            <PoolsBannerLeftFB>
-              88,888,888,888 IOS
-            </PoolsBannerLeftFB>
+            <PoolsBannerLeftFT>My Pools Earning:</PoolsBannerLeftFT>
+            <PoolsBannerLeftFB>88,888,888,888 IOS</PoolsBannerLeftFB>
           </PoolsBannerLeftF>
           <HarvestView>
-            <HarvestBtn>
-              Claim All
-            </HarvestBtn>
+            <HarvestBtn onClick={claimAll}>Claim All</HarvestBtn>
           </HarvestView>
         </PoolsBannerLeft>
         <UpToMediumHidden>
           <PoolsBannerRight>
-            <PoolsBannerRightT>
-              TVL (iOS Pools)
-            </PoolsBannerRightT>
-            <PoolsBannerRightB>
-              $ 88
-            </PoolsBannerRightB>
+            <PoolsBannerRightT>TVL (iOS Pools)</PoolsBannerRightT>
+            <PoolsBannerRightB>$ 88</PoolsBannerRightB>
           </PoolsBannerRight>
         </UpToMediumHidden>
       </PoolsBanner>
       <UpToMediumShow>
-        <PoolsBannerRightT>
-          TVL (Liquidity Pools)
-        </PoolsBannerRightT>
-        <PoolsBannerRightB>
-          $ 88
-        </PoolsBannerRightB>
+        <PoolsBannerRightT>TVL (Liquidity Pools)</PoolsBannerRightT>
+        <PoolsBannerRightB>$ 88</PoolsBannerRightB>
       </UpToMediumShow>
       <PoolsCards>
-        {
-          poolsConfig.map((pool: any, index: number) => <PoolsCard key={index} pool={pool}/>)
-        }
+        {poolsConfig.map((pool: any, index: number) => (
+          <PoolsCard key={index} pool={pool} />
+        ))}
       </PoolsCards>
     </PoolsPage>
   )
