@@ -89,10 +89,8 @@ const ApprovalButton = styled.div<any>`
   font-weight: 600;
   margin-top: 20px;
   cursor: pointer;
-
-  color: ${({ theme }) => theme.primary1};
-  border: 1px solid ${({ theme }) => theme.primary1};
-  background: transparent;
+  color: ${({theme})=>theme.white};
+  background: linear-gradient(90deg, ${({ theme }) => theme.gradual1}, ${({ theme }) => theme.gradual2});
   border-radius: 12px;
 
   :hover {
@@ -104,6 +102,9 @@ const StakeButton = styled(ApprovalButton)`
   width: 80px;
   font-weight: 400;
   font-size: 30px;
+  background: transparent;
+  color: ${({ theme }) => theme.primary1};
+  border: 1px solid ${({ theme }) => theme.primary1};
 `
 const LineViewText = styled.div`
   font-size: 14px;
@@ -248,7 +249,7 @@ export default function PoolsCard({ pool }: any) {
             <FlexCenterH>
               <ClaimBtn themeColor={poolData.themeColor} isDark={isDark} onClick={onClaim_}>
                 {claimLoading && <LoadingIcon />}
-                Claim
+                Harvest
               </ClaimBtn>
             </FlexCenterH>
           </LineView>
@@ -275,7 +276,7 @@ export default function PoolsCard({ pool }: any) {
                 {
                   approveLoading && <LoadingIcon />
                 }
-                Approve {poolData.coin}
+                Approve Contract
               </ApprovalButton>
             )
           }
