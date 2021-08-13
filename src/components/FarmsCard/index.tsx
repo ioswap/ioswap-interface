@@ -10,6 +10,7 @@ import { useBlockNumber } from '../../state/application/hooks'
 import LoadingIcon from '../LoadingIcon/LoadingIcon'
 import { getApr } from '../../pools/apr'
 import ArrowSvg from '../../assets/svg/pools/arrow.svg'
+import { ExternalLink } from '../../theme'
 
 const CardView = styled.div`
   background: ${({ theme }) => theme.bg1};
@@ -89,7 +90,7 @@ const ApprovalButton = styled.div<any>`
   font-weight: 600;
   margin-top: 20px;
   cursor: pointer;
-  color: ${({theme})=>theme.white};
+  color: ${({ theme }) => theme.white};
   background: linear-gradient(90deg, ${({ theme }) => theme.gradual1}, ${({ theme }) => theme.gradual2});
   border-radius: 12px;
 
@@ -141,11 +142,17 @@ const CardFooterLine = styled.div`
 const PaddingLR = styled.div`
   padding: 0 16px;
 `
-const LinkArrowBox = styled(LineViewValue)`
+const LinkArrowBox = styled(ExternalLink)`
   cursor: pointer;
+  border-bottom: 1px solid transparent;
+
+  span {
+    text-decoration: none;
+  }
 
   :hover {
-    text-decoration: underline;
+    text-decoration: none;
+    border-bottom: 1px solid #cccccc;
   }
 `
 const LinkArrow = styled.div`
@@ -289,11 +296,13 @@ export default function PoolsCard({ pool, updateBannerData }: any) {
             <CardFooterLine>
               <LineView>
                 <LineViewText>Stake</LineViewText>
-                <LinkArrowBox>
-                  {poolData.coin.replace('/', '-')}
-                  <LinkArrow>
-                    <img src={ArrowSvg} alt='' />
-                  </LinkArrow>
+                <LinkArrowBox href={'https://info.ioswap.io/pair/' + poolData.address.toLowerCase()}>
+                  <LineViewValue>
+                    <span>{poolData.coin.replace('/', '-')}</span>
+                    <LinkArrow>
+                      <img src={ArrowSvg} alt='' />
+                    </LinkArrow>
+                  </LineViewValue>
                 </LinkArrowBox>
               </LineView>
             </CardFooterLine>

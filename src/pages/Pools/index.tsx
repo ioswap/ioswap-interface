@@ -6,6 +6,7 @@ import { useActiveWeb3React } from '../../hooks'
 import { getMultiCallProvider } from '../../constants/web3'
 import { Contract } from 'ethers-multicall-x'
 import { formatAmount } from '../../utils/format'
+import LoadingIcon from '../../components/LoadingIcon/LoadingIcon'
 
 export const FlexCenter = styled.div`
   display: flex;
@@ -158,6 +159,7 @@ export default function Pools() {
   const { library, chainId, account } = useActiveWeb3React()
   const [earningTotal, setEarningTotal] = useState('-')
   const [totalDeposited, setTotalDeposited] = useState('-')
+  const [claimAllLoading, setClaimAllLoading] = useState(false)
 
   const updateBannerData = (poolData: any) => {
     poolMap[poolData.address] = poolData
@@ -177,13 +179,20 @@ export default function Pools() {
     }
   }
   const claimAll = async () => {
-    if (library) {
+    if (library && !claimAllLoading) {
       const multicall = getMultiCallProvider(library.getSigner(), chainId)
       const callList = poolsConfig.map(pool => {
         const contract = new Contract(pool.address, pool.abi)
         return contract.getRewardA(account)
       })
-      await multicall.allSend(callList)
+      setClaimAllLoading(true)
+      // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
+      // @ts-ignore
+      multicall.allSend(callList).then(() => {
+        setClaimAllLoading(false)
+      }).catch(() => {
+        setClaimAllLoading(false)
+      })
     }
   }
   return (
@@ -196,7 +205,10 @@ export default function Pools() {
             <PoolsBannerLeftFB>{earningTotal} IOS</PoolsBannerLeftFB>
           </PoolsBannerLeftF>
           <HarvestView>
-            <HarvestBtn onClick={claimAll}>Claim All</HarvestBtn>
+            <HarvestBtn onClick={claimAll}>
+              {claimAllLoading && <LoadingIcon />}
+              Claim All
+            </HarvestBtn>
           </HarvestView>
         </PoolsBannerLeft>
         <UpToMediumHidden>
