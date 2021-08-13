@@ -1,7 +1,7 @@
 import { Contract } from 'ethers-multicall-x'
 import { ERC20_ABI } from '../constants/abis/erc20'
 import { getOnlyMultiCallProvider, getRpcUrl, getWeb3Contract, processResult } from '../constants/web3'
-import { formatAmount, fromWei } from '../utils/format'
+import { formatAmount } from '../utils/format'
 import { ChainId, Token, WETH, Fetcher, Route } from '@io-swap/sdk'
 
 import { JsonRpcProvider } from '@ethersproject/providers'
@@ -37,11 +37,11 @@ export const getPoolInfo = (pool, account) => {
   })
 }
 // Unit Price
-export const useTokenPriceValue = (networkId, address, decimal) => {
+export const useTokenPriceValue = (poolData) => {
   const [price, setPrice] = useState('0')
   useMemo(() => {
-    const USDT = new Token(ChainId.OKT, '0x382bb369d343125bfb2117af9c149795c6c65c50', 18)
-    const DAI = new Token(networkId, address, decimal)
+    const USDT = new Token(poolData.networkId, poolData.settleToken, poolData.settleTokenDecimal)
+    const DAI = new Token(poolData.networkId, poolData.MLP, poolData.mlpDecimal)
 
     const provider = new JsonRpcProvider(getRpcUrl(DAI.chainId), DAI.chainId)
     Promise.all([
@@ -53,10 +53,32 @@ export const useTokenPriceValue = (networkId, address, decimal) => {
         const route = new Route([USDCWETHPair, DAIUSDCPair], WETH[ChainId.OKT])
         const _price = route.midPrice.toSignificant(6)
         setPrice(_price)
-      } catch {}
+      } catch {
+      }
     })
   }, [])
   return price
+}
+// get Unit Price
+export const getTokenPriceValue = (poolData) => {
+  if (poolData.settleToken === poolData.MLP) {
+    return '1'
+  }
+  const USDT = new Token(poolData.networkId, poolData.settleToken, poolData.settleTokenDecimal)
+  const DAI = new Token(poolData.networkId, poolData.MLP, poolData.mlpDecimal)
+  const provider = new JsonRpcProvider(getRpcUrl(DAI.chainId), DAI.chainId)
+  return Promise.all([
+    Fetcher.fetchPairData(DAI, USDT, provider)
+  ]).then(data => {
+    try {
+      const [pair] = data
+      const route = new Route([pair], DAI, USDT)
+      const _price = route.midPrice.toSignificant()
+      return _price
+    } catch (e) {
+      throw e
+    }
+  })
 }
 
 // 授权

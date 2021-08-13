@@ -163,7 +163,7 @@ export default function FarmsActionModal({ isOpen, onClose, poolData, upUpdateNu
     return null
   }
   const onConfirm = () => {
-    if (stakeLoading || !inputValue || isNaN(Number(inputValue))) {
+    if (stakeLoading || !inputValue || isNaN(Number(inputValue)) || inputValue == '0') {
       return
     }
     setStakeLoading(true)
@@ -176,6 +176,7 @@ export default function FarmsActionModal({ isOpen, onClose, poolData, upUpdateNu
       .on('receipt', () => {
         upUpdateNum && upUpdateNum()
         setStakeLoading(false)
+        onClose()
       })
       .on('error', () => {
         setStakeLoading(false)

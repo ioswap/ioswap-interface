@@ -4,13 +4,13 @@ import { FlexCenterH } from '../../pages/Farms'
 import { Color } from '../../theme/styled'
 import { useDarkModeManager } from '../../state/user/hooks'
 import { useActiveWeb3React } from '../../hooks'
-import { getPoolInfo, onApproveContract, onClaim, onExit, useTokenPriceValue } from '../../hooks/pools'
-import { formatAmount, formatTotalPrice, fromWei } from '../../utils/format'
+import { getPoolInfo, onApproveContract, onClaim, onExit } from '../../pools/pools'
+import { formatAmount, formatTotalPrice } from '../../utils/format'
 import PoolsActionModal from '../FarmsActionModal'
 import { useBlockNumber } from '../../state/application/hooks'
 import LoadingIcon from '../LoadingIcon/LoadingIcon'
-import { getApr } from '../../hooks/apr'
-import BigNumber from 'bignumber.js'
+import { getApr } from '../../pools/apr'
+import { FlexCenter } from '../../pages/Pools'
 
 interface ThemeColor {
   light: Color
@@ -75,14 +75,14 @@ const ClaimBtn = styled.button<any>`
   width: 120px;
   height: 40px;
   border-radius: 12px;
-  background: transparent;
   cursor: pointer;
   font-weight: 600;
-  color: ${({ themeColor, isDark }) => getThemeColor(themeColor, isDark)};
-  border: 1px solid ${({ themeColor, isDark }) => getThemeColor(themeColor, isDark)};
   display: flex;
   align-items: center;
   justify-content: center;
+  border: 0;
+  color: ${({ theme }) => theme.white};
+  background: ${({ themeColor, isDark }) => getThemeColor(themeColor, isDark)};
 
   :hover {
     opacity: 0.9;
@@ -98,16 +98,22 @@ const ApprovalButton = styled.div<any>`
   font-weight: 600;
   margin-top: 20px;
   cursor: pointer;
-  border: 0;
-  color: ${({ theme }) => theme.white};
-  background: ${({ themeColor, isDark }) => getThemeColor(themeColor, isDark)};
+
+  color: ${({ themeColor, isDark }) => getThemeColor(themeColor, isDark)};
+  border: 1px solid ${({ themeColor, isDark }) => getThemeColor(themeColor, isDark)};
+  background: transparent;
   border-radius: 12px;
 
   :hover {
     opacity: 0.9;
   }
 `
-const ClaimButton = styled(ApprovalButton)``
+const StakeButton = styled(ApprovalButton)`
+  margin-top: 12px;
+  width: 146px;
+  font-weight: 400;
+  font-size: 30px;
+`
 const LineViewText = styled.div`
   font-size: 14px;
   line-height: 20px;
@@ -142,19 +148,22 @@ const PaddingLR = styled.div`
   padding: 0 16px;
 `
 const ExitButton = styled.div<any>`
-  font-size: 12px;
-  padding: 5px 10px;
-  border-radius: 5px;
-  margin-left: 5px;
+  width: 146px;
+  height: 40px;
+  border-radius: 12px;
+  margin-right: 6px;
+  margin-top: 12px;
   cursor: pointer;
-  color: ${({ theme }) => theme.white};
-  background: ${({themeColor, isDark})=>getThemeColor(themeColor, isDark)};
+  font-weight: 600;
+  color: ${({ themeColor, isDark }) => getThemeColor(themeColor, isDark)};
+  border: 1px solid ${({ themeColor, isDark }) => getThemeColor(themeColor, isDark)};
+  background: transparent;
   display: flex;
   align-items: center;
   justify-content: center;
 `
 
-export default function PoolsCard({ pool }: any) {
+export default function PoolsCard({ pool, updateBannerData }: any) {
   const { account, library } = useActiveWeb3React()
   const [isDark] = useDarkModeManager()
   const [poolData, setPoolData] = useState(pool)
@@ -164,24 +173,8 @@ export default function PoolsCard({ pool }: any) {
   const [updateNum, setUpdateNum] = useState(0)
 
   const [exitLoading, setExitLoading] = useState(false)
-
-  const [aprData, setAprData] = useState({
-    span: new BigNumber(0),
-    allowance: new BigNumber(0)
-  })
-  // 单价
-  const price = useTokenPriceValue(poolData.networkId, poolData.rewards1Address, poolData.mlpDecimal)
+  
   const [apr, setApr] = useState('-')
-  useMemo(() => {
-    if (price && aprData.span.toString() !== '0') {
-      const apy = new BigNumber(aprData.allowance).multipliedBy(
-        new BigNumber(1)
-          .div(aprData.span.div(86400))
-          .multipliedBy(365)
-          .multipliedBy(price).multipliedBy(100)).toFixed(2, 1).toString()
-      setApr(apy)
-    }
-  }, [price, aprData])
 
   const upUpdateNum = () => {
     setUpdateNum(updateNum + 1)
@@ -189,12 +182,15 @@ export default function PoolsCard({ pool }: any) {
   const blockNumber = useBlockNumber()
   useMemo(() => {
     getPoolInfo(pool, account).then((resPool) => {
-      setPoolData(resPool)
-      getApr(resPool).then(([span, allowance]) => {
-        setAprData({
-          span: new BigNumber(span),
-          allowance: fromWei(allowance, poolData.mlpDecimal)
-        })
+      getApr(resPool, 1).then(data => {
+        setApr(data.apr)
+        const newPoolData = {
+          ...resPool,
+          balanceOfValue: formatTotalPrice(resPool.balanceOf, data.price, 2),
+          totalSupplyValue: formatTotalPrice(resPool.totalSupply, data.price, 2)
+        }
+        setPoolData(newPoolData)
+        updateBannerData(newPoolData)
       })
     })
   }, [account, blockNumber, updateNum])
@@ -265,9 +261,15 @@ export default function PoolsCard({ pool }: any) {
           </LineView>
           {
             poolData.allowance ? (
-              <ClaimButton themeColor={poolData.themeColor} isDark={isDark} onClick={() => setIsOpen(true)}>
-                Stake
-              </ClaimButton>
+              <FlexCenter>
+                <ExitButton themeColor={poolData.themeColor} isDark={isDark} onClick={onExit_}>
+                  {exitLoading && <LoadingIcon size={18} />}
+                  Withdraw {poolData.coin}
+                </ExitButton>
+                <StakeButton themeColor={poolData.themeColor} isDark={isDark} onClick={() => setIsOpen(true)}>
+                  +
+                </StakeButton>
+              </FlexCenter>
             ) : (
               <ApprovalButton themeColor={poolData.themeColor} isDark={isDark} approveLoading={approveLoading}
                               onClick={onApprove}>
@@ -284,17 +286,13 @@ export default function PoolsCard({ pool }: any) {
             <CardFooterLine>
               <LineView>
                 <LineViewText>Your Deposited</LineViewText>
-                <LineViewValue>{poolData.balanceOf}(${formatTotalPrice(poolData.balanceOf, price)})</LineViewValue>
-                <ExitButton themeColor={poolData.themeColor} isDark={isDark} onClick={onExit_}>
-                  {exitLoading && <LoadingIcon size={12} />}
-                  Exit
-                </ExitButton>
+                <LineViewValue>{poolData.balanceOf}(${poolData.balanceOfValue})</LineViewValue>
               </LineView>
             </CardFooterLine>
             <CardFooterLine>
               <LineView>
                 <LineViewText>Total Deposited</LineViewText>
-                <LineViewValue>{poolData.totalSupply}(${formatTotalPrice(poolData.totalSupply, price)})</LineViewValue>
+                <LineViewValue>{poolData.totalSupply}(${poolData.totalSupplyValue})</LineViewValue>
               </LineView>
             </CardFooterLine>
           </PaddingLR>

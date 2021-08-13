@@ -2,7 +2,11 @@ import React, { useState } from 'react'
 import styled from 'styled-components'
 import { farmPools } from './config'
 import FarmsCard from '../../components/FarmsCard'
-import FarmsActionModal from '../../components/FarmsActionModal'
+import { formatAmount } from '../../utils/format'
+import { poolsConfig } from '../Pools/config'
+import { Contract } from 'ethers-multicall-x'
+import { useActiveWeb3React } from '../../hooks'
+import { getMultiCallProvider } from '../../constants/web3'
 
 export const FlexCenter = styled.div`
   display: flex;
@@ -121,7 +125,7 @@ const FarmsBannerRightT = styled(FarmsBannerLeftFT)`
   color: ${({ theme }) => theme.text1};
 `
 const FarmsBannerRightB = styled(FarmsBannerLeftFB)`
-  color: ${({ theme }) => theme.text1};
+  color: ${({ theme }) => theme.text2};
   font-weight: 600;
 `
 const HarvestView = styled(FlexCenter)``
@@ -152,56 +156,69 @@ const FarmsCards = styled.div`
   `}
 `
 
+const poolMap: any = {}
 export default function Farms() {
+  const { library, chainId, account } = useActiveWeb3React()
+  const [harvestTotal, setHarvestTotal] = useState('-')
+  const [liquidityTotal, setLiquidityTotal] = useState('-')
 
-  const [isOpen, setIsOpen] = useState(false)
+  const updateBannerData = (poolData: any) => {
+    poolMap[poolData.address] = poolData
+    const len = Object.keys(poolMap).length
+    if (len === farmPools.length) {
+      let harvestTotal_ = 0
+      let liquidityTotal_ = 0
+      for (const i in poolMap) {
+        const totalSupplyValue = Number(poolMap[i].totalSupplyValue)
+        if (!isNaN(totalSupplyValue)) {
+          harvestTotal_ += Number(formatAmount(poolMap[i].earned || '0'))
+          liquidityTotal_ += totalSupplyValue
+        }
+      }
+      setHarvestTotal(String(harvestTotal_ === 0 ? 0 : harvestTotal_.toFixed(6)))
+      setLiquidityTotal(String(liquidityTotal_))
+    }
+  }
+
+  const claimAll = async () => {
+    if (library) {
+      const multicall = getMultiCallProvider(library.getSigner(), chainId)
+      const callList = poolsConfig.map(pool => {
+        const contract = new Contract(pool.address, pool.abi)
+        return contract.getRewardA(account)
+      })
+      await multicall.allSend(callList)
+    }
+  }
 
   return (
     <FarmsPage>
-      {
-        false && <FarmsActionModal isOpen={isOpen} onClose={() => setIsOpen(false)} />
-      }
       <FarmsTitle>Stake your LP tokens to earn IOS</FarmsTitle>
       <FarmsBanner>
         <FarmsBannerLeft>
           <FarmsBannerLeftF>
-            <FarmsBannerLeftFT>
-              My Total Crops:
-            </FarmsBannerLeftFT>
-            <FarmsBannerLeftFB>
-              88,888,888,888 IOS
-            </FarmsBannerLeftFB>
+            <FarmsBannerLeftFT>My Total Crops:</FarmsBannerLeftFT>
+            <FarmsBannerLeftFB>{harvestTotal} IOS</FarmsBannerLeftFB>
           </FarmsBannerLeftF>
           <HarvestView>
-            <HarvestBtn>
-              Harvest All
-            </HarvestBtn>
+            <HarvestBtn onClick={claimAll}>Harvest All</HarvestBtn>
           </HarvestView>
         </FarmsBannerLeft>
         <UpToMediumHidden>
           <FarmsBannerRight>
-            <FarmsBannerRightT>
-              TVL (Liquidity Pools)
-            </FarmsBannerRightT>
-            <FarmsBannerRightB>
-              $ 88
-            </FarmsBannerRightB>
+            <FarmsBannerRightT>TVL (Liquidity Pools)</FarmsBannerRightT>
+            <FarmsBannerRightB>$ {liquidityTotal}</FarmsBannerRightB>
           </FarmsBannerRight>
         </UpToMediumHidden>
       </FarmsBanner>
       <UpToMediumShow>
-
-        <FarmsBannerRightT>
-          TVL (Liquidity Pools)
-        </FarmsBannerRightT>
-        <FarmsBannerRightB>
-          $ 88
-        </FarmsBannerRightB>
+        <FarmsBannerRightT>TVL (Liquidity Pools)</FarmsBannerRightT>
+        <FarmsBannerRightB>$ {liquidityTotal}</FarmsBannerRightB>
       </UpToMediumShow>
       <FarmsCards>
-        {
-          farmPools.map((farmPool: any, index: number) => <FarmsCard key={index} farmPool={farmPool} />)
-        }
+        {farmPools.map((pool: any, index: number) => (
+          <FarmsCard key={index} pool={pool} updateBannerData={updateBannerData} />
+        ))}
       </FarmsCards>
     </FarmsPage>
   )

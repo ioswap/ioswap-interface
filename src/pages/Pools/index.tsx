@@ -1,10 +1,11 @@
-import React from 'react'
+import React, { useState } from 'react'
 import styled from 'styled-components'
 import { poolsConfig } from './config'
 import PoolsCard from '../../components/PoolsCard'
 import { useActiveWeb3React } from '../../hooks'
 import { getMultiCallProvider } from '../../constants/web3'
 import { Contract } from 'ethers-multicall-x'
+import { formatAmount } from '../../utils/format'
 
 export const FlexCenter = styled.div`
   display: flex;
@@ -152,17 +153,36 @@ const PoolsCards = styled.div`
       justify-items: center;
   `}
 `
-
+const poolMap: any = {}
 export default function Pools() {
-  const { library, chainId } = useActiveWeb3React()
+  const { library, chainId, account } = useActiveWeb3React()
+  const [earningTotal, setEarningTotal] = useState('-')
+  const [totalDeposited, setTotalDeposited] = useState('-')
+
+  const updateBannerData = (poolData: any) => {
+    poolMap[poolData.address] = poolData
+    const len = Object.keys(poolMap).length
+    if (len === poolsConfig.length) {
+      let earningTotal_ = 0
+      let totalDeposited_ = 0
+      for (const i in poolMap) {
+        const totalSupplyValue = Number(poolMap[i].totalSupplyValue)
+        if (!isNaN(totalSupplyValue)) {
+          earningTotal_ += Number(formatAmount(poolMap[i].earned || '0'))
+          totalDeposited_ += totalSupplyValue
+        }
+      }
+      setEarningTotal(String(earningTotal_ === 0 ? 0 : earningTotal_.toFixed(6)))
+      setTotalDeposited(String(totalDeposited_))
+    }
+  }
   const claimAll = async () => {
     if (library) {
       const multicall = getMultiCallProvider(library.getSigner(), chainId)
-      const callList = poolsConfig.slice(0, 1).map(pool => {
+      const callList = poolsConfig.map(pool => {
         const contract = new Contract(pool.address, pool.abi)
-        return contract.getReward()
+        return contract.getRewardA(account)
       })
-      console.log(callList)
       await multicall.allSend(callList)
     }
   }
@@ -173,7 +193,7 @@ export default function Pools() {
         <PoolsBannerLeft>
           <PoolsBannerLeftF>
             <PoolsBannerLeftFT>My Pools Earning:</PoolsBannerLeftFT>
-            <PoolsBannerLeftFB>88,888,888,888 IOS</PoolsBannerLeftFB>
+            <PoolsBannerLeftFB>{earningTotal} IOS</PoolsBannerLeftFB>
           </PoolsBannerLeftF>
           <HarvestView>
             <HarvestBtn onClick={claimAll}>Claim All</HarvestBtn>
@@ -182,17 +202,17 @@ export default function Pools() {
         <UpToMediumHidden>
           <PoolsBannerRight>
             <PoolsBannerRightT>TVL (iOS Pools)</PoolsBannerRightT>
-            <PoolsBannerRightB>$ 88</PoolsBannerRightB>
+            <PoolsBannerRightB>$ {totalDeposited}</PoolsBannerRightB>
           </PoolsBannerRight>
         </UpToMediumHidden>
       </PoolsBanner>
       <UpToMediumShow>
         <PoolsBannerRightT>TVL (Liquidity Pools)</PoolsBannerRightT>
-        <PoolsBannerRightB>$ 88</PoolsBannerRightB>
+        <PoolsBannerRightB>$ {totalDeposited}</PoolsBannerRightB>
       </UpToMediumShow>
       <PoolsCards>
         {poolsConfig.map((pool: any, index: number) => (
-          <PoolsCard key={index} pool={pool} />
+          <PoolsCard key={index} pool={pool} updateBannerData={updateBannerData} />
         ))}
       </PoolsCards>
     </PoolsPage>
