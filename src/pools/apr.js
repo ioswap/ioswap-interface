@@ -52,7 +52,7 @@ export const getLptValue = (poolData, price) => {
         totalSupply
       ] = data
       if (poolData.LPO.toLowerCase() === token0Address.toLowerCase()) {
-        return new BigNumber(reserve0)
+        return  new BigNumber(reserve0)
           .multipliedBy(new BigNumber(2))
           .multipliedBy(
             new BigNumber(poolData.totalSupply).div(new BigNumber(totalSupply))
@@ -94,17 +94,17 @@ export const getApr = async (poolData, type) => {
   }
   // LP
   if (type === 2) {
-    const LPTValue = await getLptValue(poolData, price)
-    if (isNaN(LPTValue) || LPTValue.toString() === '0') {
-      return {
-        apr: 'infinity',
-        price: '0'
-      }
-    }
     const price2 = await getTokenPriceValue({
       ...poolData,
       MLP: poolData.LPO
     })
+    const LPTValue = await getLptValue(poolData, price)
+    if (isNaN(LPTValue) || LPTValue.toString() === '0') {
+      return {
+        apr: 'infinity',
+        price: price2
+      }
+    }
     const apr = new BigNumber(allowance).multipliedBy(
       new BigNumber(1)
         .div(span.div(86400))

@@ -25,10 +25,12 @@ const FarmsPage = styled.div`
   ${({ theme }) => theme.mediaWidth.upToMedium`
   width: 100%;
   max-width: 728px;
+  padding-bottom: 20px;
   `}
   ${({ theme }) => theme.mediaWidth.upToExtraSmall`
   width: 100%;
   max-width: 100%;
+  padding-bottom: 60px;
   `}
 `
 const FarmsTitle = styled.div`
