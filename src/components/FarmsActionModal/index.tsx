@@ -138,7 +138,7 @@ const CancelBtn = styled.button`
   margin-right: 12px;
   cursor: pointer;
 `
-const ConfigBtn = styled.button`
+const ConfigBtn = styled.button<any>`
   display: flex;
   align-items: center;
   justify-content: center;
@@ -146,7 +146,7 @@ const ConfigBtn = styled.button`
   height: 48px;
   border: 0;
   color: ${({theme})=>theme.white};
-  background: linear-gradient(90deg, ${({ theme }) => theme.gradual1}, ${({ theme }) => theme.gradual2});
+  background: ${({theme, disabled}) => disabled ? theme.disabled : ('linear-gradient(90deg, ' + theme.gradual1 + ',' + theme.gradual2 + ')')};
   border-radius: 12px;
   cursor: pointer;
   :hover{
@@ -162,8 +162,9 @@ export default function FarmsActionModal({ isOpen, onClose, poolData, upUpdateNu
   if (!isOpen) {
     return null
   }
+  const disabled = stakeLoading || !inputValue || isNaN(Number(inputValue)) || inputValue == '0'
   const onConfirm = () => {
-    if (stakeLoading || !inputValue || isNaN(Number(inputValue)) || inputValue == '0') {
+    if (disabled) {
       return
     }
     setStakeLoading(true)
@@ -208,7 +209,7 @@ export default function FarmsActionModal({ isOpen, onClose, poolData, upUpdateNu
         </ModalContentPD>
         <FooterBtnGroup>
           <CancelBtn onClick={onClose}>Cancel</CancelBtn>
-          <ConfigBtn onClick={onConfirm}>
+          <ConfigBtn onClick={onConfirm} disabled={disabled}>
             {stakeLoading && <LoadingIcon />}
             Confirm
           </ConfigBtn>

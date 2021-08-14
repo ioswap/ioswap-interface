@@ -565,14 +565,16 @@ export default function Swap({ history }: RouteComponentProps) {
       ) : (
         <UnsupportedCurrencyFooter show={swapIsUnsupported} currencies={[currencies.INPUT, currencies.OUTPUT]} />
       )}
-      <LanguageView>
-        {t('availabel')}
-        <span onClick={() => i18n.changeLanguage(i18n.language === 'en' ? 'zh-CN' : 'en')}>
+      {
+        false && <LanguageView>
+          {t('availabel')}
+          <span onClick={() => i18n.changeLanguage(i18n.language === 'en' ? 'zh-CN' : 'en')}>
         {
           i18n.language === 'en' ? '中文(简体)' : 'English'
         }
       </span>
-      </LanguageView>
+        </LanguageView>
+      }
     </>
   )
 }
