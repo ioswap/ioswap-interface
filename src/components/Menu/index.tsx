@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react'
-import { BookOpen, Code, Moon, Sun, Globe, ChevronLeft } from 'react-feather'
+import { BookOpen, Code, Moon, Sun, ChevronLeft } from 'react-feather' // Globe
 import styled from 'styled-components'
 import { ReactComponent as MenuIcon } from '../../assets/images/menu.svg'
 
@@ -114,7 +114,7 @@ export default function Menu() {
   useEffect(() => {
     setShowLanguage(false)
   }, [open])
-  const languageCheck = LANGUAGES.find(i => i.key === i18n.language)
+  // const languageCheck = LANGUAGES.find(i => i.key === i18n.language)
   return (
     <StyledMenu ref={node as any}>
       <StyledMenuButton onClick={toggle}>
@@ -130,10 +130,10 @@ export default function Menu() {
             <Code size={19} />
             Code
           </MenuItem>
-          <MenuItemSty id="link" onClick={() => setShowLanguage(true)}>
-            <Globe size={19} />
-            {languageCheck && languageCheck.name}
-          </MenuItemSty>
+          {/*<MenuItemSty id="link" onClick={() => setShowLanguage(true)}>*/}
+          {/*  <Globe size={19} />*/}
+          {/*  {languageCheck && languageCheck.name}*/}
+          {/*</MenuItemSty>*/}
           <MenuItemSty id="link" onClick={toggleDarkMode}>
             {darkMode ? <Moon size={20} /> : <Sun size={20} />}
             {darkMode ? 'Light Theme' : 'Dark Theme'}
