@@ -74,7 +74,10 @@ export const getLptValue = (poolData, price) => {
 export const getApr = async (poolData, type) => {
   const [span, allowance] = await Promise.all([getSpan(poolData), getAllowance(poolData)])
 
-  const price = await getTokenPriceValue(poolData)
+  const price = await getTokenPriceValue({
+    ...poolData,
+    MLP: poolData.rewards1Address
+  })
   // 单币
   if (type === 1) {
     const price2 = await getTokenPriceValue(poolData)
