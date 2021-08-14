@@ -11,12 +11,16 @@ import BtckEthkIosSvg from '../../assets/svg/pools/btck_ethk.svg'
 import WokbOkbSvg from '../../assets/svg/pools/okb_okb.svg'
 import IOSPoolsAbi from '../../constants/abis/IOSPools.json'
 import { ChainId } from '@io-swap/sdk'
-import { IOS_TOKEN_INFO } from '../../constants'
+import { IOS_TOKEN_INFO, OKB } from '../../constants'
 
 const IOSAddress = IOS_TOKEN_INFO.address
 const USDTAddress = '0x382bb369d343125bfb2117af9c149795c6c65c50'
 const ETHKAddress = '0xEF71CA2EE68F45B9Ad6F72fbdb33d707b872315C'
 const WOKTAddress = '0x8F8526dbfd6E38E3D8307702cA8469Bae6C56C15'
+const BTCKAddress = '0x54e4622DC504176b3BB432dCCAf504569699a7fF'
+const OKBAddress = '0xdF54B6c6195EA4d948D03bfD818D365cf175cFC2'
+const LTCKAddress = '0xfA520efC34C81bfC1E3DD48b7fE9fF326049f986'
+const DOTKAddress = '0xabc732f6f69a519F6d508434481376B6221eb7d5'
 export const farmPools = [
   {
     title: 'USDT/IOS LP',
@@ -31,7 +35,8 @@ export const farmPools = [
     rewards1Address: IOSAddress, // LP奖励都是ios
     MLP: '0x56bb69f74562a267b02699f5ff8b32c291231cb7', // 质押的资产 stakingToken
     mlpDecimal: 18,
-    LPO: USDTAddress, // LP组合其中的一个，用于计算价值*2
+    address0: USDTAddress, // LP组合其中的一个，用于计算价值*2
+    address1: IOSAddress,
     settleToken: USDTAddress, // 转换价值的地址 现在都以USDT
     settleTokenDecimal: 18
   },
@@ -49,7 +54,8 @@ export const farmPools = [
     rewards1Address: IOSAddress, // LP奖励都是ios
     MLP: '0xC9E00665De025ee8Bfea2eFbA7aeE73854356b6e', // 质押的资产 stakingToken
     mlpDecimal: 18,
-    LPO: IOSAddress, // LP组合其中的一个，用于计算价值*2
+    address0: WOKTAddress, // LP组合其中的一个，用于计算价值*2
+    address1: IOSAddress,
     settleToken: USDTAddress, // 转换价值的地址 现在都以USDT
     settleTokenDecimal: 18
   },
@@ -67,7 +73,8 @@ export const farmPools = [
     rewards1Address: IOSAddress, // LP奖励都是ios
     MLP: '0x44c147D0c9623E49eabe8ae6cCD97D351E708DEE', // 质押的资产 stakingToken
     mlpDecimal: 18,
-    LPO: USDTAddress, // LP组合其中的一个，用于计算价值*2
+    address0: USDTAddress, // LP组合其中的一个，用于计算价值*2
+    address1: WOKTAddress,
     settleToken: USDTAddress, // 转换价值的地址 现在都以USDT
     settleTokenDecimal: 18
   },
@@ -85,7 +92,8 @@ export const farmPools = [
     rewards1Address: IOSAddress, // LP奖励都是ios
     MLP: '0x7b2e0a1DC702A467fdc855883AA1a5f293a1A0a2', // 质押的资产 stakingToken
     mlpDecimal: 18,
-    LPO: IOSAddress, // LP组合其中的一个，用于计算价值*2
+    address0: USDTAddress, // LP组合其中的一个，用于计算价值*2
+    address1: BTCKAddress,
     settleToken: USDTAddress, // 转换价值的地址 现在都以USDT
     settleTokenDecimal: 18
   },
@@ -103,7 +111,8 @@ export const farmPools = [
     rewards1Address: IOSAddress, // LP奖励都是ios
     MLP: '0xf028e6617084E87dd82D2426A898e9fa50337a57', // 质押的资产 stakingToken
     mlpDecimal: 18,
-    LPO: IOSAddress, // LP组合其中的一个，用于计算价值*2
+    address0: USDTAddress, // LP组合其中的一个，用于计算价值*2
+    address1: ETHKAddress,
     settleToken: USDTAddress, // 转换价值的地址 现在都以USDT
     settleTokenDecimal: 18
   },
@@ -121,7 +130,8 @@ export const farmPools = [
     rewards1Address: IOSAddress, // LP奖励都是ios
     MLP: '0x50E70d4a98eA9eF874347BCb391D96b34E8A8F5D', // 质押的资产 stakingToken
     mlpDecimal: 18,
-    LPO: ETHKAddress, // LP组合其中的一个，用于计算价值*2
+    address0: BTCKAddress, // LP组合其中的一个，用于计算价值*2
+    address1: ETHKAddress,
     settleToken: USDTAddress, // 转换价值的地址 现在都以USDT
     settleTokenDecimal: 18
   },
@@ -139,7 +149,8 @@ export const farmPools = [
     rewards1Address: IOSAddress, // LP奖励都是ios
     MLP: '0x704E0CF243B4D71d038dd8618012aFa77f983258', // 质押的资产 stakingToken
     mlpDecimal: 18,
-    LPO: USDTAddress, // LP组合其中的一个，用于计算价值*2
+    address0: USDTAddress, // LP组合其中的一个，用于计算价值*2
+    address1: OKBAddress,
     settleToken: USDTAddress, // 转换价值的地址 现在都以USDT
     settleTokenDecimal: 18
   },
@@ -157,17 +168,18 @@ export const farmPools = [
     rewards1Address: IOSAddress, // LP奖励都是ios
     MLP: '0xf9426972906Daeb688CFc3E05E3C24AF7d2fB78c', // 质押的资产 stakingToken
     mlpDecimal: 18,
-    LPO: WOKTAddress, // LP组合其中的一个，用于计算价值*2
+    address0: WOKTAddress, // LP组合其中的一个，用于计算价值*2
+    address1: OKBAddress,
     settleToken: USDTAddress, // 转换价值的地址 现在都以USDT
     settleTokenDecimal: 18
   },
   {
-    title: 'USDT/LTC LP',
+    title: 'USDT/LTCK LP',
     icon: UsdtLtcSvg,
     earnedName: 'IOS EARNED',
     stakeUrl: '',
 
-    coin: 'USDT/LTC LP',
+    coin: 'USDT/LTCK LP',
     address: '0x6F3286D6c2F35a111010A58D46FfD6B3252F0e6E',
     abi: IOSPoolsAbi,
     networkId: ChainId.OKT,
@@ -175,7 +187,8 @@ export const farmPools = [
     rewards1Address: IOSAddress, // LP奖励都是ios
     MLP: '0x4A628C636Ad837A783863a97b3f30df36999F9E4', // 质押的资产 stakingToken
     mlpDecimal: 18,
-    LPO: USDTAddress, // LP组合其中的一个，用于计算价值*2
+    address0: USDTAddress, // LP组合其中的一个，用于计算价值*2
+    address1: LTCKAddress,
     settleToken: USDTAddress, // 转换价值的地址 现在都以USDT
     settleTokenDecimal: 18
   },
@@ -193,8 +206,9 @@ export const farmPools = [
     rewards1Address: IOSAddress, // LP奖励都是ios
     MLP: '0x6342c21127480f78e7BE6877c56175B931b2D096', // 质押的资产 stakingToken
     mlpDecimal: 18,
-    LPO: USDTAddress, // LP组合其中的一个，用于计算价值*2
+    address0: USDTAddress, // LP组合其中的一个，用于计算价值*2
+    address1: DOTKAddress,
     settleToken: USDTAddress, // 转换价值的地址 现在都以USDT
     settleTokenDecimal: 18
-  },
+  }
 ]

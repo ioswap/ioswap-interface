@@ -185,6 +185,7 @@ export default function PoolsCard({ pool, updateBannerData }: any) {
       getPoolInfo(pool, account).then((resPool) => {
         getApr(resPool, 1).then(data => {
           setApr(data.apr)
+          console.log('poolData',poolData.address, data.price)
           const newPoolData = {
             ...resPool,
             balanceOfValue: formatTotalPrice(resPool.balanceOf, data.price, 2),

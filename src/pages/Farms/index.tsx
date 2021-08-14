@@ -179,7 +179,7 @@ export default function Farms() {
         }
       }
       setHarvestTotal(String(harvestTotal_ === 0 ? 0 : harvestTotal_.toFixed(6)))
-      setLiquidityTotal(String(liquidityTotal_))
+      setLiquidityTotal(String(liquidityTotal_ === 0 ? 0 : liquidityTotal_.toFixed(2)))
     }
   }
 

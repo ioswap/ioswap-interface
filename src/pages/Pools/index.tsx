@@ -177,7 +177,7 @@ export default function Pools() {
         }
       }
       setEarningTotal(String(earningTotal_ === 0 ? 0 : earningTotal_.toFixed(6)))
-      setTotalDeposited(String(totalDeposited_))
+      setTotalDeposited(String(totalDeposited_ === 0 ? 0 : totalDeposited_.toFixed(2)))
     }
   }
   const claimAll = async () => {

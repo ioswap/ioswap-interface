@@ -51,14 +51,14 @@ export const getLptValue = (poolData, price) => {
         [reserve0, reserve1],
         totalSupply
       ] = data
-      if (poolData.LPO.toLowerCase() === token0Address.toLowerCase()) {
+      if (poolData.address0.toLowerCase() === token0Address.toLowerCase()) {
         return  new BigNumber(reserve0)
           .multipliedBy(new BigNumber(2))
           .multipliedBy(
             new BigNumber(poolData.totalSupply).div(new BigNumber(totalSupply))
           ).multipliedBy(price)
       }
-      if (poolData.LPO.toLowerCase() === token1Address.toLowerCase()) {
+      if (poolData.address0.toLowerCase() === token1Address.toLowerCase()) {
         return new BigNumber(reserve1)
           .multipliedBy(new BigNumber(2))
           .multipliedBy(
@@ -74,10 +74,7 @@ export const getLptValue = (poolData, price) => {
 export const getApr = async (poolData, type) => {
   const [span, allowance] = await Promise.all([getSpan(poolData), getAllowance(poolData)])
 
-  const price = await getTokenPriceValue({
-    ...poolData,
-    MLP: poolData.rewards1Address
-  })
+  const price = await getTokenPriceValue(poolData)
   // 单币
   if (type === 1) {
     const price2 = await getTokenPriceValue(poolData)
@@ -96,13 +93,13 @@ export const getApr = async (poolData, type) => {
   if (type === 2) {
     const price2 = await getTokenPriceValue({
       ...poolData,
-      MLP: poolData.LPO
+      MLP: poolData.address0
     })
     const LPTValue = await getLptValue(poolData, price)
     if (isNaN(LPTValue) || LPTValue.toString() === '0') {
       return {
         apr: 'infinity',
-        price: price2
+        price: price2 * 2
       }
     }
     const apr = new BigNumber(allowance).multipliedBy(
@@ -113,7 +110,7 @@ export const getApr = async (poolData, type) => {
     ).div(new BigNumber(poolData.totalSupply).multipliedBy(new BigNumber(10).pow(poolData.mlpDecimal)).multipliedBy(price2)).multipliedBy(100).toFixed(2, 1).toString()
     return {
       apr,
-      price: price2
+      price: price2 * 2
     }
   }
   return {

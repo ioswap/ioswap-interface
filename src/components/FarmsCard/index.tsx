@@ -11,6 +11,7 @@ import LoadingIcon from '../LoadingIcon/LoadingIcon'
 import { getApr } from '../../pools/apr'
 import ArrowSvg from '../../assets/svg/pools/arrow.svg'
 import { ExternalLink } from '../../theme'
+import { Link } from 'react-router-dom'
 
 const CardView = styled.div`
   background: ${({ theme }) => theme.bg1};
@@ -298,7 +299,7 @@ export default function PoolsCard({ pool, updateBannerData }: any) {
             <CardFooterLine>
               <LineView>
                 <LineViewText>Stake</LineViewText>
-                <LinkArrowBox href={'https://info.ioswap.io/pair/' + poolData.MLP.toLowerCase()}>
+                <LinkArrowBox as={Link} to={`/add/${poolData.address0}/${poolData.address1}`}>
                   <LineViewValue>
                     <span>{poolData.coin.replace('/', '-')}</span>
                     <LinkArrow>
