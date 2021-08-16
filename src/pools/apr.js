@@ -18,11 +18,11 @@ export const getSpan = poolData => {
 }
 
 const createContractERC20 = (chainId, address) => {
-  var web3 = new Web3(new Web3.providers.HttpProvider(getRpcUrl(chainId)))
+  const web3 = new Web3(new Web3.providers.HttpProvider(getRpcUrl(chainId)))
   return new web3.eth.Contract(ERC20_ABI, address) // WAR_ADDRESS(chainId)
 }
 
-export const getAllowance = (poolData) => {
+export const getAllowance = poolData => {
   const contract = createContractERC20(poolData.networkId, poolData.rewards1Address)
   return contract.methods
     .allowance(poolData.mineMountainAddress, poolData.address)
@@ -34,39 +34,28 @@ export const getAllowance = (poolData) => {
 // 矿池总的LPT的价值
 export const getLptValue = (poolData, price) => {
   const contract = new Contract(poolData.MLP, LPT)
-  const promiseList = [
-    contract.token0(),
-    contract.token1(),
-    contract.getReserves(),
-    contract.totalSupply()
-  ]
+  const promiseList = [contract.token0(), contract.token1(), contract.getReserves(), contract.totalSupply()]
   const multicallProvider = getOnlyMultiCallProvider(poolData.networkId)
   return multicallProvider
     .all(promiseList)
-    .then((data_) => {
+    .then(data_ => {
       const data = processResult(data_)
-      const [
-        token0Address,
-        token1Address,
-        [reserve0, reserve1],
-        totalSupply
-      ] = data
+      const [token0Address, token1Address, [reserve0, reserve1], totalSupply] = data
       if (poolData.address0.toLowerCase() === token0Address.toLowerCase()) {
-        return  new BigNumber(reserve0)
+        return new BigNumber(reserve0)
           .multipliedBy(new BigNumber(2))
-          .multipliedBy(
-            new BigNumber(poolData.totalSupply).div(new BigNumber(totalSupply))
-          ).multipliedBy(price)
+          .multipliedBy(new BigNumber(poolData.totalSupply).div(new BigNumber(totalSupply)))
+          .multipliedBy(price)
       }
       if (poolData.address0.toLowerCase() === token1Address.toLowerCase()) {
         return new BigNumber(reserve1)
           .multipliedBy(new BigNumber(2))
-          .multipliedBy(
-            new BigNumber(poolData.totalSupply).div(new BigNumber(totalSupply))
-          ).multipliedBy(price)
+          .multipliedBy(new BigNumber(poolData.totalSupply).div(new BigNumber(totalSupply)))
+          .multipliedBy(price)
       }
       return new BigNumber(0)
-    }).catch(() => {
+    })
+    .catch(() => {
       return new BigNumber(0)
     })
 }
@@ -78,15 +67,24 @@ export const getApr = async (poolData, type) => {
   if (type === 1) {
     const price = await getTokenPriceValue(poolData)
     const price2 = await getTokenPriceValue(poolData)
-    const apr = allowance.multipliedBy(
-      new BigNumber(1)
-        .div(span.div(86400))
-        .multipliedBy(365)
-        .multipliedBy(price)
-    ).div(new BigNumber(poolData.totalSupply).multipliedBy(new BigNumber(10).pow(poolData.mlpDecimal)).multipliedBy(price2)).multipliedBy(100).toFixed(2, 1).toString()
+    const value = new BigNumber(poolData.totalSupply)
+      .multipliedBy(new BigNumber(10).pow(poolData.mlpDecimal))
+      .multipliedBy(price2)
+    const apr = allowance
+      .multipliedBy(
+        new BigNumber(1)
+          .div(span.div(86400))
+          .multipliedBy(365)
+          .multipliedBy(price)
+      )
+      .div(value)
+      .multipliedBy(100)
+      .toFixed(2, 1)
+      .toString()
     return {
       apr,
-      price
+      price,
+      value: value.toString()
     }
   }
   // LP
@@ -99,26 +97,39 @@ export const getApr = async (poolData, type) => {
       ...poolData,
       MLP: poolData.address0
     })
-    const LPTValue = await getLptValue(poolData, price)
+    const LPTValue = await getLptValue(poolData, price2)
     if (isNaN(LPTValue) || LPTValue.toString() === '0') {
       return {
         apr: 'infinity',
-        price: price2 * 2
+        price: '0',
+        value: '0'
       }
     }
-    const apr = new BigNumber(allowance).multipliedBy(
-      new BigNumber(1)
-        .div(span.div(86400))
-        .multipliedBy(365)
-        .multipliedBy(price).div(LPTValue)
-    ).div(new BigNumber(poolData.totalSupply).multipliedBy(new BigNumber(10).pow(poolData.mlpDecimal)).multipliedBy(price2)).multipliedBy(100).toFixed(2, 1).toString()
+    const apr = new BigNumber(allowance)
+      .multipliedBy(
+        new BigNumber(1)
+          .div(span.div(86400))
+          .multipliedBy(365)
+          .multipliedBy(price)
+          .div(LPTValue)
+      )
+      .div(
+        new BigNumber(poolData.totalSupply)
+          .multipliedBy(new BigNumber(10).pow(poolData.mlpDecimal))
+          .multipliedBy(price2)
+      )
+      .multipliedBy(100)
+      .toFixed(2, 1)
+      .toString()
     return {
       apr,
-      price: price2 * 2
+      price: price2 * 2,
+      value: LPTValue.toString()
     }
   }
   return {
     apr: '-',
-    price: '0'
+    price: '0',
+    value: '0'
   }
 }
