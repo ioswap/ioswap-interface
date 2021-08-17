@@ -155,7 +155,7 @@ export default function PoolsCard({ pool, updateBannerData }: any) {
       return
     }
     setClaimLoading(true)
-    getReward(account, library, poolInfo.abi, poolInfo.address, (success: boolean) => {
+    getReward(account, library, poolInfo.MLP, poolInfo.abi, poolInfo.address, (success: boolean) => {
       setClaimLoading(false)
       success && getTradeBonusInfo_()
     })

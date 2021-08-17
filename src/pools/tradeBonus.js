@@ -24,10 +24,10 @@ export const getTradeBonusInfo = (pool, account) => {
     })
   })
 }
-export const getReward = (account, library, abi, contractAddress, callback) => {
+export const getReward = (account, library, MLP, abi, contractAddress, callback) => {
   const contract = getWeb3Contract(library, abi, contractAddress)
   contract.methods
-    .getReward(account)
+    .getReward(MLP)
     .send({
       from: account
     })

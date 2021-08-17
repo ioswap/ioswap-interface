@@ -158,14 +158,14 @@ export default function Dividends() {
         if (!isNaN(paid)) {
           bonusAllocated_ += paid
         }
-        const swapAmountsValue = Number(poolMap[i].swapAmountsValue)
-        if (!isNaN(swapAmountsValue)) {
-          myTotalBonus_ += swapAmountsValue
+        const swapAmounts = Number(poolMap[i].swapAmounts)
+        if (!isNaN(swapAmounts)) {
+          myTotalBonus_ += swapAmounts
         }
       }
       setTotalVolume(toFormat(String(totalVolume_ === 0 ? 0 : totalVolume_.toFixed(2))))
       setBonusAllocated(toFormat(String(bonusAllocated_ === 0 ? 0 : bonusAllocated_.toFixed(6))))
-      setMyTotalBonus(toFormat(String(myTotalBonus_ === 0 ? 0 : myTotalBonus_.toFixed(2))))
+      setMyTotalBonus(toFormat(String(myTotalBonus_ === 0 ? 0 : myTotalBonus_.toFixed(6))))
     }
   }
   return (
@@ -178,19 +178,19 @@ export default function Dividends() {
         <PoolsBannerItem>
           <div>
             <PoolsBannerItemTitle>Total Volume</PoolsBannerItemTitle>
-            <PoolsBannerItemValue>{totalVolume}</PoolsBannerItemValue>
+            <PoolsBannerItemValue>${totalVolume}</PoolsBannerItemValue>
           </div>
         </PoolsBannerItem>
         <PoolsBannerItem>
           <div>
             <PoolsBannerItemTitle>Bonus Allocated</PoolsBannerItemTitle>
-            <PoolsBannerItemValue>{bonusAllocated}</PoolsBannerItemValue>
+            <PoolsBannerItemValue>{bonusAllocated} IOS</PoolsBannerItemValue>
           </div>
         </PoolsBannerItem>
         <PoolsBannerItem>
           <div>
             <PoolsBannerItemTitle>My Total Bonus</PoolsBannerItemTitle>
-            <PoolsBannerItemValue>{myTotalBonus}</PoolsBannerItemValue>
+            <PoolsBannerItemValue>{myTotalBonus} IOS</PoolsBannerItemValue>
           </div>
         </PoolsBannerItem>
       </PoolsBanner>
