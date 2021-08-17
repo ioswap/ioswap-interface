@@ -5,7 +5,7 @@ import PoolsCard from '../../components/PoolsCard'
 import { useActiveWeb3React } from '../../hooks'
 import { getMultiCallProvider } from '../../constants/web3'
 import { Contract } from 'ethers-multicall-x'
-import { formatAmount } from '../../utils/format'
+import { formatAmount, toFormat } from '../../utils/format'
 import LoadingIcon from '../../components/LoadingIcon/LoadingIcon'
 
 export const FlexCenter = styled.div`
@@ -176,8 +176,8 @@ export default function Pools() {
           totalDeposited_ += totalSupplyValue
         }
       }
-      setEarningTotal(String(earningTotal_ === 0 ? 0 : earningTotal_.toFixed(6)))
-      setTotalDeposited(String(totalDeposited_ === 0 ? 0 : totalDeposited_.toFixed(2)))
+      setEarningTotal(toFormat(String(earningTotal_ === 0 ? 0 : earningTotal_.toFixed(6))))
+      setTotalDeposited(toFormat(String(totalDeposited_ === 0 ? 0 : totalDeposited_.toFixed(2))))
     }
   }
   const claimAll = async () => {
@@ -190,11 +190,14 @@ export default function Pools() {
       setClaimAllLoading(true)
       // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
       // @ts-ignore
-      multicall.allSend(callList).then(() => {
-        setClaimAllLoading(false)
-      }).catch(() => {
-        setClaimAllLoading(false)
-      })
+      multicall
+        .allSend(callList)
+        .then(() => {
+          setClaimAllLoading(false)
+        })
+        .catch(() => {
+          setClaimAllLoading(false)
+        })
     }
   }
   return (

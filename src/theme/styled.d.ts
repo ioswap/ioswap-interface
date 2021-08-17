@@ -35,6 +35,8 @@ export interface Colors {
   gradual7: Color
   gradual8: Color
   gradual9: Color
+  gradual10: Color
+  gradual11: Color
   border1: Color
   border2: Color
   shaw1: Color

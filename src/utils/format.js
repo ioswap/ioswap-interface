@@ -10,10 +10,13 @@ export const formatTotalPrice = (amount, price, fixed = 6) => {
   if (price == '0') {
     return '-'
   }
-  return new BigNumber(amount).multipliedBy(price).toFixed(fixed, 1).toString()
+  return new BigNumber(amount)
+    .multipliedBy(price)
+    .toFixed(fixed, 1)
+    .toString()
 }
 
-export const formatLastZero = (numStr) => {
+export const formatLastZero = numStr => {
   if (numStr == '0') {
     return numStr
   }
@@ -44,11 +47,7 @@ export const numToWei = (value, decimals = 18) => {
 
 export const weiPlus = (value1, value2) => {
   console.log('weiPlus', value1, value2)
-  return new BigNumber(
-    new BigNumber(value1 ? value1 : 0)
-      .plus(new BigNumber(value2 ? value2 : 0))
-      .toFixed(6)
-  )
+  return new BigNumber(new BigNumber(value1 ? value1 : 0).plus(new BigNumber(value2 ? value2 : 0)).toFixed(6))
     .toNumber()
     .toString()
 }
@@ -85,4 +84,7 @@ export const splitFormat = (num, fractionDigits) => {
   } else {
     return num
   }
+}
+export const toFormat = value => {
+  return new BigNumber(value).toFormat()
 }

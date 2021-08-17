@@ -4,15 +4,14 @@ import { FlexCenterH } from '../../pages/Farms'
 import { useDarkModeManager } from '../../state/user/hooks'
 import { useActiveWeb3React } from '../../hooks'
 import { getPoolInfo, onApproveContract, onClaim, onExit } from '../../pools/pools'
-import { formatAmount } from '../../utils/format'
+import { formatAmount, formatTotalPrice } from '../../utils/format'
 import PoolsActionModal from '../FarmsActionModal'
 import { useBlockNumber } from '../../state/application/hooks'
 import LoadingIcon from '../LoadingIcon/LoadingIcon'
-import { getApr } from '../../pools/apr'
+import { getAprLP } from '../../pools/apr'
 import ArrowSvg from '../../assets/svg/pools/arrow.svg'
 import { ExternalLink } from '../../theme'
 import { Link } from 'react-router-dom'
-import { BigNumber } from 'bignumber.js'
 
 const CardView = styled.div`
   background: ${({ theme }) => theme.bg1};
@@ -190,12 +189,11 @@ export default function PoolsCard({ pool, updateBannerData }: any) {
   useMemo(() => {
     if (account) {
       getPoolInfo(pool, account).then(resPool => {
-        getApr(resPool, 2).then(data => {
+        getAprLP(resPool).then(data => {
           setApr(data.apr)
-
           const newPoolData = {
             ...resPool,
-            totalSupplyValue: new BigNumber(data.value).toFixed(2, 1).toString()
+            totalSupplyValue: formatTotalPrice(resPool.totalSupply, data.price, 2)
           }
           setPoolData(newPoolData)
           updateBannerData(newPoolData)

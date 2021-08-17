@@ -3,7 +3,7 @@ import styled from 'styled-components'
 import { poolsConfig } from './config'
 import PoolsCard from '../../components/DividendsCard'
 import PoolsActionModal from '../../components/FarmsActionModal'
-import Tips from '../../assets/svg/pools/tips.svg'
+import TipView from '../../components/TipView'
 
 export const FlexCenter = styled.div`
   display: flex;
@@ -87,70 +87,22 @@ const PoolsCards = styled.div`
       justify-items: center;
   `}
 `
-const TipsView = styled.span`
-  position: relative;
-  cursor: pointer;
 
-  img {
-    width: 14px;
-    height: 14px;
-    margin-left: 12px;
-    transform: translateY(2px);
-  }
-
-  :hover div {
-    display: block;
-  }
-`
-const TipsBody = styled.div`
-  display: none;
-  position: absolute;
-  width: 436px;
-  min-height: 220px;
-  left: -150px;
-  top: 20px;
-  background: #F1F5F8;
-  border: 1px solid rgba(86, 90, 105, 0.3);
-  box-sizing: border-box;
-  box-shadow: 0px 10px 30px rgba(30, 68, 89, 0.12);
-  border-radius: 12px;
-  cursor: default;
-  padding: 20px 30px;
-  max-width: 90vw;
-  ${({ theme }) => theme.mediaWidth.upToMedium`
-      position: fixed;
-      top: auto;
-      left: auto;
-      right: 10px;
-  `}
-  ${({ theme }) => theme.mediaWidth.upToExtraSmall`
-    width: 90vw;
-    position: fixed;
-    top: auto;
-    left: 5vw;
-  `}
-`
 export default function Dividends() {
-
   const [isOpen, setIsOpen] = useState(false)
 
   return (
     <PoolsPage>
-      {
-        false && <PoolsActionModal isOpen={isOpen} onClose={() => setIsOpen(false)} />
-      }
+      {false && <PoolsActionModal isOpen={isOpen} onClose={() => setIsOpen(false)} />}
       <PoolsTitle>
         Stake Your IOS to earn platform dividends.You can choose to get USDT, OKT or BTC.
-        <TipsView>
-          <img src={Tips} alt='' />
-          <TipsBody>
-            The transaction fee of the swaps on the iOSwap platform is 0.3%, and 100% transaction fee will be put into
+        <TipView
+          text="The transaction fee of the swaps on the iOSwap platform is 0.3%, and 100% transaction fee will be put into
             the dividend pools to reward the users staking IOS. Staking rewards are distributed in three forms by USDT
             pool, OKT pool and BTC pool. Users can choose to stake their IOS to three different pools to harvest
             rewards. The smart contract will automatically send 10% of the funds in the staking mining pool to users at
-            correspondent ratio.
-          </TipsBody>
-        </TipsView>
+            correspondent ratio."
+        />
       </PoolsTitle>
       <PoolsBanner>
         <PoolsBannerItem>
@@ -173,9 +125,9 @@ export default function Dividends() {
         </PoolsBannerItem>
       </PoolsBanner>
       <PoolsCards>
-        {
-          poolsConfig.map((poolData: any, index: number) => <PoolsCard key={index} poolData={poolData} />)
-        }
+        {poolsConfig.map((poolData: any, index: number) => (
+          <PoolsCard key={index} poolData={poolData} />
+        ))}
       </PoolsCards>
     </PoolsPage>
   )

@@ -9,7 +9,7 @@ import { formatAmount, formatTotalPrice } from '../../utils/format'
 import PoolsActionModal from '../FarmsActionModal'
 import { useBlockNumber } from '../../state/application/hooks'
 import LoadingIcon from '../LoadingIcon/LoadingIcon'
-import { getApr } from '../../pools/apr'
+import { getAprSingle } from '../../pools/apr'
 import { FlexCenter } from '../../pages/Pools'
 
 interface ThemeColor {
@@ -43,7 +43,7 @@ const CardTitle = styled.div`
   font-weight: 600;
 `
 
-const APYView = styled.button<{ themeColor: ThemeColor, isDark: boolean }>`
+const APYView = styled.button<{ themeColor: ThemeColor; isDark: boolean }>`
   background: transparent;
   display: block;
   height: 42px;
@@ -161,6 +161,7 @@ const ExitButton = styled.div<any>`
   display: flex;
   align-items: center;
   justify-content: center;
+  white-space: nowrap;
 `
 
 export default function PoolsCard({ pool, updateBannerData }: any) {
@@ -173,7 +174,7 @@ export default function PoolsCard({ pool, updateBannerData }: any) {
   const [updateNum, setUpdateNum] = useState(0)
 
   const [exitLoading, setExitLoading] = useState(false)
-  
+
   const [apr, setApr] = useState('-')
 
   const upUpdateNum = () => {
@@ -182,10 +183,9 @@ export default function PoolsCard({ pool, updateBannerData }: any) {
   const blockNumber = useBlockNumber()
   useMemo(() => {
     if (account) {
-      getPoolInfo(pool, account).then((resPool) => {
-        getApr(resPool, 1).then(data => {
+      getPoolInfo(pool, account).then(resPool => {
+        getAprSingle(resPool).then(data => {
           setApr(data.apr)
-          console.log('poolData',poolData.address, data.price)
           const newPoolData = {
             ...resPool,
             balanceOfValue: formatTotalPrice(resPool.balanceOf, data.price, 2),
@@ -221,9 +221,7 @@ export default function PoolsCard({ pool, updateBannerData }: any) {
       setClaimLoading(false)
       upUpdateNum()
       if (succcess) {
-
       } else {
-
       }
     })
   }
@@ -232,26 +230,31 @@ export default function PoolsCard({ pool, updateBannerData }: any) {
       return
     }
     setExitLoading(true)
-    onExit(library, account, poolData.abi, poolData.address,(succcess: boolean) => {
+    onExit(library, account, poolData.abi, poolData.address, (succcess: boolean) => {
       setExitLoading(false)
       upUpdateNum()
       if (succcess) {
-
       } else {
-
       }
     })
   }
 
   return (
     <>
-      <PoolsActionModal isOpen={isOpen} onClose={() => setIsOpen(false)} poolData={poolData}
-                        upUpdateNum={upUpdateNum} />
+      <PoolsActionModal
+        isOpen={isOpen}
+        onClose={() => setIsOpen(false)}
+        poolData={poolData}
+        upUpdateNum={upUpdateNum}
+      />
       <CardView>
         <PaddingLR>
           <CardIcon src={poolData.icon} />
           <CardTitle>{poolData.title}</CardTitle>
-          <APYView themeColor={poolData.themeColor} isDark={isDark}> APY：{apr}% </APYView>
+          <APYView themeColor={poolData.themeColor} isDark={isDark}>
+            {' '}
+            APY：{apr}%{' '}
+          </APYView>
           <EarnedName>{poolData.earnedName}</EarnedName>
           <LineView>
             <LineViewAmount>{formatAmount(poolData.earned || '0').toString()}</LineViewAmount>
@@ -262,40 +265,44 @@ export default function PoolsCard({ pool, updateBannerData }: any) {
               </ClaimBtn>
             </FlexCenterH>
           </LineView>
-          {
-            poolData.allowance ? (
-              <FlexCenter>
-                <ExitButton themeColor={poolData.themeColor} isDark={isDark} onClick={onExit_}>
-                  {exitLoading && <LoadingIcon size={18} />}
-                  Withdraw {poolData.coin}
-                </ExitButton>
-                <StakeButton themeColor={poolData.themeColor} isDark={isDark} onClick={() => setIsOpen(true)}>
-                  +
-                </StakeButton>
-              </FlexCenter>
-            ) : (
-              <ApprovalButton themeColor={poolData.themeColor} isDark={isDark} approveLoading={approveLoading}
-                              onClick={onApprove}>
-                {
-                  approveLoading && <LoadingIcon />
-                }
-                Approve {poolData.coin}
-              </ApprovalButton>
-            )
-          }
+          {poolData.allowance ? (
+            <FlexCenter>
+              <ExitButton themeColor={poolData.themeColor} isDark={isDark} onClick={onExit_}>
+                {exitLoading && <LoadingIcon size={18} />}
+                Withdraw {poolData.coin}
+              </ExitButton>
+              <StakeButton themeColor={poolData.themeColor} isDark={isDark} onClick={() => setIsOpen(true)}>
+                +
+              </StakeButton>
+            </FlexCenter>
+          ) : (
+            <ApprovalButton
+              themeColor={poolData.themeColor}
+              isDark={isDark}
+              approveLoading={approveLoading}
+              onClick={onApprove}
+            >
+              {approveLoading && <LoadingIcon />}
+              Approve {poolData.coin}
+            </ApprovalButton>
+          )}
         </PaddingLR>
         <CardFooter>
           <PaddingLR>
             <CardFooterLine>
               <LineView>
                 <LineViewText>Your Deposited</LineViewText>
-                <LineViewValue>{poolData.balanceOf}(${poolData.balanceOfValue})</LineViewValue>
+                <LineViewValue>
+                  {poolData.balanceOf}(${poolData.balanceOfValue})
+                </LineViewValue>
               </LineView>
             </CardFooterLine>
             <CardFooterLine>
               <LineView>
                 <LineViewText>Total Deposited</LineViewText>
-                <LineViewValue>{poolData.totalSupply}(${poolData.totalSupplyValue})</LineViewValue>
+                <LineViewValue>
+                  {poolData.totalSupply}(${poolData.totalSupplyValue})
+                </LineViewValue>
               </LineView>
             </CardFooterLine>
           </PaddingLR>

@@ -1,9 +1,10 @@
 import React, { useState } from 'react'
 import styled from 'styled-components'
-import { farmPools } from './config'
+import { tradeBonusConfig, recommendedPairs } from './config'
+import TipView from '../../components/TipView'
 import TradeBonusCard from '../../components/TradeBonusCard'
-import TradeBonusActionModal from '../../components/FarmsActionModal'
-import IMG0101 from '../../assets/svg/pools/0101.png'
+import { toFormat } from '../../utils/format'
+import { Link } from 'react-router-dom'
 
 export const FlexCenter = styled.div`
   display: flex;
@@ -15,7 +16,7 @@ export const FlexCenterH = styled.div`
   align-items: center;
 `
 
-const TradeBonusPage = styled.div`
+const PoolsPage = styled.div`
   width: 1020px;
   max-width: 1020px;
   margin: auto;
@@ -30,122 +31,51 @@ const TradeBonusPage = styled.div`
   padding-bottom: 60px;
   `}
 `
-
-const TradeBonusBanner = styled.div`
-  display: flex;
-  flex-wrap: wrap;
+const PoolsTitle = styled.div`
+  font-size: 14px;
+  line-height: 20px;
+  margin-bottom: 20px;
   font-weight: 600;
-`
-
-const TradeBonusBannerLeft = styled.div`
-  position: relative;
-  flex: 1;
-  display: flex;
-  flex-wrap: wrap;
-  margin-right: 12px;
-  height: 186px;
-  padding: 15px 22px;
-  border-radius: 12px;
-  overflow: hidden;
-
-  //background: linear-gradient(90deg, rgba(255,255,255,1) 0%, rgba(255,255,255,0) 100%);
-  background-image: linear-gradient(90deg, ${({ theme }) => theme.gradual5} 0%, ${({ theme }) => theme.gradual6} 60%, ${({ theme }) => theme.gradual7} 100%), url(${IMG0101});
-  background-position: center;
-  background-color: ${({ theme }) => theme.bg1};
-  background-size: 100%;
-  background-blend-mode: normal;
-  ${({ theme }) => theme.mediaWidth.upToMedium`
-  height: 145px;
-  margin-right: 0;
-  `}
-  ${({ theme }) => theme.mediaWidth.upToExtraSmall`
-   height: 145px;
-  `}
-`
-const TradeBonusBannerLeftF = styled.div`
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  ${({ theme }) => theme.mediaWidth.upToMedium`
-  width: 100%;
-  max-width: 728px;
-  `}
-  ${({ theme }) => theme.mediaWidth.upToExtraSmall`
-  width: 100%;
-  max-width: 100%;
-  `}
-`
-const TradeBonusBannerLeftFT = styled.div`
-  display: flex;
-  align-items: center;
-  font-size: 16px;
-  line-height: 22px;
   color: ${({ theme }) => theme.text1};
 `
-const TradeBonusBannerLeftFB = styled.div`
-  flex: 1;
-  display: flex;
-  align-items: center;
+const PoolsBanner = styled.div`
+  background: linear-gradient(90deg, ${({ theme }) => theme.gradual10} 0%, ${({ theme }) => theme.gradual11} 100%);
+  color: ${({ theme }) => theme.text1};
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  width: 100%;
+  min-height: 110px;
+  border-radius: 12px;
+  padding: 0 20px 20px 20px;
+  ${({ theme }) => theme.mediaWidth.upToMedium`
+    grid-template-columns: 1fr 1fr;
+  `}
+  ${({ theme }) => theme.mediaWidth.upToExtraSmall`
+    grid-template-columns: 1fr;
+  `}
+`
+
+const PoolsBannerItem = styled(FlexCenter)`
+  ${({ theme }) => theme.mediaWidth.upToExtraSmall`
+    justify-content: flex-start;
+  `}
+`
+const PoolsBannerItemTitle = styled.div`
+  color: ${({ theme }) => theme.white};
+  font-weight: 600;
+  font-size: 16px;
+  line-height: 22px;
+  margin-top: 20px;
+`
+const PoolsBannerItemValue = styled.div`
+  color: ${({ theme }) => theme.white};
+  font-weight: 600;
   font-size: 26px;
   line-height: 36px;
-  font-weight: 600;
-  color: ${({ theme }) => theme.primary1};
+  margin-top: 12px;
 `
 
-const TradeBonusBannerRight = styled.div`
-  margin-right: 12px;
-  width: 370px;
-  height: 186px;
-  border-radius: 12px;
-  background: linear-gradient(90deg, ${({ theme }) => theme.gradual1} 0%, ${({ theme }) => theme.gradual2} 100%);
-  display: flex;
-  flex-direction: column;
-  padding: 15px 22px;
-`
-const UpToMediumHidden = styled.div`
-  ${({ theme }) => theme.mediaWidth.upToMedium`
-  display: none;
-  `}
-  ${({ theme }) => theme.mediaWidth.upToExtraSmall`
-  display: none;
-  `}
-`
-
-const UpToMediumShow = styled(TradeBonusBannerRight)`
-  display: none;
-  margin-top: 10px;
-  width: 100%;
-  max-width: 718px;
-  ${({ theme }) => theme.mediaWidth.upToMedium`
-  display: flex;
-  margin-right: 0;
-  `}
-  ${({ theme }) => theme.mediaWidth.upToExtraSmall`
-  display: flex;
-  margin-right: 0;
-  `}
-`
-
-const TradeBonusBannerRightT = styled(TradeBonusBannerLeftFT)`
-  color: ${({ theme }) => theme.white};
-`
-const TradeBonusBannerRightB = styled(TradeBonusBannerLeftFB)`
-  color: ${({ theme }) => theme.white};
-`
-
-const HarvestBtn = styled(FlexCenter)`
-  background: ${({ theme }) => theme.bg1};
-  border-radius: 12px;
-  color: ${({ theme }) => theme.text6};
-  width: 100%;
-  height: 48px;
-  cursor: pointer;
-
-  :hover {
-    opacity: 0.9;
-  }
-`
-const TradeBonusCards = styled.div`
+const PoolsCards = styled.div`
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
   margin-top: 10px;
@@ -158,58 +88,132 @@ const TradeBonusCards = styled.div`
       justify-items: center;
   `}
 `
+const RecommendedPairsTitle = styled(PoolsTitle)`
+  margin: 30px 0 20px 0;
+`
+const RecommendedPairs = styled.div`
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+  margin-top: 10px;
+  ${({ theme }) => theme.mediaWidth.upToMedium`
+      grid-template-columns: 1fr 1fr 1fr;
+      justify-items: center;
+  `}
+  ${({ theme }) => theme.mediaWidth.upToExtraSmall`
+      grid-template-columns: 1fr;
+      justify-items: center;
+  `}
+`
+const RecommendedPair = styled.div`
+  width: 192px;
+  height: 200px;
+  padding: 32px 26px;
+  margin-top: 20px;
+  background: ${({ theme }) => theme.bg1};
+  text-align: center;
+  box-shadow: 0px 10px 30px rgba(30, 68, 89, 0.12);
+  border-radius: 12px;
+  img {
+    height: 36px;
+  }
+`
+const RecommendedPairTitle = styled.div`
+  font-weight: 600;
+  font-size: 20px;
+  line-height: 28px;
+  margin: 10px 0 20px 0;
+`
+const RecommendedPairButton = styled.button`
+  display: inline-block;
+  border: 0;
+  width: 140px;
+  height: 42px;
+  line-height: 42px;
+  text-decoration: none;
+  background: linear-gradient(90deg, ${({ theme }) => theme.gradual3} 0%, ${({ theme }) => theme.gradual4} 100%);
+  color: ${({ theme }) => theme.primary1};
+  border-radius: 12px;
+  cursor: pointer;
+`
 
-export default function TradeBonus() {
+const poolMap: any = {}
+export default function Dividends() {
+  const [totalVolume, setTotalVolume] = useState('-')
+  const [bonusAllocated, setBonusAllocated] = useState('-')
+  const [myTotalBonus, setMyTotalBonus] = useState('-')
 
-  const [isOpen, setIsOpen] = useState(false)
-
-  return (
-    <TradeBonusPage>
-      {
-        false && <TradeBonusActionModal isOpen={isOpen} onClose={() => setIsOpen(false)} />
-      }
-      <TradeBonusBanner>
-        <TradeBonusBannerLeft>
-          {/*<img src={IMG0101} alt='' />*/}
-          <TradeBonusBannerLeftF>
-            <TradeBonusBannerLeftFT>
-              Total Volume
-            </TradeBonusBannerLeftFT>
-            <TradeBonusBannerLeftFB>
-              $88,888,888,888
-            </TradeBonusBannerLeftFB>
-          </TradeBonusBannerLeftF>
-        </TradeBonusBannerLeft>
-        <UpToMediumHidden>
-          <TradeBonusBannerRight>
-            <TradeBonusBannerRightT>
-              TVL (Liquidity Pools)
-            </TradeBonusBannerRightT>
-            <TradeBonusBannerRightB>
-              88 IOS
-            </TradeBonusBannerRightB>
-            <HarvestBtn>
-              Claim All
-            </HarvestBtn>
-          </TradeBonusBannerRight>
-        </UpToMediumHidden>
-      </TradeBonusBanner>
-      <UpToMediumShow>
-        <TradeBonusBannerRightT>
-          TVL (Liquidity Pools)
-        </TradeBonusBannerRightT>
-        <TradeBonusBannerRightB>
-          88 IOS
-        </TradeBonusBannerRightB>
-        <HarvestBtn>
-          Claim All
-        </HarvestBtn>
-      </UpToMediumShow>
-      <TradeBonusCards>
-        {
-          farmPools.map((farmPool: any, index: number) => <TradeBonusCard key={index} farmPool={farmPool} />)
+  const updateBannerData = (poolData: any) => {
+    poolMap[poolData.address + poolData.MLP] = poolData
+    const len = Object.keys(poolMap).length
+    if (len === tradeBonusConfig.length) {
+      let totalVolume_ = 0
+      let bonusAllocated_ = 0
+      let myTotalBonus_ = 0
+      for (const i in poolMap) {
+        const swapAmountsTotalValue = Number(poolMap[i].swapAmountsTotalValue)
+        if (!isNaN(swapAmountsTotalValue)) {
+          totalVolume_ += swapAmountsTotalValue
         }
-      </TradeBonusCards>
-    </TradeBonusPage>
+        const paid = Number(poolMap[i].paid)
+        if (!isNaN(paid)) {
+          bonusAllocated_ += paid
+        }
+        const swapAmounts = Number(poolMap[i].swapAmounts)
+        if (!isNaN(swapAmounts)) {
+          myTotalBonus_ += swapAmounts
+        }
+      }
+      setTotalVolume(toFormat(String(totalVolume_ === 0 ? 0 : totalVolume_.toFixed(2))))
+      setBonusAllocated(toFormat(String(bonusAllocated_ === 0 ? 0 : bonusAllocated_.toFixed(6))))
+      setMyTotalBonus(toFormat(String(myTotalBonus_ === 0 ? 0 : myTotalBonus_.toFixed(6))))
+    }
+  }
+  return (
+    <PoolsPage>
+      <PoolsTitle>
+        Trade with USDT, OKT, or BTCK to earn IOS
+        <TipView text="In order to encourage users to trade, iOSwap sets up transaction mining rewards for trading pairs containing USDT, OKT and BTCK. All trading pairs that include these three assets in the user's transaction can receive transaction mining rewards. Transaction mining rewards are issued in the form of platform token IOS, which is issued according to the proportion of user transaction volume to the total transaction volume of the platform. " />
+      </PoolsTitle>
+      <PoolsBanner>
+        <PoolsBannerItem>
+          <div>
+            <PoolsBannerItemTitle>Total Volume</PoolsBannerItemTitle>
+            <PoolsBannerItemValue>${totalVolume}</PoolsBannerItemValue>
+          </div>
+        </PoolsBannerItem>
+        <PoolsBannerItem>
+          <div>
+            <PoolsBannerItemTitle>Bonus Allocated</PoolsBannerItemTitle>
+            <PoolsBannerItemValue>{bonusAllocated} IOS</PoolsBannerItemValue>
+          </div>
+        </PoolsBannerItem>
+        <PoolsBannerItem>
+          <div>
+            <PoolsBannerItemTitle>My Total Bonus</PoolsBannerItemTitle>
+            <PoolsBannerItemValue>{myTotalBonus} IOS</PoolsBannerItemValue>
+          </div>
+        </PoolsBannerItem>
+      </PoolsBanner>
+      <PoolsCards>
+        {tradeBonusConfig.map((pool: any, index: number) => (
+          <TradeBonusCard key={index} pool={pool} updateBannerData={updateBannerData} />
+        ))}
+      </PoolsCards>
+      <RecommendedPairsTitle>Recommended Pairs</RecommendedPairsTitle>
+      <RecommendedPairs>
+        {recommendedPairs.map((item: any, index: number) => (
+          <RecommendedPair key={index}>
+            <img src={item.icon} alt="" />
+            <RecommendedPairTitle>{item.title}</RecommendedPairTitle>
+            <RecommendedPairButton
+              as={Link}
+              to={`/swap?inputCurrency=${item.inputCurrency}&outputCurrency=${item.outputCurrency}`}
+            >
+              Trade Now
+            </RecommendedPairButton>
+          </RecommendedPair>
+        ))}
+      </RecommendedPairs>
+    </PoolsPage>
   )
 }
