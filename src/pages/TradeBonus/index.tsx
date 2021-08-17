@@ -1,9 +1,10 @@
 import React, { useState } from 'react'
 import styled from 'styled-components'
-import { tradeBonusConfig } from './config'
+import { tradeBonusConfig, recommendedPairs } from './config'
 import TipView from '../../components/TipView'
 import TradeBonusCard from '../../components/TradeBonusCard'
 import { toFormat } from '../../utils/format'
+import { Link } from 'react-router-dom'
 
 export const FlexCenter = styled.div`
   display: flex;
@@ -87,6 +88,54 @@ const PoolsCards = styled.div`
       justify-items: center;
   `}
 `
+const RecommendedPairsTitle = styled(PoolsTitle)`
+  margin: 30px 0 20px 0;
+`
+const RecommendedPairs = styled.div`
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+  margin-top: 10px;
+  ${({ theme }) => theme.mediaWidth.upToMedium`
+      grid-template-columns: 1fr 1fr 1fr;
+      justify-items: center;
+  `}
+  ${({ theme }) => theme.mediaWidth.upToExtraSmall`
+      grid-template-columns: 1fr;
+      justify-items: center;
+  `}
+`
+const RecommendedPair = styled.div`
+  width: 192px;
+  height: 200px;
+  padding: 32px 26px;
+  margin-top: 20px;
+  background: ${({ theme }) => theme.bg1};
+  text-align: center;
+  box-shadow: 0px 10px 30px rgba(30, 68, 89, 0.12);
+  border-radius: 12px;
+  img {
+    height: 36px;
+  }
+`
+const RecommendedPairTitle = styled.div`
+  font-weight: 600;
+  font-size: 20px;
+  line-height: 28px;
+  margin: 10px 0 20px 0;
+`
+const RecommendedPairButton = styled.button`
+  display: inline-block;
+  border: 0;
+  width: 140px;
+  height: 42px;
+  line-height: 42px;
+  text-decoration: none;
+  background: linear-gradient(90deg, ${({ theme }) => theme.gradual3} 0%, ${({ theme }) => theme.gradual4} 100%);
+  color: ${({ theme }) => theme.primary1};
+  border-radius: 12px;
+  cursor: pointer;
+`
+
 const poolMap: any = {}
 export default function Dividends() {
   const [totalVolume, setTotalVolume] = useState('-')
@@ -150,6 +199,21 @@ export default function Dividends() {
           <TradeBonusCard key={index} pool={pool} updateBannerData={updateBannerData} />
         ))}
       </PoolsCards>
+      <RecommendedPairsTitle>Recommended Pairs</RecommendedPairsTitle>
+      <RecommendedPairs>
+        {recommendedPairs.map((item: any, index: number) => (
+          <RecommendedPair key={index}>
+            <img src={item.icon} alt="" />
+            <RecommendedPairTitle>{item.title}</RecommendedPairTitle>
+            <RecommendedPairButton
+              as={Link}
+              to={`/swap?inputCurrency=${item.inputCurrency}&outputCurrency=${item.outputCurrency}`}
+            >
+              Trade Now
+            </RecommendedPairButton>
+          </RecommendedPair>
+        ))}
+      </RecommendedPairs>
     </PoolsPage>
   )
 }

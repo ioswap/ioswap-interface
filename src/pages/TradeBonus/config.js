@@ -1,8 +1,13 @@
 import USDTSvg from '../../assets/svg/pools/usdt.svg'
 import WOKTSvg from '../../assets/svg/pools/okb.svg'
 import BTCKSvg from '../../assets/svg/pools/btck.svg'
+import USDT_OKB_SVG from '../../assets/svg/pools/usdt_okb.svg'
+import OKB_IOS_SVG from '../../assets/svg/pools/okb_ios.svg'
+import USDT_IOS_SVG from '../../assets/svg/pools/usdt_ios.svg'
+import USDT_BTCK_SVG from '../../assets/svg/pools/usdt_btck.svg'
+import BTCK_ETHK_SVG from '../../assets/svg/pools/btck_ethk.svg'
 import IOSwapFarmingRouter from '../../constants/abis/IOSwapFarmingRouter.json'
-import { USDT_ADDRESS, IOS_ADDRESS } from '../../constants'
+import { USDT_ADDRESS, IOS_ADDRESS, OKB_ADDRESS, BTCK_ADDRESS, ETHK_ADDRESS } from '../../constants'
 import { ChainId } from '@io-swap/sdk'
 
 export const tradeBonusConfig = [
@@ -59,5 +64,37 @@ export const tradeBonusConfig = [
     networkId: ChainId.OKT,
     decimals: 18,
     rewards1Address: IOS_ADDRESS // 单池奖励都是ios
+  }
+]
+export const recommendedPairs = [
+  {
+    title: 'USDT/OKT',
+    icon: USDT_OKB_SVG,
+    inputCurrency: USDT_ADDRESS,
+    outputCurrency: 'OKT'
+  },
+  {
+    title: 'OKB/IOS',
+    icon: OKB_IOS_SVG,
+    inputCurrency: OKB_ADDRESS,
+    outputCurrency: IOS_ADDRESS
+  },
+  {
+    title: 'USDT/IOS',
+    icon: USDT_IOS_SVG,
+    inputCurrency: USDT_ADDRESS,
+    outputCurrency: IOS_ADDRESS
+  },
+  {
+    title: 'USDT/BTCK',
+    icon: USDT_BTCK_SVG,
+    inputCurrency: USDT_ADDRESS,
+    outputCurrency: BTCK_ADDRESS
+  },
+  {
+    title: 'BTCK/ETHK',
+    icon: BTCK_ETHK_SVG,
+    inputCurrency: BTCK_ADDRESS,
+    outputCurrency: ETHK_ADDRESS
   }
 ]
