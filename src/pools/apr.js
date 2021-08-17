@@ -121,12 +121,3 @@ export const getAprLP = async poolData => {
     value: LPTValue.toString()
   }
 }
-// Pairs
-export const getAprPairs = async poolData => {
-  const price = await getTokenPriceValue(poolData)
-  console.log('price', price)
-  return {
-    apr: '-',
-    price: price
-  }
-}

@@ -37,7 +37,7 @@ export const getPoolInfo = (pool, account) => {
   })
 }
 // Unit Price
-export const useTokenPriceValue = (poolData) => {
+export const useTokenPriceValue = poolData => {
   const [price, setPrice] = useState('0')
   useMemo(() => {
     const USDT = new Token(poolData.networkId, poolData.settleToken, poolData.settleTokenDecimal)
@@ -53,31 +53,24 @@ export const useTokenPriceValue = (poolData) => {
         const route = new Route([USDCWETHPair, DAIUSDCPair], WETH[ChainId.OKT])
         const _price = route.midPrice.toSignificant(6)
         setPrice(_price)
-      } catch {
-      }
+      } catch {}
     })
   }, [])
   return price
 }
 // get Unit Price
-export const getTokenPriceValue = (poolData) => {
+export const getTokenPriceValue = poolData => {
   if (poolData.settleToken === poolData.MLP) {
     return '1'
   }
   const USDT = new Token(poolData.networkId, poolData.settleToken, poolData.settleTokenDecimal)
   const DAI = new Token(poolData.networkId, poolData.MLP, poolData.mlpDecimal)
   const provider = new JsonRpcProvider(getRpcUrl(DAI.chainId), DAI.chainId)
-  return Promise.all([
-    Fetcher.fetchPairData(DAI, USDT, provider)
-  ]).then(data => {
-    try {
-      const [pair] = data
-      const route = new Route([pair], DAI, USDT)
-      const _price = route.midPrice.toSignificant()
-      return _price
-    } catch (e) {
-      throw e
-    }
+  return Promise.all([Fetcher.fetchPairData(DAI, USDT, provider)]).then(data => {
+    const [pair] = data
+    const route = new Route([pair], DAI, USDT)
+    const _price = route.midPrice.toSignificant()
+    return _price
   })
 }
 

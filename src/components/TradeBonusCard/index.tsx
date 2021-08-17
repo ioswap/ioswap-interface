@@ -7,8 +7,9 @@ import { useBlockNumber } from '../../state/application/hooks'
 import { useActiveWeb3React } from '../../hooks'
 import { getTradeBonusInfo, getReward } from '../../pools/tradeBonus'
 import LoadingIcon from '../LoadingIcon/LoadingIcon'
-import { getAprPairs } from '../../pools/apr'
 import { formatTotalPrice } from '../../utils/format'
+import { getTokenPriceValue } from '../../pools/pools'
+import QuestionHelper from '../QuestionHelper'
 
 interface ThemeColor {
   light: Color
@@ -43,7 +44,9 @@ const CardTitle = styled.div`
 
 const APYView = styled.button<{ themeColor: ThemeColor; isDark: boolean }>`
   background: transparent;
-  display: block;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   height: 42px;
   padding: 10px 38px;
   border: 1px solid ${({ isDark, themeColor }) => getThemeColor(themeColor, isDark)};
@@ -100,10 +103,6 @@ const LineViewValue = styled.div`
   text-align: right;
   color: ${({ theme }) => theme.text1};
 `
-const LineViewTextLong = styled(LineViewText)`
-  min-width: 200px;
-  max-width: 200px;
-`
 const CardFooter = styled.div`
   border-top: 1px solid ${({ theme }) => theme.border1};
   padding-top: 4px;
@@ -121,28 +120,31 @@ const CardFooterLine = styled.div`
 const PaddingLR = styled.div`
   padding: 0 16px;
 `
-
+const QuestionHelperB = styled.span<{ themeColor: ThemeColor; isDark: boolean }>`
+  line-height: 0;
+  div {
+    color: ${({ themeColor, isDark }) => getThemeColor(themeColor, isDark)};
+    background: transparent !important;
+  }
+`
 export default function PoolsCard({ pool, updateBannerData }: any) {
   const [poolInfo, setPoolInfo] = useState(pool)
   const { account, library } = useActiveWeb3React()
   const [isDark] = useDarkModeManager()
   const blockNumber = useBlockNumber()
-  const [apr, setApr] = useState('-')
   const [claimLoading, setClaimLoading] = useState(false)
-  const getTradeBonusInfo_ = () => {
+  const getTradeBonusInfo_ = async () => {
     if (account) {
+      const price = await getTokenPriceValue(pool)
       getTradeBonusInfo(pool, account).then((resPool: any) => {
-        getAprPairs(resPool).then(data => {
-          setApr(data.apr)
-          const newPoolData = {
-            ...resPool,
-            swapAmountsTotalValue: formatTotalPrice(resPool.swapAmountsTotal, data.price, 2),
-            swapAmountsValue: formatTotalPrice(resPool.swapAmounts, data.price, 2)
-          }
-          console.log('newPoolData', newPoolData)
-          updateBannerData(newPoolData)
-          setPoolInfo(newPoolData)
-        })
+        const newPoolData = {
+          ...resPool,
+          swapAmountsTotalValue: formatTotalPrice(resPool.swapAmountsTotal, price, 2),
+          swapAmountsValue: formatTotalPrice(resPool.swapAmounts, price, 2)
+        }
+        console.log('newPoolData', newPoolData)
+        updateBannerData(newPoolData)
+        setPoolInfo(newPoolData)
       })
     }
   }
@@ -166,7 +168,10 @@ export default function PoolsCard({ pool, updateBannerData }: any) {
         <CardIcon src={poolInfo.icon} />
         <CardTitle>{poolInfo.title}</CardTitle>
         <APYView themeColor={poolInfo.themeColor} isDark={isDark}>
-          APY：{apr}%
+          Bonus Ratio： {poolInfo.swapTaxs} IOS
+          <QuestionHelperB themeColor={poolInfo.themeColor} isDark={isDark}>
+            <QuestionHelper text="The IOS expected to get for every 1000U transaction" />
+          </QuestionHelperB>
         </APYView>
         <EarnedName>{poolInfo.earnedName}</EarnedName>
         <LineView>
@@ -201,12 +206,6 @@ export default function PoolsCard({ pool, updateBannerData }: any) {
               <LineViewValue>
                 {poolInfo.swapAmounts} (${poolInfo.swapAmountsValue})
               </LineViewValue>
-            </LineView>
-          </CardFooterLine>
-          <CardFooterLine>
-            <LineView>
-              <LineViewTextLong>The IOS expected to get for every 1000U transaction</LineViewTextLong>
-              <LineViewValue>{poolInfo.swapTaxs} IOS</LineViewValue>
             </LineView>
           </CardFooterLine>
         </PaddingLR>

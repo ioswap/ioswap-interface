@@ -161,6 +161,7 @@ const ExitButton = styled.div<any>`
   display: flex;
   align-items: center;
   justify-content: center;
+  white-space: nowrap;
 `
 
 export default function PoolsCard({ pool, updateBannerData }: any) {
