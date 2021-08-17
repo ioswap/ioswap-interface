@@ -11,16 +11,17 @@ import BtckEthkIosSvg from '../../assets/svg/pools/btck_ethk.svg'
 import WokbOkbSvg from '../../assets/svg/pools/okb_okb.svg'
 import IOSPoolsAbi from '../../constants/abis/IOSPools.json'
 import { ChainId } from '@io-swap/sdk'
-import { IOS_TOKEN_INFO, OKB } from '../../constants'
+import {
+  IOS_ADDRESS,
+  USDT_ADDRESS,
+  ETHK_ADDRESS,
+  WOKT_ADDRESS,
+  BTCK_ADDRESS,
+  OKB_ADDRESS,
+  LTCK_ADDRESS,
+  DOTK_ADDRESS
+} from '../../constants'
 
-const IOSAddress = IOS_TOKEN_INFO.address
-const USDTAddress = '0x382bb369d343125bfb2117af9c149795c6c65c50'
-const ETHKAddress = '0xEF71CA2EE68F45B9Ad6F72fbdb33d707b872315C'
-const WOKTAddress = '0x8F8526dbfd6E38E3D8307702cA8469Bae6C56C15'
-const BTCKAddress = '0x54e4622DC504176b3BB432dCCAf504569699a7fF'
-const OKBAddress = '0xdF54B6c6195EA4d948D03bfD818D365cf175cFC2'
-const LTCKAddress = '0xfA520efC34C81bfC1E3DD48b7fE9fF326049f986'
-const DOTKAddress = '0xabc732f6f69a519F6d508434481376B6221eb7d5'
 export const farmPools = [
   {
     title: 'USDT/IOS LP',
@@ -32,12 +33,12 @@ export const farmPools = [
     abi: IOSPoolsAbi,
     networkId: ChainId.OKT,
     mineMountainAddress: '0xd8c33866645B1B4856d1A1A15123ecb138c7A5A7', // 矿山的地址
-    rewards1Address: IOSAddress, // LP奖励都是ios
+    rewards1Address: IOS_ADDRESS, // LP奖励都是ios
     MLP: '0x56bb69f74562a267b02699f5ff8b32c291231cb7', // 质押的资产 stakingToken
     mlpDecimal: 18,
-    address0: USDTAddress, // LP组合其中的一个，用于计算价值*2
-    address1: IOSAddress,
-    settleToken: USDTAddress, // 转换价值的地址 现在都以USDT
+    address0: USDT_ADDRESS, // LP组合其中的一个，用于计算价值*2
+    address1: IOS_ADDRESS,
+    settleToken: USDT_ADDRESS, // 转换价值的地址 现在都以USDT
     settleTokenDecimal: 18
   },
   {
@@ -51,12 +52,12 @@ export const farmPools = [
     abi: IOSPoolsAbi,
     networkId: ChainId.OKT,
     mineMountainAddress: '0xd8c33866645B1B4856d1A1A15123ecb138c7A5A7', // 矿山的地址
-    rewards1Address: IOSAddress, // LP奖励都是ios
+    rewards1Address: IOS_ADDRESS, // LP奖励都是ios
     MLP: '0xC9E00665De025ee8Bfea2eFbA7aeE73854356b6e', // 质押的资产 stakingToken
     mlpDecimal: 18,
-    address0: WOKTAddress, // LP组合其中的一个，用于计算价值*2
-    address1: IOSAddress,
-    settleToken: USDTAddress, // 转换价值的地址 现在都以USDT
+    address0: WOKT_ADDRESS, // LP组合其中的一个，用于计算价值*2
+    address1: IOS_ADDRESS,
+    settleToken: USDT_ADDRESS, // 转换价值的地址 现在都以USDT
     settleTokenDecimal: 18
   },
   {
@@ -70,12 +71,12 @@ export const farmPools = [
     abi: IOSPoolsAbi,
     networkId: ChainId.OKT,
     mineMountainAddress: '0xd8c33866645B1B4856d1A1A15123ecb138c7A5A7', // 矿山的地址
-    rewards1Address: IOSAddress, // LP奖励都是ios
+    rewards1Address: IOS_ADDRESS, // LP奖励都是ios
     MLP: '0x44c147D0c9623E49eabe8ae6cCD97D351E708DEE', // 质押的资产 stakingToken
     mlpDecimal: 18,
-    address0: USDTAddress, // LP组合其中的一个，用于计算价值*2
-    address1: WOKTAddress,
-    settleToken: USDTAddress, // 转换价值的地址 现在都以USDT
+    address0: USDT_ADDRESS, // LP组合其中的一个，用于计算价值*2
+    address1: WOKT_ADDRESS,
+    settleToken: USDT_ADDRESS, // 转换价值的地址 现在都以USDT
     settleTokenDecimal: 18
   },
   {
@@ -89,12 +90,12 @@ export const farmPools = [
     abi: IOSPoolsAbi,
     networkId: ChainId.OKT,
     mineMountainAddress: '0xd8c33866645B1B4856d1A1A15123ecb138c7A5A7', // 矿山的地址
-    rewards1Address: IOSAddress, // LP奖励都是ios
+    rewards1Address: IOS_ADDRESS, // LP奖励都是ios
     MLP: '0x7b2e0a1DC702A467fdc855883AA1a5f293a1A0a2', // 质押的资产 stakingToken
     mlpDecimal: 18,
-    address0: USDTAddress, // LP组合其中的一个，用于计算价值*2
-    address1: BTCKAddress,
-    settleToken: USDTAddress, // 转换价值的地址 现在都以USDT
+    address0: USDT_ADDRESS, // LP组合其中的一个，用于计算价值*2
+    address1: BTCK_ADDRESS,
+    settleToken: USDT_ADDRESS, // 转换价值的地址 现在都以USDT
     settleTokenDecimal: 18
   },
   {
@@ -108,12 +109,12 @@ export const farmPools = [
     abi: IOSPoolsAbi,
     networkId: ChainId.OKT,
     mineMountainAddress: '0xd8c33866645B1B4856d1A1A15123ecb138c7A5A7', // 矿山的地址
-    rewards1Address: IOSAddress, // LP奖励都是ios
+    rewards1Address: IOS_ADDRESS, // LP奖励都是ios
     MLP: '0xf028e6617084E87dd82D2426A898e9fa50337a57', // 质押的资产 stakingToken
     mlpDecimal: 18,
-    address0: USDTAddress, // LP组合其中的一个，用于计算价值*2
-    address1: ETHKAddress,
-    settleToken: USDTAddress, // 转换价值的地址 现在都以USDT
+    address0: USDT_ADDRESS, // LP组合其中的一个，用于计算价值*2
+    address1: ETHK_ADDRESS,
+    settleToken: USDT_ADDRESS, // 转换价值的地址 现在都以USDT
     settleTokenDecimal: 18
   },
   {
@@ -127,12 +128,12 @@ export const farmPools = [
     abi: IOSPoolsAbi,
     networkId: ChainId.OKT,
     mineMountainAddress: '0xd8c33866645B1B4856d1A1A15123ecb138c7A5A7', // 矿山的地址
-    rewards1Address: IOSAddress, // LP奖励都是ios
+    rewards1Address: IOS_ADDRESS, // LP奖励都是ios
     MLP: '0x50E70d4a98eA9eF874347BCb391D96b34E8A8F5D', // 质押的资产 stakingToken
     mlpDecimal: 18,
-    address0: BTCKAddress, // LP组合其中的一个，用于计算价值*2
-    address1: ETHKAddress,
-    settleToken: USDTAddress, // 转换价值的地址 现在都以USDT
+    address0: BTCK_ADDRESS, // LP组合其中的一个，用于计算价值*2
+    address1: ETHK_ADDRESS,
+    settleToken: USDT_ADDRESS, // 转换价值的地址 现在都以USDT
     settleTokenDecimal: 18
   },
   {
@@ -146,12 +147,12 @@ export const farmPools = [
     abi: IOSPoolsAbi,
     networkId: ChainId.OKT,
     mineMountainAddress: '0xd8c33866645B1B4856d1A1A15123ecb138c7A5A7', // 矿山的地址
-    rewards1Address: IOSAddress, // LP奖励都是ios
+    rewards1Address: IOS_ADDRESS, // LP奖励都是ios
     MLP: '0x704E0CF243B4D71d038dd8618012aFa77f983258', // 质押的资产 stakingToken
     mlpDecimal: 18,
-    address0: USDTAddress, // LP组合其中的一个，用于计算价值*2
-    address1: OKBAddress,
-    settleToken: USDTAddress, // 转换价值的地址 现在都以USDT
+    address0: USDT_ADDRESS, // LP组合其中的一个，用于计算价值*2
+    address1: OKB_ADDRESS,
+    settleToken: USDT_ADDRESS, // 转换价值的地址 现在都以USDT
     settleTokenDecimal: 18
   },
   {
@@ -165,12 +166,12 @@ export const farmPools = [
     abi: IOSPoolsAbi,
     networkId: ChainId.OKT,
     mineMountainAddress: '0xd8c33866645B1B4856d1A1A15123ecb138c7A5A7', // 矿山的地址
-    rewards1Address: IOSAddress, // LP奖励都是ios
+    rewards1Address: IOS_ADDRESS, // LP奖励都是ios
     MLP: '0xf9426972906Daeb688CFc3E05E3C24AF7d2fB78c', // 质押的资产 stakingToken
     mlpDecimal: 18,
-    address0: WOKTAddress, // LP组合其中的一个，用于计算价值*2
-    address1: OKBAddress,
-    settleToken: USDTAddress, // 转换价值的地址 现在都以USDT
+    address0: WOKT_ADDRESS, // LP组合其中的一个，用于计算价值*2
+    address1: OKB_ADDRESS,
+    settleToken: USDT_ADDRESS, // 转换价值的地址 现在都以USDT
     settleTokenDecimal: 18
   },
   {
@@ -184,12 +185,12 @@ export const farmPools = [
     abi: IOSPoolsAbi,
     networkId: ChainId.OKT,
     mineMountainAddress: '0xd8c33866645B1B4856d1A1A15123ecb138c7A5A7', // 矿山的地址
-    rewards1Address: IOSAddress, // LP奖励都是ios
+    rewards1Address: IOS_ADDRESS, // LP奖励都是ios
     MLP: '0x4A628C636Ad837A783863a97b3f30df36999F9E4', // 质押的资产 stakingToken
     mlpDecimal: 18,
-    address0: USDTAddress, // LP组合其中的一个，用于计算价值*2
-    address1: LTCKAddress,
-    settleToken: USDTAddress, // 转换价值的地址 现在都以USDT
+    address0: USDT_ADDRESS, // LP组合其中的一个，用于计算价值*2
+    address1: LTCK_ADDRESS,
+    settleToken: USDT_ADDRESS, // 转换价值的地址 现在都以USDT
     settleTokenDecimal: 18
   },
   {
@@ -203,12 +204,12 @@ export const farmPools = [
     abi: IOSPoolsAbi,
     networkId: ChainId.OKT,
     mineMountainAddress: '0xd8c33866645B1B4856d1A1A15123ecb138c7A5A7', // 矿山的地址
-    rewards1Address: IOSAddress, // LP奖励都是ios
+    rewards1Address: IOS_ADDRESS, // LP奖励都是ios
     MLP: '0x6342c21127480f78e7BE6877c56175B931b2D096', // 质押的资产 stakingToken
     mlpDecimal: 18,
-    address0: USDTAddress, // LP组合其中的一个，用于计算价值*2
-    address1: DOTKAddress,
-    settleToken: USDTAddress, // 转换价值的地址 现在都以USDT
+    address0: USDT_ADDRESS, // LP组合其中的一个，用于计算价值*2
+    address1: DOTK_ADDRESS,
+    settleToken: USDT_ADDRESS, // 转换价值的地址 现在都以USDT
     settleTokenDecimal: 18
   }
 ]

@@ -8,7 +8,7 @@ import { formatAmount, formatTotalPrice } from '../../utils/format'
 import PoolsActionModal from '../FarmsActionModal'
 import { useBlockNumber } from '../../state/application/hooks'
 import LoadingIcon from '../LoadingIcon/LoadingIcon'
-import { getApr } from '../../pools/apr'
+import { getAprLP } from '../../pools/apr'
 import ArrowSvg from '../../assets/svg/pools/arrow.svg'
 import { ExternalLink } from '../../theme'
 import { Link } from 'react-router-dom'
@@ -123,7 +123,7 @@ const LineViewValue = styled.div`
   font-size: 14px;
   line-height: 20px;
   text-align: right;
-  color: ${({ theme }) => theme.text2}
+  color: ${({ theme }) => theme.text2};
 `
 const CardFooter = styled.div`
   border-top: 1px solid ${({ theme }) => theme.border1};
@@ -188,8 +188,8 @@ export default function PoolsCard({ pool, updateBannerData }: any) {
   const blockNumber = useBlockNumber()
   useMemo(() => {
     if (account) {
-      getPoolInfo(pool, account).then((resPool) => {
-        getApr(resPool, 2).then(data => {
+      getPoolInfo(pool, account).then(resPool => {
+        getAprLP(resPool).then(data => {
           setApr(data.apr)
           const newPoolData = {
             ...resPool,
@@ -225,9 +225,7 @@ export default function PoolsCard({ pool, updateBannerData }: any) {
       setClaimLoading(false)
       upUpdateNum()
       if (succcess) {
-
       } else {
-
       }
     })
   }
@@ -240,17 +238,19 @@ export default function PoolsCard({ pool, updateBannerData }: any) {
       setExitLoading(false)
       upUpdateNum()
       if (succcess) {
-
       } else {
-
       }
     })
   }
 
   return (
     <>
-      <PoolsActionModal isOpen={isOpen} onClose={() => setIsOpen(false)} poolData={poolData}
-                        upUpdateNum={upUpdateNum} />
+      <PoolsActionModal
+        isOpen={isOpen}
+        onClose={() => setIsOpen(false)}
+        poolData={poolData}
+        upUpdateNum={upUpdateNum}
+      />
       <CardView>
         <PaddingLR>
           <CardIcon src={poolData.icon} />
@@ -267,32 +267,29 @@ export default function PoolsCard({ pool, updateBannerData }: any) {
             </FlexCenterH>
           </LineView>
           <EarnedName>{poolData.coin}</EarnedName>
-          {
-            poolData.allowance ? (
-              <LineView>
-                <LineViewAmount>{poolData.balanceOf}</LineViewAmount>
-                <FlexCenterH>
-                  <StakeButton themeColor={poolData.themeColor} isDark={isDark} onClick={onExit_}>
-                    {
-                      exitLoading && <LoadingIcon />
-                    }
-                    -
-                  </StakeButton>
-                  <StakeButton themeColor={poolData.themeColor} isDark={isDark} onClick={() => setIsOpen(true)}>
-                    +
-                  </StakeButton>
-                </FlexCenterH>
-              </LineView>
-            ) : (
-              <ApprovalButton themeColor={poolData.themeColor} isDark={isDark} approveLoading={approveLoading}
-                              onClick={onApprove}>
-                {
-                  approveLoading && <LoadingIcon />
-                }
-                Approve Contract
-              </ApprovalButton>
-            )
-          }
+          {poolData.allowance ? (
+            <LineView>
+              <LineViewAmount>{poolData.balanceOf}</LineViewAmount>
+              <FlexCenterH>
+                <StakeButton themeColor={poolData.themeColor} isDark={isDark} onClick={onExit_}>
+                  {exitLoading && <LoadingIcon />}-
+                </StakeButton>
+                <StakeButton themeColor={poolData.themeColor} isDark={isDark} onClick={() => setIsOpen(true)}>
+                  +
+                </StakeButton>
+              </FlexCenterH>
+            </LineView>
+          ) : (
+            <ApprovalButton
+              themeColor={poolData.themeColor}
+              isDark={isDark}
+              approveLoading={approveLoading}
+              onClick={onApprove}
+            >
+              {approveLoading && <LoadingIcon />}
+              Approve Contract
+            </ApprovalButton>
+          )}
         </PaddingLR>
         <CardFooter>
           <PaddingLR>
@@ -303,7 +300,7 @@ export default function PoolsCard({ pool, updateBannerData }: any) {
                   <LineViewValue>
                     <span>{poolData.coin.replace('/', '-')}</span>
                     <LinkArrow>
-                      <img src={ArrowSvg} alt='' />
+                      <img src={ArrowSvg} alt="" />
                     </LinkArrow>
                   </LineViewValue>
                 </LinkArrowBox>
@@ -312,7 +309,9 @@ export default function PoolsCard({ pool, updateBannerData }: any) {
             <CardFooterLine>
               <LineView>
                 <LineViewText>Total Deposited</LineViewText>
-                <LineViewValue>{poolData.totalSupply}(${poolData.totalSupplyValue})</LineViewValue>
+                <LineViewValue>
+                  {poolData.totalSupply}(${poolData.totalSupplyValue})
+                </LineViewValue>
               </LineView>
             </CardFooterLine>
           </PaddingLR>

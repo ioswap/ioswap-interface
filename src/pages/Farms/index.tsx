@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import styled from 'styled-components'
 import { farmPools } from './config'
 import FarmsCard from '../../components/FarmsCard'
-import { formatAmount } from '../../utils/format'
+import { formatAmount, toFormat } from '../../utils/format'
 import { Contract } from 'ethers-multicall-x'
 import { useActiveWeb3React } from '../../hooks'
 import { getMultiCallProvider } from '../../constants/web3'
@@ -178,8 +178,8 @@ export default function Farms() {
           liquidityTotal_ += totalSupplyValue
         }
       }
-      setHarvestTotal(String(harvestTotal_ === 0 ? 0 : harvestTotal_.toFixed(6)))
-      setLiquidityTotal(String(liquidityTotal_ === 0 ? 0 : liquidityTotal_.toFixed(2)))
+      setHarvestTotal(toFormat(String(harvestTotal_ === 0 ? 0 : harvestTotal_.toFixed(6))))
+      setLiquidityTotal(toFormat(String(liquidityTotal_ === 0 ? 0 : liquidityTotal_.toFixed(2))))
     }
   }
 
@@ -193,11 +193,14 @@ export default function Farms() {
       setClaimAllLoading(true)
       // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
       // @ts-ignore
-      await multicall.allSend(callList).then(() => {
-        setClaimAllLoading(false)
-      }).catch(() => {
-        setClaimAllLoading(false)
-      })
+      await multicall
+        .allSend(callList)
+        .then(() => {
+          setClaimAllLoading(false)
+        })
+        .catch(() => {
+          setClaimAllLoading(false)
+        })
     }
   }
 
