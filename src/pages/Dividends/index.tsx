@@ -1,9 +1,10 @@
-import React, { useState } from 'react'
+import React from 'react'
 import styled from 'styled-components'
 import { poolsConfig } from './config'
 import PoolsCard from '../../components/DividendsCard'
-import PoolsActionModal from '../../components/FarmsActionModal'
 import TipView from '../../components/TipView'
+// import { useActiveWeb3React } from '../../hooks'
+// import { formatAmount, toFormat } from '../../utils/format'
 
 export const FlexCenter = styled.div`
   display: flex;
@@ -87,13 +88,31 @@ const PoolsCards = styled.div`
       justify-items: center;
   `}
 `
-
+const poolMap: any = {}
 export default function Dividends() {
-  const [isOpen, setIsOpen] = useState(false)
+  // const [earningTotal, setEarningTotal] = useState('-')
+  // const [totalDeposited, setTotalDeposited] = useState('-')
+  // const [claimAllLoading, setClaimAllLoading] = useState(false)
 
+  const updateBannerData = (poolData: any) => {
+    poolMap[poolData.address] = poolData
+    // const len = Object.keys(poolMap).length
+    // if (len === poolsConfig.length) {
+    //   let earningTotal_ = 0
+    //   let totalDeposited_ = 0
+    //   for (const i in poolMap) {
+    //     const totalSupplyValue = Number(poolMap[i].totalSupplyValue)
+    //     if (!isNaN(totalSupplyValue)) {
+    //       earningTotal_ += Number(formatAmount(poolMap[i].earned || '0'))
+    //       totalDeposited_ += totalSupplyValue
+    //     }
+    //   }
+    //   setEarningTotal(toFormat(String(earningTotal_ === 0 ? 0 : earningTotal_.toFixed(6))))
+    //   setTotalDeposited(toFormat(String(totalDeposited_ === 0 ? 0 : totalDeposited_.toFixed(2))))
+    // }
+  }
   return (
     <PoolsPage>
-      {false && <PoolsActionModal isOpen={isOpen} onClose={() => setIsOpen(false)} />}
       <PoolsTitle>
         Stake Your IOS to earn platform dividends.You can choose to get USDT, OKT or BTC.
         <TipView
@@ -125,8 +144,8 @@ export default function Dividends() {
         </PoolsBannerItem>
       </PoolsBanner>
       <PoolsCards>
-        {poolsConfig.map((poolData: any, index: number) => (
-          <PoolsCard key={index} poolData={poolData} />
+        {poolsConfig.map((pool: any, index: number) => (
+          <PoolsCard key={index} pool={pool} updateBannerData={updateBannerData} />
         ))}
       </PoolsCards>
     </PoolsPage>

@@ -1,25 +1,34 @@
-import React from 'react'
+import React, { useMemo, useState } from 'react'
 import styled from 'styled-components'
+import { FlexCenterH } from '../../pages/Farms'
 import { Color } from '../../theme/styled'
 import { useDarkModeManager } from '../../state/user/hooks'
-import { FlexCenter, FlexCenterH } from '../../pages/Dividends'
-import AddSvg from '../../assets/svg/pools/add.svg'
+import { useActiveWeb3React } from '../../hooks'
+import { getPoolInfo, onApproveContract, onClaim, onExit } from '../../pools/dividends'
+import { formatAmount, formatTotalPrice } from '../../utils/format'
+import PoolsActionModal from '../FarmsActionModal'
+import { useBlockNumber } from '../../state/application/hooks'
+import LoadingIcon from '../LoadingIcon/LoadingIcon'
+import { FlexCenter } from '../../pages/Pools'
+import { getTokenPriceValue } from '../../pools/pools'
+
 interface ThemeColor {
-  light: Color,
+  light: Color
   dark: Color
 }
+
 const getThemeColor = (themeColor: ThemeColor, isDark: boolean) => {
   return isDark ? themeColor.dark : themeColor.light
 }
-const CardView = styled.div<{themeColor: ThemeColor, isDark: boolean}>`
-  color: ${({theme}) => theme.white};
-  background: ${({themeColor, isDark}) => getThemeColor(themeColor, isDark)};
+const CardView = styled.div<{ themeColor: ThemeColor; isDark: boolean }>`
+  background: ${({ themeColor, isDark }) => getThemeColor(themeColor, isDark)};
+  color: ${({ theme }) => theme.white};
   margin-top: 20px;
   width: 330px;
-  height: 502px;
+  height: 466px;
   box-shadow: 0px 10px 30px rgba(30, 68, 89, 0.12);
   border-radius: 12px;
-  padding: 24px 0 20px 0;
+  padding: 24px 0 16px 0;
 `
 const CardIcon = styled.img`
   display: block;
@@ -39,8 +48,8 @@ const APYView = styled.button`
   display: block;
   height: 42px;
   padding: 10px 38px;
-  border: 1px solid ${({theme})=>theme.white};
-  color: ${({theme})=>theme.white};
+  border: 1px solid ${({ theme }) => theme.white};
+  color: ${({ theme }) => theme.white};
   box-sizing: border-box;
   border-radius: 12px;
   margin: 20px auto 14px auto;
@@ -60,21 +69,25 @@ const LineViewAmount = styled.div`
   font-weight: 600;
   font-size: 20px;
 `
-const ClaimBtn = styled.button<{disabled: boolean}>`
+const ClaimBtn = styled.button`
   width: 120px;
   height: 40px;
   border-radius: 12px;
-  background: ${({disabled}) => disabled ? 'rgba(0, 0, 0, 0.16)' : 'transparent'};
-  cursor: ${({disabled}) => disabled ? 'no-drop' : 'pointer'};
+  cursor: pointer;
   font-weight: 600;
-  border: 1px solid ${({theme, disabled})=> disabled ? 'transparent' : theme.white};
-  color: ${({theme, disabled})=>disabled ? 'rgba(0, 0, 0, 0.5)' : theme.white};
-  :hover{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: ${({ theme }) => theme.white};
+  border: 1px solid ${({ theme }) => theme.white};
+  background: transparent;
+
+  :hover {
     opacity: 0.9;
   }
 `
 
-const ApprovalButton = styled.div<{themeColor: ThemeColor, isDark: boolean}>`
+const ApprovalButton = styled.div<any>`
   display: flex;
   align-items: center;
   justify-content: center;
@@ -83,40 +96,45 @@ const ApprovalButton = styled.div<{themeColor: ThemeColor, isDark: boolean}>`
   font-weight: 600;
   margin-top: 20px;
   cursor: pointer;
+
+  color: ${({ themeColor, isDark }) => getThemeColor(themeColor, isDark)};
   border: 0;
-  background-color: ${({theme})=>theme.white};
+  background: ${({ theme }) => theme.white};
   border-radius: 12px;
 
-  color: ${({themeColor, isDark})=> getThemeColor(themeColor, isDark)};
-  :hover{
+  :hover {
     opacity: 0.9;
   }
+`
+const StakeButton = styled(ApprovalButton)`
+  margin-top: 12px;
+  width: 146px;
+  font-weight: 400;
+  font-size: 30px;
 `
 const LineViewText = styled.div`
   font-size: 14px;
   line-height: 20px;
-  color: ${({theme})=>theme.white};;
   flex: 1;
   display: flex;
   align-content: center;
 `
-const LineViewValue = styled.div`
+const LineViewValue = styled(FlexCenterH)`
   font-weight: 600;
   font-size: 14px;
   line-height: 20px;
   text-align: right;
-  ${({theme})=>theme.white}
 `
 const CardFooter = styled.div`
-  border-top: 1px solid ${({theme})=>theme.border2};
+  border-top: 1px solid ${({ theme }) => theme.border1};
   padding-top: 4px;
   margin-top: 20px;
 `
 
 const CardFooterLine = styled.div`
   margin-top: 16px;
-  span{
-    color: ${({theme})=>theme.text2};;
+
+  span {
     font-weight: 600;
   }
 `
@@ -124,96 +142,164 @@ const CardFooterLine = styled.div`
 const PaddingLR = styled.div`
   padding: 0 16px;
 `
-const ActionBtn = styled.div`
-  margin: 20px 0;
-`
-const UnStakeBtn = styled.button`
-  background: ${({theme})=>theme.white};
-  border: 0;
+const ExitButton = styled.div<any>`
+  width: 146px;
   height: 40px;
-  flex: 1;
+  border-radius: 12px;
   margin-right: 6px;
-  border-radius: 14px;
-  font-weight: 600;
-  color: ${({theme})=>theme.text6};
+  margin-top: 12px;
   cursor: pointer;
-  :hover{
-    opacity: 0.9;
-  }
-`
-const AddBtn = styled.button`
-  background: ${({theme})=>theme.white};
-  border: 1px solid ${({theme})=>theme.white};
-  color: ${({theme})=>theme.white};
-  height: 40px;
-  flex: 1;
-  margin-left: 6px;
-  border-radius: 14px;
   font-weight: 600;
-  color: ${({theme})=>theme.white};
-  background: transparent;
-  font-size: 28px;
-  cursor: pointer;
-  :hover{
-    opacity: 0.9;
-  }
+  color: ${({ themeColor, isDark }) => getThemeColor(themeColor, isDark)};
+  border: 0;
+  background: ${({ theme }) => theme.white};
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  white-space: nowrap;
 `
 
-export default function PoolsCard({poolData}: any){
-  const isApprove = true
+export default function PoolsCard({ pool, updateBannerData }: any) {
+  const { account, library } = useActiveWeb3React()
   const [isDark] = useDarkModeManager()
+  const [poolData, setPoolData] = useState(pool)
+  const [isOpen, setIsOpen] = useState(false)
+  const [approveLoading, setApproveLoading] = useState(false)
+  const [claimLoading, setClaimLoading] = useState(false)
+  const [updateNum, setUpdateNum] = useState(0)
+
+  const [exitLoading, setExitLoading] = useState(false)
+
+  const upUpdateNum = () => {
+    setUpdateNum(updateNum + 1)
+  }
+  const blockNumber = useBlockNumber()
+  const getPoolInfo_ = async () => {
+    if (account) {
+      const price = await getTokenPriceValue(poolData)
+      getPoolInfo(pool, account).then(resPool => {
+        const newPoolData = {
+          ...resPool,
+          balanceOfValue: formatTotalPrice(resPool.balanceOf, price, 2),
+          totalSupplyValue: formatTotalPrice(resPool.totalSupply, price, 2)
+        }
+        console.log('newPool', newPoolData)
+        setPoolData(newPoolData)
+        updateBannerData(newPoolData)
+      })
+    }
+  }
+  useMemo(() => {
+    getPoolInfo_()
+  }, [account, blockNumber, updateNum])
+  const onApprove = () => {
+    if (approveLoading || !account) {
+      return
+    }
+    setApproveLoading(true)
+    onApproveContract(library, account, poolData.MLP, poolData.address, (res: boolean) => {
+      setApproveLoading(false)
+      if (res) {
+        upUpdateNum()
+        console.log('success')
+      } else {
+        console.log('fail')
+      }
+    })
+  }
+  const onClaim_ = () => {
+    if (claimLoading || poolData.earned == '0' || !account) {
+      return
+    }
+    setClaimLoading(true)
+    onClaim(library, poolData.address, poolData.abi, account, (succcess: boolean) => {
+      setClaimLoading(false)
+      upUpdateNum()
+      if (succcess) {
+      } else {
+      }
+    })
+  }
+  const onExit_ = () => {
+    if (poolData.balanceOf <= 0 || exitLoading || !account) {
+      return
+    }
+    setExitLoading(true)
+    onExit(library, account, poolData.abi, poolData.address, (succcess: boolean) => {
+      setExitLoading(false)
+      upUpdateNum()
+      if (succcess) {
+      } else {
+      }
+    })
+  }
+
   return (
-    <CardView themeColor={poolData.themeColor} isDark={isDark}>
-      <PaddingLR>
-        <CardIcon src={poolData.icon}/>
-        <CardTitle>{poolData.title}</CardTitle>
-        <APYView>APY：8888%</APYView>
-        <EarnedName>{poolData.earnedName}</EarnedName>
-        <LineView>
-          <LineViewAmount>888.888</LineViewAmount>
-          <FlexCenterH>
-            <ClaimBtn disabled={false}>Claim</ClaimBtn>
-          </FlexCenterH>
-        </LineView>
-        {
-          isApprove ? (
-            <ActionBtn>
-              <FlexCenter>
-                <UnStakeBtn>Unstake {poolData.coin}</UnStakeBtn>
-                <AddBtn><img src={AddSvg} alt='' /></AddBtn>
-              </FlexCenter>
-            </ActionBtn>
+    <>
+      <PoolsActionModal
+        isOpen={isOpen}
+        onClose={() => setIsOpen(false)}
+        poolData={poolData}
+        upUpdateNum={upUpdateNum}
+      />
+      <CardView themeColor={poolData.themeColor} isDark={isDark}>
+        <PaddingLR>
+          <CardIcon src={poolData.icon} />
+          <CardTitle>{poolData.title}</CardTitle>
+          <APYView> APY：{poolData.APY}% </APYView>
+          <EarnedName>{poolData.earnedName}</EarnedName>
+          <LineView>
+            <LineViewAmount>{formatAmount(poolData.earned || '0').toString()}</LineViewAmount>
+            <FlexCenterH>
+              <ClaimBtn onClick={onClaim_}>
+                {claimLoading && <LoadingIcon />}
+                Claim
+              </ClaimBtn>
+            </FlexCenterH>
+          </LineView>
+          {poolData.allowance ? (
+            <FlexCenter>
+              <ExitButton themeColor={poolData.themeColor} isDark={isDark} onClick={onExit_}>
+                {exitLoading && <LoadingIcon size={18} />}
+                Withdraw {poolData.coin}
+              </ExitButton>
+              <StakeButton themeColor={poolData.themeColor} isDark={isDark} onClick={() => setIsOpen(true)}>
+                +
+              </StakeButton>
+            </FlexCenter>
           ) : (
-            <ApprovalButton themeColor={poolData.themeColor} isDark={isDark}>
+            <ApprovalButton
+              themeColor={poolData.themeColor}
+              isDark={isDark}
+              approveLoading={approveLoading}
+              onClick={onApprove}
+            >
+              {approveLoading && <LoadingIcon />}
               Approve {poolData.coin}
             </ApprovalButton>
-          )
-        }
-      </PaddingLR>
-      <CardFooter>
-        <PaddingLR>
-          <CardFooterLine>
-            <LineView>
-              <LineViewText>Pool Remaining</LineViewText>
-              <FlexCenterH>
-                <LineViewValue>$12,345</LineViewValue>
-              </FlexCenterH>
-            </LineView>
-          </CardFooterLine>
-          <CardFooterLine>
-            <LineView>
-              <LineViewText>Your Staked</LineViewText>
-              <LineViewValue>888,888</LineViewValue>
-            </LineView>
-          </CardFooterLine>
-          <CardFooterLine>
-            <LineView>
-              <LineViewText>Total Staked</LineViewText>
-              <LineViewValue>888,888</LineViewValue>
-            </LineView>
-          </CardFooterLine>
+          )}
         </PaddingLR>
-      </CardFooter>
-    </CardView>
+        <CardFooter>
+          <PaddingLR>
+            <CardFooterLine>
+              <LineView>
+                <LineViewText>Your Staked</LineViewText>
+                <LineViewValue>
+                  {poolData.balanceOf}(${poolData.balanceOfValue})
+                </LineViewValue>
+              </LineView>
+            </CardFooterLine>
+            <CardFooterLine>
+              <LineView>
+                <LineViewText>Total Staked</LineViewText>
+                <LineViewValue>
+                  {poolData.totalSupply}(${poolData.totalSupplyValue})
+                </LineViewValue>
+              </LineView>
+            </CardFooterLine>
+          </PaddingLR>
+        </CardFooter>
+      </CardView>
+    </>
   )
 }

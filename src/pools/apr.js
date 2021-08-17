@@ -21,7 +21,7 @@ const createContractERC20 = (chainId, address) => {
   const web3 = new Web3(new Web3.providers.HttpProvider(getRpcUrl(chainId)))
   return new web3.eth.Contract(ERC20_ABI, address) // WAR_ADDRESS(chainId)
 }
-
+// 池子在矿山授权的额度
 export const getAllowance = poolData => {
   const contract = createContractERC20(poolData.networkId, poolData.rewards1Address)
   return contract.methods
@@ -62,7 +62,10 @@ export const getLptValue = (poolData, price) => {
 // Single
 export const getAprSingle = async poolData => {
   const [span, allowance] = await Promise.all([getSpan(poolData), getAllowance(poolData)])
-  const price = await getTokenPriceValue(poolData)
+  const price = await getTokenPriceValue({
+    ...poolData,
+    MLP: poolData.rewards1Address
+  })
   const price2 = await getTokenPriceValue(poolData)
   const apr = allowance
     .multipliedBy(
