@@ -23,7 +23,7 @@ const CardView = styled.div`
   background: ${({ theme }) => theme.bg1};
   margin-top: 20px;
   width: 330px;
-  height: 495px;
+  height: 440px;
   box-shadow: 0px 10px 30px rgba(30, 68, 89, 0.12);
   border-radius: 12px;
   padding: 24px 0 20px 0;
