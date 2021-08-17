@@ -93,11 +93,12 @@ export const getAprLP = async poolData => {
     ...poolData,
     MLP: poolData.address0
   })
-  const LPTValue = await getLptValue(poolData, price)
+  const LPTValue = await getLptValue(poolData, price2)
   if (isNaN(LPTValue) || LPTValue.toString() === '0') {
     return {
       apr: 'infinity',
-      price: price2 * 2
+      price: '0',
+      value: '0'
     }
   }
   const apr = new BigNumber(allowance)
@@ -116,7 +117,8 @@ export const getAprLP = async poolData => {
     .toString()
   return {
     apr,
-    price: price2 * 2
+    price: price2 * 2,
+    value: LPTValue.toString()
   }
 }
 // Pairs
