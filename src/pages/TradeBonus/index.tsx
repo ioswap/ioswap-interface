@@ -154,13 +154,15 @@ export default function Dividends() {
         if (!isNaN(swapAmountsTotalValue)) {
           totalVolume_ += swapAmountsTotalValue
         }
-        const paid = Number(poolMap[i].paid)
-        if (!isNaN(paid)) {
-          bonusAllocated_ += paid
+        const paidTotal = Number(poolMap[i].paidTotal)
+        const earnedTotal = Number(poolMap[i].earnedTotal)
+        if (!isNaN(paidTotal) && !isNaN(earnedTotal)) {
+          bonusAllocated_ += paidTotal + earnedTotal
         }
-        const swapAmounts = Number(poolMap[i].swapAmounts)
-        if (!isNaN(swapAmounts)) {
-          myTotalBonus_ += swapAmounts
+        const paid = Number(poolMap[i].paid)
+        const earned = Number(poolMap[i].earned)
+        if (!isNaN(paid) && !isNaN(earned)) {
+          myTotalBonus_ += paid + earned
         }
       }
       setTotalVolume(toFormat(String(totalVolume_ === 0 ? 0 : totalVolume_.toFixed(2))))

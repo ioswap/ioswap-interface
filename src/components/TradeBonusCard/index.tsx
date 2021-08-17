@@ -136,7 +136,7 @@ export default function PoolsCard({ pool, updateBannerData }: any) {
   const getTradeBonusInfo_ = async () => {
     if (account) {
       const price = await getTokenPriceValue(pool)
-      getTradeBonusInfo(pool, account).then((resPool: any) => {
+      getTradeBonusInfo(pool, account, price).then((resPool: any) => {
         const newPoolData = {
           ...resPool,
           swapAmountsTotalValue: formatTotalPrice(resPool.swapAmountsTotal, price, 2),
@@ -168,7 +168,7 @@ export default function PoolsCard({ pool, updateBannerData }: any) {
         <CardIcon src={poolInfo.icon} />
         <CardTitle>{poolInfo.title}</CardTitle>
         <APYView themeColor={poolInfo.themeColor} isDark={isDark}>
-          Bonus Ratio： {poolInfo.swapTaxs} IOS
+          Bonus Ratio： {poolInfo.bonusRatio} IOS
           <QuestionHelperB themeColor={poolInfo.themeColor} isDark={isDark}>
             <QuestionHelper text="The IOS expected to get for every 1000U transaction" />
           </QuestionHelperB>
