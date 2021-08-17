@@ -46,11 +46,9 @@ const HeaderFrame = styled.div`
   background: ${({ theme }) => theme.bg10};
   ${({ theme }) => theme.mediaWidth.upToLarge`
   grid-template-columns: 120px 1fr 300px;
-    position: relative;
   `};
   ${({ theme }) => theme.mediaWidth.upToMedium`
   grid-template-columns: 120px 1fr;
-    position: relative;
   `};
 
   ${({ theme }) => theme.mediaWidth.upToExtraSmall`
