@@ -25,7 +25,7 @@ const CardView = styled.div<{ themeColor: ThemeColor; isDark: boolean }>`
   color: ${({ theme }) => theme.white};
   margin-top: 20px;
   width: 330px;
-  height: 466px;
+  height: 520px;
   box-shadow: 0px 10px 30px rgba(30, 68, 89, 0.12);
   border-radius: 12px;
   padding: 24px 0 16px 0;
@@ -57,7 +57,7 @@ const APYView = styled.button`
 const EarnedName = styled.div`
   font-size: 14px;
   line-height: 20px;
-  margin-top: 16px;
+  margin-top: 32px;
 `
 const LineView = styled.div`
   display: flex;
@@ -176,12 +176,18 @@ export default function PoolsCard({ pool, updateBannerData }: any) {
   const blockNumber = useBlockNumber()
   const getPoolInfo_ = async () => {
     if (account) {
-      const price = await getTokenPriceValue(poolData)
-      getPoolInfo(pool, account).then(resPool => {
+      // 奖励价格
+      const price = await getTokenPriceValue({
+        ...poolData,
+        MLP: poolData.rewards1Address
+      })
+      // 质押价格IOS
+      const price2 = await getTokenPriceValue(poolData)
+      getPoolInfo(pool, account, price).then(resPool => {
         const newPoolData = {
           ...resPool,
-          balanceOfValue: formatTotalPrice(resPool.balanceOf, price, 2),
-          totalSupplyValue: formatTotalPrice(resPool.totalSupply, price, 2)
+          balanceOfValue: formatTotalPrice(resPool.balanceOf, price2, 2),
+          totalSupplyValue: formatTotalPrice(resPool.totalSupply, price2, 2)
         }
         console.log('newPool', newPoolData)
         setPoolData(newPoolData)
@@ -215,9 +221,6 @@ export default function PoolsCard({ pool, updateBannerData }: any) {
     onClaim(library, poolData.address, poolData.abi, account, (succcess: boolean) => {
       setClaimLoading(false)
       upUpdateNum()
-      if (succcess) {
-      } else {
-      }
     })
   }
   const onExit_ = () => {
@@ -281,6 +284,14 @@ export default function PoolsCard({ pool, updateBannerData }: any) {
         </PaddingLR>
         <CardFooter>
           <PaddingLR>
+            <CardFooterLine>
+              <LineView>
+                <LineViewText>Pool Remaining</LineViewText>
+                <LineViewValue>
+                  {poolData.poolBalanceOf}(${poolData.poolBalanceOfValue})
+                </LineViewValue>
+              </LineView>
+            </CardFooterLine>
             <CardFooterLine>
               <LineView>
                 <LineViewText>Your Staked</LineViewText>

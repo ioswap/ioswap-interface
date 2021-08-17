@@ -1,20 +1,29 @@
 import { Contract } from 'ethers-multicall-x'
 import { ERC20_ABI } from '../constants/abis/erc20'
+import IOSwapFarmingRouter from '../constants/abis/IOSwapFarmingRouter.json'
 import { getOnlyMultiCallProvider, getRpcUrl, getWeb3Contract, processResult } from '../constants/web3'
 import { formatAmount } from '../utils/format'
 import { ChainId, Token, WETH, Fetcher, Route } from '@io-swap/sdk'
 
 import { JsonRpcProvider } from '@ethersproject/providers'
 import { useMemo, useState } from 'react'
+import BigNumber from 'bignumber.js'
+import { ZERO_ADDRESS } from '../constants'
+BigNumber.config({ EXPONENTIAL_AT: 100 })
 
-export const getPoolInfo = (pool, account) => {
+export const getPoolInfo = (pool, account, price) => {
   const multicallProvider = getOnlyMultiCallProvider(pool.networkId)
   const poolContract = new Contract(pool.address, pool.abi)
   const currencyToken = new Contract(pool.MLP, ERC20_ABI)
+  const rewardsToken = new Contract(pool.rewards1Address, ERC20_ABI)
+  const routerContract = new Contract(pool.routerAddress, IOSwapFarmingRouter)
+
   const promiseList = [
     poolContract.begin(), // 开始时间
     poolContract.totalSupply(), // 总抵押
-    poolContract.APY()
+    poolContract.APY(), // apy
+    rewardsToken.balanceOf(pool.address), // 池子的余额
+    routerContract.swapTaxs(ZERO_ADDRESS, pool.rewards1Address) // 全部税
   ]
   if (account) {
     promiseList.push(
@@ -25,12 +34,15 @@ export const getPoolInfo = (pool, account) => {
   }
   return multicallProvider.all(promiseList).then(async data_ => {
     const data = processResult(data_)
-    const [begin, totalSupply, APY = '0', earned = 0, balanceOf = 0, allowance = 0] = data
+    const [begin, totalSupply, APY = '0', poolBalanceOf, swapTaxs, earned = 0, balanceOf = 0, allowance = 0] = data
     const newPool = Object.assign({}, pool, {
       begin,
       totalSupply: formatAmount(totalSupply),
       earned,
+      swapTaxs: formatAmount(new BigNumber(swapTaxs).multipliedBy(price).toString()),
       APY: Number(formatAmount(APY, 18, 4) * 100).toFixed(2),
+      poolBalanceOf: formatAmount(poolBalanceOf),
+      poolBalanceOfValue: formatAmount(new BigNumber(poolBalanceOf).multipliedBy(price), 18, 2),
       balanceOf: formatAmount(balanceOf, pool.mlpDecimal),
       allowance: allowance > 0
     })

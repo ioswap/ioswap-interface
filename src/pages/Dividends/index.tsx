@@ -1,10 +1,9 @@
-import React from 'react'
+import React, { useState } from 'react'
 import styled from 'styled-components'
 import { poolsConfig } from './config'
 import PoolsCard from '../../components/DividendsCard'
 import TipView from '../../components/TipView'
-// import { useActiveWeb3React } from '../../hooks'
-// import { formatAmount, toFormat } from '../../utils/format'
+import { toFormat } from '../../utils/format'
 
 export const FlexCenter = styled.div`
   display: flex;
@@ -90,26 +89,35 @@ const PoolsCards = styled.div`
 `
 const poolMap: any = {}
 export default function Dividends() {
-  // const [earningTotal, setEarningTotal] = useState('-')
-  // const [totalDeposited, setTotalDeposited] = useState('-')
-  // const [claimAllLoading, setClaimAllLoading] = useState(false)
+  const [totalFees, setTotalFees] = useState('-')
+  const [feesUnallocated, setFeesUnallocated] = useState('-')
+  const [iOSStaked, setIOSStaked] = useState('-')
 
   const updateBannerData = (poolData: any) => {
     poolMap[poolData.address] = poolData
-    // const len = Object.keys(poolMap).length
-    // if (len === poolsConfig.length) {
-    //   let earningTotal_ = 0
-    //   let totalDeposited_ = 0
-    //   for (const i in poolMap) {
-    //     const totalSupplyValue = Number(poolMap[i].totalSupplyValue)
-    //     if (!isNaN(totalSupplyValue)) {
-    //       earningTotal_ += Number(formatAmount(poolMap[i].earned || '0'))
-    //       totalDeposited_ += totalSupplyValue
-    //     }
-    //   }
-    //   setEarningTotal(toFormat(String(earningTotal_ === 0 ? 0 : earningTotal_.toFixed(6))))
-    //   setTotalDeposited(toFormat(String(totalDeposited_ === 0 ? 0 : totalDeposited_.toFixed(2))))
-    // }
+    const len = Object.keys(poolMap).length
+    if (len === poolsConfig.length) {
+      let totalFeesValue_ = 0
+      let poolBalanceOf_ = 0
+      let totalSupply_ = 0
+      for (const i in poolMap) {
+        const swapTaxs = Number(poolMap[i].swapTaxs)
+        const poolBalanceOfValue = Number(poolMap[i].poolBalanceOfValue)
+        if (!isNaN(swapTaxs)) {
+          totalFeesValue_ += Number(swapTaxs)
+        }
+        if (!isNaN(poolBalanceOf_)) {
+          poolBalanceOf_ += poolBalanceOfValue
+        }
+        const totalSupply = Number(poolMap[i].totalSupply)
+        if (!isNaN(totalSupply)) {
+          totalSupply_ += totalSupply
+        }
+      }
+      setTotalFees(toFormat(totalFeesValue_.toFixed(2).toString()))
+      setFeesUnallocated(toFormat(poolBalanceOf_.toFixed(2).toString()))
+      setIOSStaked(toFormat(totalSupply_.toFixed(6).toString()))
+    }
   }
   return (
     <PoolsPage>
@@ -127,19 +135,19 @@ export default function Dividends() {
         <PoolsBannerItem>
           <div>
             <PoolsBannerItemTitle>Total Fees</PoolsBannerItemTitle>
-            <PoolsBannerItemValue>88,888,888</PoolsBannerItemValue>
+            <PoolsBannerItemValue>${totalFees}</PoolsBannerItemValue>
           </div>
         </PoolsBannerItem>
         <PoolsBannerItem>
           <div>
             <PoolsBannerItemTitle>Fees Unallocated</PoolsBannerItemTitle>
-            <PoolsBannerItemValue>88,888,888</PoolsBannerItemValue>
+            <PoolsBannerItemValue>${feesUnallocated}</PoolsBannerItemValue>
           </div>
         </PoolsBannerItem>
         <PoolsBannerItem>
           <div>
             <PoolsBannerItemTitle>IOS Staked</PoolsBannerItemTitle>
-            <PoolsBannerItemValue>88,888,888</PoolsBannerItemValue>
+            <PoolsBannerItemValue>{iOSStaked} IOS</PoolsBannerItemValue>
           </div>
         </PoolsBannerItem>
       </PoolsBanner>
