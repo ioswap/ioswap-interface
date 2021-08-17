@@ -30,6 +30,9 @@ import UniBalanceContent from './UniBalanceContent'
 import usePrevious from '../../hooks/usePrevious'
 
 const HeaderFrame = styled.div`
+  position: fixed;
+  left: 0;
+  top: 0;
   display: grid;
   grid-template-columns: 120px 1fr 120px;
   align-items: center;
@@ -37,11 +40,10 @@ const HeaderFrame = styled.div`
   align-items: center;
   flex-direction: row;
   width: 100%;
-  top: 0;
-  position: relative;
   border-bottom: 1px solid rgba(0, 0, 0, 0.1);
   padding: 17px;
   z-index: 2;
+  background: ${({ theme }) => theme.bg10};
   ${({ theme }) => theme.mediaWidth.upToLarge`
   grid-template-columns: 120px 1fr 300px;
     position: relative;
@@ -55,7 +57,11 @@ const HeaderFrame = styled.div`
         padding: 0.5rem 1rem;
   `}
 `
-
+const HeaderFrameBlock = styled.div`
+  position: relative;
+  background: transparent;
+  height: 80px;
+`
 const HeaderControls = styled.div`
   display: flex;
   flex-direction: row;
@@ -135,7 +141,7 @@ const AccountElement = styled.div<{ active: boolean }>`
   display: flex;
   flex-direction: row;
   align-items: center;
-  background-color: ${({ theme }) => theme.bg1 };
+  background-color: ${({ theme }) => theme.bg1};
   border-radius: 12px;
   white-space: nowrap;
   width: 100%;
@@ -352,118 +358,117 @@ export default function Header() {
   const countUpValuePrevious = usePrevious(countUpValue) ?? '0'
 
   return (
-    <HeaderFrame>
-      <ClaimModal />
-      <Modal isOpen={showUniBalanceModal} onDismiss={() => setShowUniBalanceModal(false)}>
-        <UniBalanceContent setShowUniBalanceModal={setShowUniBalanceModal} />
-      </Modal>
-      <HeaderRow>
-        <Title>
-          <UniIcon>
-            <img width={'107px'} src={darkMode ? LogoDark : Logo} alt='logo' />
-          </UniIcon>
-        </Title>
-      </HeaderRow>
-      <HeaderControls>
-        <HeaderLinksBox>
-          <HeaderEmptyDiv>
-            <HeaderLinks>
-              <StyledNavLink id={`swap-nav-link`} to={'/swap'}>
-                {t('swap')}
-              </StyledNavLink>
-              <StyledNavLink
-                id={`pool-nav-link`}
-                to={'/pool'}
-                isActive={(match, { pathname }) =>
-                  Boolean(match) ||
-                  pathname.startsWith('/add') ||
-                  pathname.startsWith('/remove') ||
-                  pathname.startsWith('/create') ||
-                  pathname.startsWith('/find')
-                }
-              >
-                {t('pool')}
-              </StyledNavLink>
-              <StyledNavLink id={`swap-nav-link`} to={'/farms'}>
-                {t('farms')}
-              </StyledNavLink>
-              <StyledNavLink id={`swap-nav-link`} to={'/tradeBonus'}>
-                {t('tradeBonus')}
-              </StyledNavLink>
-              <StyledNavLink id={`swap-nav-link`} to={'/pools'}>
-                {t('pools')}
-              </StyledNavLink>
-              <StyledNavLink id={`swap-nav-link`} to={'/dividends'}>
-                {t('dividends')}
-              </StyledNavLink>
+    <>
+      <HeaderFrameBlock></HeaderFrameBlock>
+      <HeaderFrame>
+        <ClaimModal />
+        <Modal isOpen={showUniBalanceModal} onDismiss={() => setShowUniBalanceModal(false)}>
+          <UniBalanceContent setShowUniBalanceModal={setShowUniBalanceModal} />
+        </Modal>
+        <HeaderRow>
+          <Title>
+            <UniIcon>
+              <img width={'107px'} src={darkMode ? LogoDark : Logo} alt="logo" />
+            </UniIcon>
+          </Title>
+        </HeaderRow>
+        <HeaderControls>
+          <HeaderLinksBox>
+            <HeaderEmptyDiv>
+              <HeaderLinks>
+                <StyledNavLink id={`swap-nav-link`} to={'/swap'}>
+                  {t('swap')}
+                </StyledNavLink>
+                <StyledNavLink
+                  id={`pool-nav-link`}
+                  to={'/pool'}
+                  isActive={(match, { pathname }) =>
+                    Boolean(match) ||
+                    pathname.startsWith('/add') ||
+                    pathname.startsWith('/remove') ||
+                    pathname.startsWith('/create') ||
+                    pathname.startsWith('/find')
+                  }
+                >
+                  {t('pool')}
+                </StyledNavLink>
+                <StyledNavLink id={`swap-nav-link`} to={'/farms'}>
+                  {t('farms')}
+                </StyledNavLink>
+                <StyledNavLink id={`swap-nav-link`} to={'/tradeBonus'}>
+                  {t('tradeBonus')}
+                </StyledNavLink>
+                <StyledNavLink id={`swap-nav-link`} to={'/pools'}>
+                  {t('pools')}
+                </StyledNavLink>
+                <StyledNavLink id={`swap-nav-link`} to={'/dividends'}>
+                  {t('dividends')}
+                </StyledNavLink>
 
-              {false && (
-                <>
-                  <StyledExternalLink id={`stake-nav-link`} href={'https://info.ioswap.io'}>
-                    Charts <span style={{ fontSize: '11px' }}>↗</span>
-                  </StyledExternalLink>
-                </>
-              )}
-            </HeaderLinks>
-          </HeaderEmptyDiv>
-        </HeaderLinksBox>
-      </HeaderControls>
-      <HeaderRight>
-        <HeaderElement>
-          <HideSmall>
-            {chainId && NETWORK_LABELS[chainId] && (
-              <NetworkCard title={NETWORK_LABELS[chainId]}>{NETWORK_LABELS[chainId]}</NetworkCard>
-            )}
-          </HideSmall>
-          {false && availableClaim && !showClaimPopup && (
-            <UNIWrapper onClick={toggleClaimModal}>
-              <UNIAmount active={!!account && !availableClaim} style={{ pointerEvents: 'auto' }}>
-                <TYPE.white padding='0 2px'>
-                  {claimTxn && !claimTxn?.receipt ? <Dots>Claiming UNI</Dots> : 'Claim UNI'}
-                </TYPE.white>
-              </UNIAmount>
-              <CardNoise />
-            </UNIWrapper>
-          )}
-          {false && !availableClaim && aggregateBalance && (
-            <UNIWrapper onClick={() => setShowUniBalanceModal(true)}>
-              <UNIAmount active={!!account && !availableClaim} style={{ pointerEvents: 'auto' }}>
-                {account && (
-                  <HideSmall>
-                    <TYPE.white
-                      style={{
-                        paddingRight: '.4rem'
-                      }}
-                    >
-                      <CountUp
-                        key={countUpValue}
-                        isCounting
-                        start={parseFloat(countUpValuePrevious)}
-                        end={parseFloat(countUpValue)}
-                        thousandsSeparator={','}
-                        duration={1}
-                      />
-                    </TYPE.white>
-                  </HideSmall>
+                {false && (
+                  <>
+                    <StyledExternalLink id={`stake-nav-link`} href={'https://info.ioswap.io'}>
+                      Charts <span style={{ fontSize: '11px' }}>↗</span>
+                    </StyledExternalLink>
+                  </>
                 )}
-                UNI
-              </UNIAmount>
-              <CardNoise />
-            </UNIWrapper>
-          )}
-          <AccountElement active={!!account} style={{ pointerEvents: 'auto' }}>
-            {account && userEthBalance ? (
-              <BalanceText>
-                {userEthBalance?.toSignificant(4)} IOS
-              </BalanceText>
-            ) : null}
-            <Web3Status />
-          </AccountElement>
-        </HeaderElement>
-        <HeaderElementWrap>
-          <Menu />
-        </HeaderElementWrap>
-      </HeaderRight>
-    </HeaderFrame>
+              </HeaderLinks>
+            </HeaderEmptyDiv>
+          </HeaderLinksBox>
+        </HeaderControls>
+        <HeaderRight>
+          <HeaderElement>
+            <HideSmall>
+              {chainId && NETWORK_LABELS[chainId] && (
+                <NetworkCard title={NETWORK_LABELS[chainId]}>{NETWORK_LABELS[chainId]}</NetworkCard>
+              )}
+            </HideSmall>
+            {false && availableClaim && !showClaimPopup && (
+              <UNIWrapper onClick={toggleClaimModal}>
+                <UNIAmount active={!!account && !availableClaim} style={{ pointerEvents: 'auto' }}>
+                  <TYPE.white padding="0 2px">
+                    {claimTxn && !claimTxn?.receipt ? <Dots>Claiming UNI</Dots> : 'Claim UNI'}
+                  </TYPE.white>
+                </UNIAmount>
+                <CardNoise />
+              </UNIWrapper>
+            )}
+            {false && !availableClaim && aggregateBalance && (
+              <UNIWrapper onClick={() => setShowUniBalanceModal(true)}>
+                <UNIAmount active={!!account && !availableClaim} style={{ pointerEvents: 'auto' }}>
+                  {account && (
+                    <HideSmall>
+                      <TYPE.white
+                        style={{
+                          paddingRight: '.4rem'
+                        }}
+                      >
+                        <CountUp
+                          key={countUpValue}
+                          isCounting
+                          start={parseFloat(countUpValuePrevious)}
+                          end={parseFloat(countUpValue)}
+                          thousandsSeparator={','}
+                          duration={1}
+                        />
+                      </TYPE.white>
+                    </HideSmall>
+                  )}
+                  UNI
+                </UNIAmount>
+                <CardNoise />
+              </UNIWrapper>
+            )}
+            <AccountElement active={!!account} style={{ pointerEvents: 'auto' }}>
+              {account && userEthBalance ? <BalanceText>{userEthBalance?.toSignificant(4)} IOS</BalanceText> : null}
+              <Web3Status />
+            </AccountElement>
+          </HeaderElement>
+          <HeaderElementWrap>
+            <Menu />
+          </HeaderElementWrap>
+        </HeaderRight>
+      </HeaderFrame>
+    </>
   )
 }
