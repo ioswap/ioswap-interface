@@ -1652,6 +1652,34 @@
   },
   {
     "constant": true,
+    "inputs": [
+      {
+        "indexed": false,
+        "internalType": "address",
+        "name": "taxToken",
+        "type": "address"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "amount",
+        "type": "uint256"
+      }
+    ],
+    "name": "swapFarmingable",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "reward",
+        "type": "uint256"
+      }
+    ],
+    "payable": false,
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "constant": true,
     "inputs": [],
     "name": "rewardQuota",
     "outputs": [
