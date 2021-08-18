@@ -75,14 +75,15 @@ const ClaimBtn = styled.button<{ disabled: boolean; themeColor: ThemeColor; isDa
   width: 120px;
   height: 40px;
   border-radius: 12px;
-  background: ${({ isDark, themeColor }) => getThemeColor(themeColor, isDark)};
+  background: ${({ isDark, themeColor, disabled, theme }) =>
+    disabled ? theme.disabled : getThemeColor(themeColor, isDark)};
   font-weight: 600;
   border: 0;
-  color: ${({ theme }) => theme.white};
+  color: ${({ theme, disabled }) => (disabled ? theme.black : theme.white)};
   display: flex;
   align-items: center;
   justify-content: center;
-  cursor: pointer;
+  cursor: ${({ disabled }) => (disabled ? 'default' : 'pointer')};
   :hover {
     opacity: 0.9;
   }
@@ -180,7 +181,12 @@ export default function PoolsCard({ pool, updateBannerData }: any) {
         <LineView>
           <LineViewAmount>{poolInfo.earned}</LineViewAmount>
           <FlexCenterH>
-            <ClaimBtn disabled={false} themeColor={poolInfo.themeColor} isDark={isDark} onClick={onClaim}>
+            <ClaimBtn
+              disabled={poolInfo.earned <= 0 || !poolInfo.earned}
+              themeColor={poolInfo.themeColor}
+              isDark={isDark}
+              onClick={onClaim}
+            >
               {claimLoading && <LoadingIcon />}
               Claim
             </ClaimBtn>
