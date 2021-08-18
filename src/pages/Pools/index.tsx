@@ -181,7 +181,7 @@ export default function Pools() {
     }
   }
   const claimAll = async () => {
-    if (library && !claimAllLoading) {
+    if (library && !claimAllLoading && (parseInt(earningTotal) > 0 || Number(earningTotal) > 0)) {
       const multicall = getMultiCallProvider(library.getSigner(), chainId)
       const callList = poolsConfig.map(pool => {
         const contract = new Contract(pool.address, pool.abi)

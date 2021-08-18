@@ -184,7 +184,7 @@ export default function Farms() {
   }
 
   const claimAll = async () => {
-    if (library && !claimAllLoading) {
+    if (library && !claimAllLoading && (parseInt(harvestTotal) > 0 || Number(harvestTotal) > 0)) {
       const multicall = getMultiCallProvider(library.getSigner(), chainId)
       const callList = farmPools.map(pool => {
         const contract = new Contract(pool.address, pool.abi)

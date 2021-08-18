@@ -56,19 +56,19 @@ const MG = styled.div`
   margin: 10px 0;
 `
 export default function AddLiquidity({
-                                       match: {
-                                         params: { currencyIdA, currencyIdB }
-                                       },
-                                       history
-                                     }: RouteComponentProps<{ currencyIdA?: string; currencyIdB?: string }>) {
+  match: {
+    params: { currencyIdA, currencyIdB }
+  },
+  history
+}: RouteComponentProps<{ currencyIdA?: string; currencyIdB?: string }>) {
   const { account, chainId, library } = useActiveWeb3React()
   const theme = useContext(ThemeContext)
   const currencyA = useCurrency(currencyIdA)
   const currencyB = useCurrency(currencyIdB)
   const oneCurrencyIsWETH = Boolean(
     chainId &&
-    ((currencyA && currencyEquals(currencyA, WETH[chainId])) ||
-      (currencyB && currencyEquals(currencyB, WETH[chainId])))
+      ((currencyA && currencyEquals(currencyA, WETH[chainId])) ||
+        (currencyB && currencyEquals(currencyB, WETH[chainId])))
   )
 
   const toggleWalletModal = useWalletModalToggle() // toggle wallet when disconnected
@@ -225,10 +225,10 @@ export default function AddLiquidity({
 
   const modalHeader = () => {
     return noLiquidity ? (
-      <AutoColumn gap='20px'>
-        <LightCard mt='20px' borderRadius='20px'>
+      <AutoColumn gap="20px">
+        <LightCard mt="20px" borderRadius="20px">
           <RowFlat>
-            <Text fontSize='48px' fontWeight={500} lineHeight='42px' marginRight={10}>
+            <Text fontSize="48px" fontWeight={500} lineHeight="42px" marginRight={10}>
               {currencies[Field.CURRENCY_A]?.symbol + '/' + currencies[Field.CURRENCY_B]?.symbol}
             </Text>
             <DoubleCurrencyLogo
@@ -240,9 +240,9 @@ export default function AddLiquidity({
         </LightCard>
       </AutoColumn>
     ) : (
-      <AutoColumn gap='20px'>
+      <AutoColumn gap="20px">
         <RowFlat style={{ marginTop: '20px' }}>
-          <Text fontSize='48px' fontWeight={500} lineHeight='42px' marginRight={10}>
+          <Text fontSize="48px" fontWeight={500} lineHeight="42px" marginRight={10}>
             {liquidityMinted?.toSignificant(6)}
           </Text>
           <DoubleCurrencyLogo
@@ -252,13 +252,13 @@ export default function AddLiquidity({
           />
         </RowFlat>
         <Row>
-          <Text fontSize='24px'>
+          <Text fontSize="24px">
             {currencies[Field.CURRENCY_A]?.symbol + '/' + currencies[Field.CURRENCY_B]?.symbol + ' Pool Tokens'}
           </Text>
         </Row>
-        <TYPE.italic fontSize={12} textAlign='left' padding={'8px 0 0 0 '}>
+        <TYPE.italic fontSize={12} textAlign="left" padding={'8px 0 0 0 '}>
           {`Output is estimated. If the price changes by more than ${allowedSlippage /
-          100}% your transaction will revert.`}
+            100}% your transaction will revert.`}
         </TYPE.italic>
       </AutoColumn>
     )
@@ -342,37 +342,37 @@ export default function AddLiquidity({
             pendingText={pendingText}
             currencyToAdd={pair?.liquidityToken}
           />
-          <AutoColumn gap='20px'>
+          <AutoColumn gap="20px">
             {noLiquidity ||
-            (isCreate ? (
-              <MColumnCenter>
-                <BlueCard>
-                  <AutoColumn gap='10px'>
-                    <TYPE.link fontWeight={600} color={'primaryText1'}>
-                      You are the first liquidity provider.
-                    </TYPE.link>
-                    <TYPE.link fontWeight={400} color={'primaryText1'}>
-                      The ratio of tokens you add will set the price of this pool.
-                    </TYPE.link>
-                    <TYPE.link fontWeight={400} color={'primaryText1'}>
-                      Once you are happy with the rate click supply to review.
-                    </TYPE.link>
-                  </AutoColumn>
-                </BlueCard>
-              </MColumnCenter>
-            ) : (
-              <MColumnCenter>
-                <BlueCard>
-                  <AutoColumn gap='10px'>
-                    <TYPE.link fontWeight={400} color={'primaryText1'}>
-                      <b>Tip:</b> When you add liquidity, you will receive pool tokens representing your position.
-                      These tokens automatically earn fees proportional to your share of the pool, and can be redeemed
-                      at any time.
-                    </TYPE.link>
-                  </AutoColumn>
-                </BlueCard>
-              </MColumnCenter>
-            ))}
+              (isCreate ? (
+                <MColumnCenter>
+                  <BlueCard>
+                    <AutoColumn gap="10px">
+                      <TYPE.link fontWeight={600} color={'#ffffff'}>
+                        You are the first liquidity provider.
+                      </TYPE.link>
+                      <TYPE.link fontWeight={400} color={'#ffffff'}>
+                        The ratio of tokens you add will set the price of this pool.
+                      </TYPE.link>
+                      <TYPE.link fontWeight={400} color={'#ffffff'}>
+                        Once you are happy with the rate click supply to review.
+                      </TYPE.link>
+                    </AutoColumn>
+                  </BlueCard>
+                </MColumnCenter>
+              ) : (
+                <MColumnCenter>
+                  <BlueCard>
+                    <AutoColumn gap="10px">
+                      <TYPE.link fontWeight={400} color={'#ffffff'}>
+                        <b>Tip:</b> When you add liquidity, you will receive pool tokens representing your position.
+                        These tokens automatically earn fees proportional to your share of the pool, and can be redeemed
+                        at any time.
+                      </TYPE.link>
+                    </AutoColumn>
+                  </BlueCard>
+                </MColumnCenter>
+              ))}
             <CurrencyInputPanel
               value={formattedAmounts[Field.CURRENCY_A]}
               onUserInput={onFieldAInput}
@@ -383,13 +383,13 @@ export default function AddLiquidity({
               onCurrencySelect={handleCurrencyASelect}
               showMaxButton={!atMaxAmounts[Field.CURRENCY_A]}
               currency={currencies[Field.CURRENCY_A]}
-              id='add-liquidity-input-tokena'
+              id="add-liquidity-input-tokena"
               showCommonBases
             />
             <ColumnCenter>
               <PlusView>
                 <ArrowDownBox>
-                  <Plus size='16' color={theme.text2} />
+                  <Plus size="16" color={theme.text2} />
                 </ArrowDownBox>
               </PlusView>
             </ColumnCenter>
@@ -403,18 +403,18 @@ export default function AddLiquidity({
               maxAmount={maxAmounts[Field.CURRENCY_B]?.toExact() ?? '-'}
               showMaxButton={!atMaxAmounts[Field.CURRENCY_B]}
               currency={currencies[Field.CURRENCY_B]}
-              id='add-liquidity-input-tokenb'
+              id="add-liquidity-input-tokenb"
               showCommonBases
             />
             {currencies[Field.CURRENCY_A] && currencies[Field.CURRENCY_B] && pairState !== PairState.INVALID && (
               <>
-                <MLightCard padding='0px' borderRadius={'20px'}>
-                  <RowBetween padding='1rem'>
+                <MLightCard padding="0px" borderRadius={'20px'}>
+                  <RowBetween padding="1rem">
                     <TYPE.subHeader fontWeight={500} fontSize={14}>
                       {noLiquidity ? 'Initial prices' : 'Prices'} and pool share
                     </TYPE.subHeader>
                   </RowBetween>{' '}
-                  <LightCard padding='1rem' borderRadius={'20px'}>
+                  <LightCard padding="1rem" borderRadius={'20px'}>
                     <PoolPriceBar
                       currencies={currencies}
                       poolTokenPercentage={poolTokenPercentage}
@@ -428,7 +428,7 @@ export default function AddLiquidity({
             <MG>
               {addIsUnsupported ? (
                 <ButtonPrimary disabled={true}>
-                  <TYPE.main mb='4px'>Unsupported Asset</TYPE.main>
+                  <TYPE.main mb="4px">Unsupported Asset</TYPE.main>
                 </ButtonPrimary>
               ) : !account ? (
                 <ButtonLight onClick={toggleWalletModal}>Connect Wallet</ButtonLight>
@@ -438,42 +438,44 @@ export default function AddLiquidity({
                     approvalA === ApprovalState.PENDING ||
                     approvalB === ApprovalState.NOT_APPROVED ||
                     approvalB === ApprovalState.PENDING) &&
-                  isValid && (
-                    <RowBetween>
-                      {approvalA !== ApprovalState.APPROVED && (
-                        <ButtonPrimary
-                          onClick={approveACallback}
-                          disabled={approvalA === ApprovalState.PENDING}
-                          width={approvalB !== ApprovalState.APPROVED ? '48%' : '100%'}
-                        >
-                          {approvalA === ApprovalState.PENDING ? (
-                            <Dots>Approving {currencies[Field.CURRENCY_A]?.symbol}</Dots>
-                          ) : (
-                            'Approve ' + currencies[Field.CURRENCY_A]?.symbol
-                          )}
-                        </ButtonPrimary>
-                      )}
-                      {approvalB !== ApprovalState.APPROVED && (
-                        <ButtonPrimary
-                          onClick={approveBCallback}
-                          disabled={approvalB === ApprovalState.PENDING}
-                          width={approvalA !== ApprovalState.APPROVED ? '48%' : '100%'}
-                        >
-                          {approvalB === ApprovalState.PENDING ? (
-                            <Dots>Approving {currencies[Field.CURRENCY_B]?.symbol}</Dots>
-                          ) : (
-                            'Approve ' + currencies[Field.CURRENCY_B]?.symbol
-                          )}
-                        </ButtonPrimary>
-                      )}
-                    </RowBetween>
-                  )}
+                    isValid && (
+                      <RowBetween>
+                        {approvalA !== ApprovalState.APPROVED && (
+                          <ButtonPrimary
+                            onClick={approveACallback}
+                            disabled={approvalA === ApprovalState.PENDING}
+                            width={approvalB !== ApprovalState.APPROVED ? '48%' : '100%'}
+                          >
+                            {approvalA === ApprovalState.PENDING ? (
+                              <Dots>Approving {currencies[Field.CURRENCY_A]?.symbol}</Dots>
+                            ) : (
+                              'Approve ' + currencies[Field.CURRENCY_A]?.symbol
+                            )}
+                          </ButtonPrimary>
+                        )}
+                        {approvalB !== ApprovalState.APPROVED && (
+                          <ButtonPrimary
+                            onClick={approveBCallback}
+                            disabled={approvalB === ApprovalState.PENDING}
+                            width={approvalA !== ApprovalState.APPROVED ? '48%' : '100%'}
+                          >
+                            {approvalB === ApprovalState.PENDING ? (
+                              <Dots>Approving {currencies[Field.CURRENCY_B]?.symbol}</Dots>
+                            ) : (
+                              'Approve ' + currencies[Field.CURRENCY_B]?.symbol
+                            )}
+                          </ButtonPrimary>
+                        )}
+                      </RowBetween>
+                    )}
                   <MG>
                     <ButtonError
                       onClick={() => {
                         expertMode ? onAdd() : setShowConfirm(true)
                       }}
-                      disabled={!isValid || approvalA !== ApprovalState.APPROVED || approvalB !== ApprovalState.APPROVED}
+                      disabled={
+                        !isValid || approvalA !== ApprovalState.APPROVED || approvalB !== ApprovalState.APPROVED
+                      }
                       error={!isValid && !!parsedAmounts[Field.CURRENCY_A] && !!parsedAmounts[Field.CURRENCY_B]}
                     >
                       <Text fontSize={20} fontWeight={500}>

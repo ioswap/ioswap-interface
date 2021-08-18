@@ -35,7 +35,7 @@ const PlusView = styled(ColumnCenter)`
   padding: 2px 0;
 `
 const ButtonDropdownLightGray = styled(ButtonDropdownLight)`
-  background: ${({theme})=>theme.bg8};
+  background: ${({ theme }) => theme.bg8};
 `
 export default function PoolFinder() {
   const { account } = useActiveWeb3React()
@@ -95,7 +95,7 @@ export default function PoolFinder() {
       <AutoColumn style={{ padding: '1rem' }} gap="md">
         <MBlueCard>
           <AutoColumn gap="10px">
-            <TYPE.link fontWeight={400} color={'primaryText1'}>
+            <TYPE.link fontWeight={400} color={'#ffffff'}>
               <b>Tip:</b> Use this tool to find pairs that don&apos;t automatically appear in the interface.
             </TYPE.link>
           </AutoColumn>
