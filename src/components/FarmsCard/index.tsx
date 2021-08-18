@@ -12,6 +12,7 @@ import { getAprLP } from '../../pools/apr'
 import ArrowSvg from '../../assets/svg/pools/arrow.svg'
 import { ExternalLink } from '../../theme'
 import { Link } from 'react-router-dom'
+import BigNumber from 'bignumber.js'
 
 const CardView = styled.div`
   background: ${({ theme }) => theme.bg1};
@@ -194,7 +195,8 @@ export default function PoolsCard({ pool, updateBannerData }: any) {
           setApr(data.apr)
           const newPoolData = {
             ...resPool,
-            totalSupplyValue: formatTotalPrice(resPool.totalSupply, data.price, 2)
+            totalSupplyValue: formatTotalPrice(resPool.totalSupply, data.price, 2),
+            LPTValue: new BigNumber(data.value).toFixed(2).toString()
           }
           setPoolData(newPoolData)
           updateBannerData(newPoolData)
@@ -321,7 +323,7 @@ export default function PoolsCard({ pool, updateBannerData }: any) {
               <LineView>
                 <LineViewText>Total Deposited</LineViewText>
                 <LineViewValue>
-                  {poolData.totalSupply}(${poolData.totalSupplyValue})
+                  {poolData.totalSupply}(${poolData.LPTValue})
                 </LineViewValue>
               </LineView>
             </CardFooterLine>
