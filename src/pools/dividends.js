@@ -23,7 +23,7 @@ export const getPoolInfo = (pool, account, price) => {
     poolContract.totalSupply(), // 总抵押
     poolContract.APY(), // apy
     rewardsToken.balanceOf(pool.address), // 池子的余额
-    routerContract.swapTaxs(ZERO_ADDRESS, pool.rewards1Address) // 全部税
+    routerContract.swapTaxs(ZERO_ADDRESS, pool.rewards1Address) // 全部税(手续费)
   ]
   if (account) {
     promiseList.push(

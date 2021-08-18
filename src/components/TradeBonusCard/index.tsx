@@ -10,6 +10,7 @@ import LoadingIcon from '../LoadingIcon/LoadingIcon'
 import { formatTotalPrice } from '../../utils/format'
 import { getTokenPriceValue } from '../../pools/pools'
 import QuestionHelper from '../QuestionHelper'
+import BigNumber from 'bignumber.js'
 
 interface ThemeColor {
   light: Color
@@ -102,6 +103,7 @@ const LineViewValue = styled.div`
   flex: 1;
   text-align: right;
   color: ${({ theme }) => theme.text1};
+  white-space: nowrap;
 `
 const CardFooter = styled.div`
   border-top: 1px solid ${({ theme }) => theme.border1};
@@ -140,7 +142,8 @@ export default function PoolsCard({ pool, updateBannerData }: any) {
         const newPoolData = {
           ...resPool,
           swapAmountsTotalValue: formatTotalPrice(resPool.swapAmountsTotal, price, 2),
-          swapAmountsValue: formatTotalPrice(resPool.swapAmounts, price, 2)
+          swapAmountsValue: formatTotalPrice(resPool.swapAmounts, price, 2),
+          PETotal: new BigNumber(resPool.paidTotal).plus(resPool.earnedTotal).toString()
         }
         console.log('newPoolData', newPoolData)
         updateBannerData(newPoolData)
@@ -197,7 +200,7 @@ export default function PoolsCard({ pool, updateBannerData }: any) {
           <CardFooterLine>
             <LineView>
               <LineViewText>Bonus Allocated</LineViewText>
-              <LineViewValue>{poolInfo.paid} IOS</LineViewValue>
+              <LineViewValue>{poolInfo.PETotal} IOS</LineViewValue>
             </LineView>
           </CardFooterLine>
           <CardFooterLine>

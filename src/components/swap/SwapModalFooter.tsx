@@ -101,7 +101,7 @@ export default function SwapModalFooter({
               Liquidity Provider Fee
             </TYPE.black>
             <QuestionHelper text="A portion of each trade(0.3%) goes to Dividends Pool as the incentive." />
-          </RowFixed>goes to Dividends Pool as the incentive.
+          </RowFixed>
           <TYPE.black fontSize={14}>
             {realizedLPFee ? realizedLPFee?.toSignificant(6) + ' ' + trade.inputAmount.currency.symbol : '-'}
           </TYPE.black>
