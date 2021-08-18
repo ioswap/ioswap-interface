@@ -75,14 +75,15 @@ const ClaimBtn = styled.button<any>`
   width: 120px;
   height: 40px;
   border-radius: 12px;
-  cursor: pointer;
   font-weight: 600;
   display: flex;
+  cursor: ${({ disabled }) => (disabled ? 'default' : 'pointer')};
   align-items: center;
   justify-content: center;
   border: 0;
   color: ${({ theme }) => theme.white};
-  background: ${({ themeColor, isDark }) => getThemeColor(themeColor, isDark)};
+  background: ${({ themeColor, isDark, disabled, theme }) =>
+    disabled ? theme.disabled : getThemeColor(themeColor, isDark)};
 
   :hover {
     opacity: 0.9;
@@ -153,10 +154,12 @@ const ExitButton = styled.div<any>`
   border-radius: 12px;
   margin-right: 6px;
   margin-top: 12px;
-  cursor: pointer;
+  cursor: ${({ disabled }) => (disabled ? 'default' : 'pointer')};
   font-weight: 600;
-  color: ${({ themeColor, isDark }) => getThemeColor(themeColor, isDark)};
-  border: 1px solid ${({ themeColor, isDark }) => getThemeColor(themeColor, isDark)};
+  color: ${({ themeColor, isDark, disabled, theme }) =>
+    disabled ? theme.disabled : getThemeColor(themeColor, isDark)};
+  border: 1px solid
+    ${({ themeColor, isDark, disabled, theme }) => (disabled ? theme.disabled : getThemeColor(themeColor, isDark))};
   background: transparent;
   display: flex;
   align-items: center;
@@ -259,7 +262,12 @@ export default function PoolsCard({ pool, updateBannerData }: any) {
           <LineView>
             <LineViewAmount>{formatAmount(poolData.earned || '0').toString()}</LineViewAmount>
             <FlexCenterH>
-              <ClaimBtn themeColor={poolData.themeColor} isDark={isDark} onClick={onClaim_}>
+              <ClaimBtn
+                disabled={Number(poolData.earned) <= 0 || !poolData.earned}
+                themeColor={poolData.themeColor}
+                isDark={isDark}
+                onClick={onClaim_}
+              >
                 {claimLoading && <LoadingIcon />}
                 Claim
               </ClaimBtn>
@@ -267,7 +275,12 @@ export default function PoolsCard({ pool, updateBannerData }: any) {
           </LineView>
           {poolData.allowance ? (
             <FlexCenter>
-              <ExitButton themeColor={poolData.themeColor} isDark={isDark} onClick={onExit_}>
+              <ExitButton
+                disabled={Number(poolData.balanceOf) <= 0 || !poolData.balanceOf}
+                themeColor={poolData.themeColor}
+                isDark={isDark}
+                onClick={onExit_}
+              >
                 {exitLoading && <LoadingIcon size={18} />}
                 Withdraw {poolData.coin}
               </ExitButton>

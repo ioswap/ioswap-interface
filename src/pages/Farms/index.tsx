@@ -131,14 +131,14 @@ const FarmsBannerRightB = styled(FarmsBannerLeftFB)`
   font-weight: 600;
 `
 const HarvestView = styled(FlexCenter)``
-const HarvestBtn = styled(FlexCenter)`
+const HarvestBtn = styled(FlexCenter)<any>`
   background: ${({ theme }) => theme.bg1};
   border-radius: 12px;
-  color: ${({ theme }) => theme.text6};
   width: 180px;
   height: 58px;
-  cursor: pointer;
   font-weight: 600;
+  cursor: ${({ disabled }) => (disabled ? 'default' : 'pointer')};
+  color: ${({ theme, disabled }) => (disabled ? theme.disabled : theme.text6)};
 
   :hover {
     color: ${({ theme }) => theme.gradual2};
@@ -214,7 +214,10 @@ export default function Farms() {
             <FarmsBannerLeftFB>{harvestTotal} IOS</FarmsBannerLeftFB>
           </FarmsBannerLeftF>
           <HarvestView>
-            <HarvestBtn onClick={claimAll}>
+            <HarvestBtn
+              onClick={claimAll}
+              disabled={(parseInt(harvestTotal) <= 0 && Number(harvestTotal) <= 0) || harvestTotal === '-'}
+            >
               {claimAllLoading && <LoadingIcon />}
               Harvest All
             </HarvestBtn>

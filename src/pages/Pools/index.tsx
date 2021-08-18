@@ -130,14 +130,14 @@ const PoolsBannerRightB = styled(PoolsBannerLeftFB)`
   color: ${({ theme }) => theme.text2};
 `
 const HarvestView = styled(FlexCenter)``
-const HarvestBtn = styled(FlexCenter)`
+const HarvestBtn = styled(FlexCenter)<any>`
   background: ${({ theme }) => theme.bg1};
   border-radius: 12px;
-  color: ${({ theme }) => theme.text6};
+  cursor: ${({ disabled }) => (disabled ? 'default' : 'pointer')};
+  color: ${({ theme, disabled }) => (disabled ? theme.disabled : theme.text6)};
   width: 180px;
   font-weight: 600;
   height: 58px;
-  cursor: pointer;
 
   :hover {
     color: ${({ theme }) => theme.gradual2};
@@ -210,7 +210,10 @@ export default function Pools() {
             <PoolsBannerLeftFB>{earningTotal} IOS</PoolsBannerLeftFB>
           </PoolsBannerLeftF>
           <HarvestView>
-            <HarvestBtn onClick={claimAll}>
+            <HarvestBtn
+              onClick={claimAll}
+              disabled={(parseInt(earningTotal) <= 0 && Number(earningTotal) <= 0) || earningTotal === '-'}
+            >
               {claimAllLoading && <LoadingIcon />}
               Claim All
             </HarvestBtn>

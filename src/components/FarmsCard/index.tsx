@@ -68,14 +68,18 @@ const ClaimBtn = styled.button<any>`
   width: 120px;
   height: 40px;
   border-radius: 12px;
-  cursor: pointer;
+  cursor: ${({ disabled }) => (disabled ? 'default' : 'pointer')};
   font-weight: 600;
   display: flex;
   align-items: center;
   justify-content: center;
   border: 0;
   color: ${({ theme }) => theme.white};
-  background: linear-gradient(90deg, ${({ theme }) => theme.gradual1}, ${({ theme }) => theme.gradual2});
+  background: linear-gradient(
+    90deg,
+    ${({ theme, disabled }) => (disabled ? theme.disabled : theme.gradual1)},
+    ${({ theme, disabled }) => (disabled ? theme.disabled : theme.gradual2)}
+  );
 
   :hover {
     opacity: 0.9;
@@ -105,8 +109,8 @@ const StakeButton = styled(ApprovalButton)`
   font-weight: 400;
   font-size: 30px;
   background: transparent;
-  color: ${({ theme }) => theme.primary1};
-  border: 1px solid ${({ theme }) => theme.primary1};
+  color: ${({ theme, disabled }) => (disabled ? theme.disabled : theme.primary1)};
+  border: 1px solid ${({ theme, disabled }) => (disabled ? theme.disabled : theme.primary1)};
 `
 const LineViewText = styled.div`
   font-size: 14px;
@@ -147,12 +151,9 @@ const LinkArrowBox = styled(ExternalLink)`
   cursor: pointer;
   border-bottom: 1px solid transparent;
 
-  span {
-    text-decoration: none;
-  }
-
+  text-decoration: none !important;
   :hover {
-    text-decoration: none;
+    text-decoration: none !important;
     border-bottom: 1px solid #cccccc;
   }
 `
@@ -260,7 +261,12 @@ export default function PoolsCard({ pool, updateBannerData }: any) {
           <LineView>
             <LineViewAmount>{formatAmount(poolData.earned || '0').toString()}</LineViewAmount>
             <FlexCenterH>
-              <ClaimBtn themeColor={poolData.themeColor} isDark={isDark} onClick={onClaim_}>
+              <ClaimBtn
+                disabled={Number(poolData.earned) <= 0 || !poolData.earned}
+                themeColor={poolData.themeColor}
+                isDark={isDark}
+                onClick={onClaim_}
+              >
                 {claimLoading && <LoadingIcon />}
                 Harvest
               </ClaimBtn>
@@ -271,7 +277,12 @@ export default function PoolsCard({ pool, updateBannerData }: any) {
             <LineView>
               <LineViewAmount>{poolData.balanceOf}</LineViewAmount>
               <FlexCenterH>
-                <StakeButton themeColor={poolData.themeColor} isDark={isDark} onClick={onExit_}>
+                <StakeButton
+                  disabled={Number(poolData.balanceOf) <= 0 || !poolData.balanceOf}
+                  themeColor={poolData.themeColor}
+                  isDark={isDark}
+                  onClick={onExit_}
+                >
                   {exitLoading && <LoadingIcon />}-
                 </StakeButton>
                 <StakeButton themeColor={poolData.themeColor} isDark={isDark} onClick={() => setIsOpen(true)}>

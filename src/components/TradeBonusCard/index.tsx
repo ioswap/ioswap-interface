@@ -79,7 +79,7 @@ const ClaimBtn = styled.button<{ disabled: boolean; themeColor: ThemeColor; isDa
     disabled ? theme.disabled : getThemeColor(themeColor, isDark)};
   font-weight: 600;
   border: 0;
-  color: ${({ theme, disabled }) => (disabled ? theme.black : theme.white)};
+  color: ${({ theme }) => theme.white};
   display: flex;
   align-items: center;
   justify-content: center;

@@ -66,7 +66,7 @@ export const ButtonPrimary = styled(Base)`
 `
 
 export const ButtonLight = styled(Base)`
-  background: linear-gradient(90deg, ${({ theme }) => theme.gradual3} 0%, ${({ theme }) => theme.gradual4 } 100%);
+  background: linear-gradient(90deg, ${({ theme }) => theme.gradual3} 0%, ${({ theme }) => theme.gradual4} 100%);
   color: ${({ theme }) => theme.text6};
   font-size: 16px;
   font-weight: 500;
@@ -117,15 +117,7 @@ export const ButtonSecondary = styled(Base)`
   border-radius: 12px;
   padding: ${({ padding }) => (padding ? padding : '10px')};
 
-  &:focus {
-    box-shadow: 0 0 0 1pt ${({ theme }) => theme.primary4};
-    border: 1px solid ${({ theme }) => theme.primary3};
-  }
   &:hover {
-    border: 1px solid ${({ theme }) => theme.primary3};
-  }
-  &:active {
-    box-shadow: 0 0 0 1pt ${({ theme }) => theme.primary4};
     border: 1px solid ${({ theme }) => theme.primary3};
   }
   &:disabled {
