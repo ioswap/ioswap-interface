@@ -42,12 +42,12 @@ export const farmPools = [
     settleTokenDecimal: 18
   },
   {
-    title: 'WOKT/IOS LP',
+    title: 'OKT/IOS LP',
     icon: WoktIosSvg,
     earnedName: 'IOS EARNED',
     stakeUrl: '',
 
-    coin: 'WOKT/IOS LP',
+    coin: 'OKT/IOS LP',
     address: '0x39De914B76d8A41278AeA469Aa93cF1eC3256dC8',
     abi: IOSPoolsAbi,
     networkId: ChainId.OKT,
@@ -61,12 +61,12 @@ export const farmPools = [
     settleTokenDecimal: 18
   },
   {
-    title: 'USDT/WOKT LP',
+    title: 'USDT/OKT LP',
     icon: UsdtWoktSvg,
     earnedName: 'IOS EARNED',
     stakeUrl: '',
 
-    coin: 'USDT/WOKT LP',
+    coin: 'USDT/OKT LP',
     address: '0x704551FdcbF020939340737Ff758008DA5Aba4cc',
     abi: IOSPoolsAbi,
     networkId: ChainId.OKT,
@@ -156,12 +156,12 @@ export const farmPools = [
     settleTokenDecimal: 18
   },
   {
-    title: 'WOKT/OKB LP',
+    title: 'OKT/OKB LP',
     icon: WokbOkbSvg,
     earnedName: 'IOS EARNED',
     stakeUrl: '',
 
-    coin: 'WOKT/OKB LP',
+    coin: 'OKT/OKB LP',
     address: '0x84862BA96880fFE67B86C8b8aEb946327E89FD3e',
     abi: IOSPoolsAbi,
     networkId: ChainId.OKT,
