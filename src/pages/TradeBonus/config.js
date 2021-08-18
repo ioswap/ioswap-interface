@@ -27,7 +27,8 @@ export const tradeBonusConfig = [
     settleTokenDecimal: 18,
     networkId: ChainId.OKT,
     decimals: 18,
-    rewards1Address: IOS_ADDRESS // 单池奖励都是ios
+    rewards1Address: IOS_ADDRESS, // 单池奖励都是ios
+    desc: 'USDT' // 标识奖励
   },
   {
     title: 'WOKT Pairs',
@@ -45,7 +46,8 @@ export const tradeBonusConfig = [
     settleTokenDecimal: 18,
     networkId: ChainId.OKT,
     decimals: 18,
-    rewards1Address: IOS_ADDRESS // 单池奖励都是ios
+    rewards1Address: IOS_ADDRESS, // 单池奖励都是ios
+    desc: 'WOKT' // 标识奖励
   },
   {
     title: 'BTCK Pairs',
@@ -63,38 +65,49 @@ export const tradeBonusConfig = [
     settleTokenDecimal: 18,
     networkId: ChainId.OKT,
     decimals: 18,
-    rewards1Address: IOS_ADDRESS // 单池奖励都是ios
+    rewards1Address: IOS_ADDRESS, // 单池奖励都是ios
+    desc: 'BTCK' // 标识奖励
   }
 ]
+export const tradeBonusConfigMap = tradeBonusConfig.reduce((map, i) => {
+  map[i.desc] = i
+  return map
+}, {})
+// 权重 WOKT BTCK USDT
 export const recommendedPairs = [
   {
     title: 'USDT/OKT',
     icon: USDT_OKB_SVG,
     inputCurrency: USDT_ADDRESS,
-    outputCurrency: 'OKT'
+    outputCurrency: 'OKT',
+    rewards: tradeBonusConfigMap['USDT'] // 奖励
   },
   {
     title: 'OKB/IOS',
     icon: OKB_IOS_SVG,
     inputCurrency: OKB_ADDRESS,
-    outputCurrency: IOS_ADDRESS
+    outputCurrency: IOS_ADDRESS,
+    rewards: tradeBonusConfigMap['IOS']
   },
   {
     title: 'USDT/IOS',
     icon: USDT_IOS_SVG,
     inputCurrency: USDT_ADDRESS,
-    outputCurrency: IOS_ADDRESS
+    outputCurrency: IOS_ADDRESS,
+    rewards: tradeBonusConfigMap['USDT']
   },
   {
     title: 'USDT/BTCK',
     icon: USDT_BTCK_SVG,
     inputCurrency: USDT_ADDRESS,
-    outputCurrency: BTCK_ADDRESS
+    outputCurrency: BTCK_ADDRESS,
+    rewards: tradeBonusConfigMap['BTCK']
   },
   {
     title: 'BTCK/ETHK',
     icon: BTCK_ETHK_SVG,
     inputCurrency: BTCK_ADDRESS,
-    outputCurrency: ETHK_ADDRESS
+    outputCurrency: ETHK_ADDRESS,
+    rewards: tradeBonusConfigMap['BTCK']
   }
 ]

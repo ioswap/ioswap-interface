@@ -10,7 +10,7 @@ export const poolsConfig = [
     title: 'WOKT Dividend',
     icon: OKTSvg,
     coin: 'IOS',
-    earnedName: 'IOS EARNED',
+    earnedName: 'WOKT EARNED',
     themeColor: {
       light: '#4494F7',
       dark: '#4494F7'
@@ -29,7 +29,7 @@ export const poolsConfig = [
     title: 'BTCK Dividend',
     icon: BTCSvg,
     coin: 'IOS',
-    earnedName: 'IOS EARNED',
+    earnedName: 'BTCK EARNED',
     themeColor: {
       light: '#F7931A',
       dark: '#F7931A'
@@ -48,7 +48,7 @@ export const poolsConfig = [
     title: 'USDT Dividend',
     icon: USDTSvg,
     coin: 'IOS',
-    earnedName: 'IOS EARNED',
+    earnedName: 'USDT EARNED',
     themeColor: {
       light: '#26A17B',
       dark: '#26A17B'

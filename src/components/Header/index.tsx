@@ -2,7 +2,7 @@ import { ChainId, TokenAmount } from '@io-swap/sdk'
 import React, { useState } from 'react'
 import { NavLink } from 'react-router-dom'
 import { darken } from 'polished'
-import { useTranslation } from 'react-i18next'
+// import { useTranslation } from 'react-i18next'
 
 import styled from 'styled-components'
 
@@ -335,7 +335,7 @@ const NETWORK_LABELS: { [chainId in ChainId]?: string } = {
 
 export default function Header() {
   const { account, chainId } = useActiveWeb3React()
-  const { t } = useTranslation()
+  // const { t } = useTranslation()
 
   const userEthBalance = useContractBalances(account ? [account] : [])?.[account ?? '']
   // const [isDark] = useDarkModeManager()
@@ -375,7 +375,8 @@ export default function Header() {
             <HeaderEmptyDiv>
               <HeaderLinks>
                 <StyledNavLink id={`swap-nav-link`} to={'/swap'}>
-                  {t('swap')}
+                  {/*{t('swap')}*/}
+                  EXchange
                 </StyledNavLink>
                 <StyledNavLink
                   id={`pool-nav-link`}
@@ -388,19 +389,24 @@ export default function Header() {
                     pathname.startsWith('/find')
                   }
                 >
-                  {t('pool')}
+                  {/*{t('pool')}*/}
+                  Liquidity
                 </StyledNavLink>
                 <StyledNavLink id={`swap-nav-link`} to={'/farms'}>
-                  {t('farms')}
+                  {/*{t('farms')}*/}
+                  Farms
                 </StyledNavLink>
                 <StyledNavLink id={`swap-nav-link`} to={'/tradeBonus'}>
-                  {t('tradeBonus')}
+                  {/*{t('tradeBonus')}*/}
+                  Trade Bonus
                 </StyledNavLink>
                 <StyledNavLink id={`swap-nav-link`} to={'/pools'}>
-                  {t('pools')}
+                  {/*{t('pools')}*/}
+                  Pools
                 </StyledNavLink>
                 <StyledNavLink id={`swap-nav-link`} to={'/dividends'}>
-                  {t('dividends')}
+                  {/*{t('dividends')}*/}
+                  Dividends
                 </StyledNavLink>
 
                 {false && (
