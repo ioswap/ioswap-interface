@@ -50,11 +50,15 @@ import UnsupportedCurrencyFooter from 'components/swap/UnsupportedCurrencyFooter
 import { isTradeBetter } from 'utils/trades'
 import { RouteComponentProps } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
+import IOSwapFarmingRouterAbi from '../../constants/abis/IOSwapFarmingRouter.json'
+import { getWeb3Contract } from '../../constants/web3'
+import { formatAmount, numToWei } from '../../utils/format'
 
 export const MarginT = styled.div`
   margin-top: 0.75rem;
 `
 let routerAddressStr = ''
+let amountInStr = ''
 export const ArrowDownBox = styled.div`
   position: absolute;
   left: 50%;
@@ -122,7 +126,7 @@ export default function Swap({ history }: RouteComponentProps) {
       return !Boolean(token.address in defaultTokens)
     })
 
-  const { account } = useActiveWeb3React()
+  const { account, library } = useActiveWeb3React()
   const theme = useContext(ThemeContext)
 
   // toggle wallet when disconnected
@@ -348,10 +352,24 @@ export default function Swap({ history }: RouteComponentProps) {
 
   const swapIsUnsupported = useIsTransactionUnsupported(currencies?.INPUT, currencies?.OUTPUT)
 
-  const [tradeBonus] = useState(0)
+  const [tradeBonus, setTradeBonus] = useState('0')
+
+  const getTradeBonus = (amountIn: string | number, routerAddress: Array<string>) => {
+    const address = '0x4AD7f7a124a78E3e0d0eF9764022B9353B011D75'
+    const contract = getWeb3Contract(library, IOSwapFarmingRouterAbi, address)
+    console.log(numToWei(amountIn), routerAddress)
+    contract.methods
+      .swapFarmingablePath(numToWei(amountIn), routerAddress)
+      .call({
+        from: account
+      })
+      .then((res: any) => {
+        setTradeBonus(formatAmount(res))
+      })
+  }
 
   useMemo(() => {
-    if (trade) {
+    if (trade && Number(formattedAmounts[Field.INPUT]) > 0 && account) {
       const routerAddress: any = trade.route.path.reduce((arr, i) => {
         // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
         // @ts-ignore
@@ -359,14 +377,20 @@ export default function Swap({ history }: RouteComponentProps) {
         return arr
       }, [])
       const routerAddressStr_ = JSON.stringify(routerAddress)
-      if (routerAddressStr_ !== routerAddressStr) {
+      if (
+        routerAddress.length >= 2 &&
+        (amountInStr !== formattedAmounts[Field.INPUT] || routerAddressStr_ !== routerAddressStr)
+      ) {
         routerAddressStr = routerAddressStr_
-        console.log('routerAddress', routerAddress)
+        amountInStr = formattedAmounts[Field.INPUT]
+        getTradeBonus(formattedAmounts[Field.INPUT], routerAddress)
       }
     } else {
       routerAddressStr = ''
+      amountInStr = ''
+      setTradeBonus('0')
     }
-  }, [trade])
+  }, [trade, formattedAmounts[Field.INPUT], account])
   return (
     <>
       <TokenWarningModal
@@ -460,44 +484,46 @@ export default function Swap({ history }: RouteComponentProps) {
               </>
             ) : null}
             {showWrap ? null : (
-              <Card padding={showWrap ? '.25rem 1rem 0 1rem' : '0px'} borderRadius={'20px'}>
-                <AutoColumn gap="8px" style={{ padding: '0 16px' }}>
-                  {Boolean(trade) && (
-                    <>
-                      {tradeBonus > 0 && (
-                        <TradeBonus>
-                          <RowBetween align="center" marginTop="10px">
-                            <ClickableText fontWeight={500} fontSize={14} color={theme.text2} onClick={toggleSettings}>
-                              Trade Bonus
-                            </ClickableText>
-                            <ClickableText fontWeight={500} fontSize={14} color={theme.text2} onClick={toggleSettings}>
-                              <TradeBonusAmount>{tradeBonus}</TradeBonusAmount> IOS(estimated)
-                            </ClickableText>
-                          </RowBetween>
-                        </TradeBonus>
-                      )}
-                      <RowBetween align="center" marginTop="10px">
-                        <Text fontWeight={500} fontSize={14} color={theme.text2}>
-                          Price
-                        </Text>
-                        <TradePrice
-                          price={trade?.executionPrice}
-                          showInverted={showInverted}
-                          setShowInverted={setShowInverted}
-                        />
-                      </RowBetween>
-                      <RowBetween align="center" marginTop="10px">
-                        <ClickableText fontWeight={500} fontSize={14} color={theme.text2} onClick={toggleSettings}>
-                          Slippage Tolerance
-                        </ClickableText>
-                        <ClickableText fontWeight={500} fontSize={14} color={theme.text2} onClick={toggleSettings}>
-                          {allowedSlippage / 100}%
-                        </ClickableText>
-                      </RowBetween>
-                    </>
-                  )}
-                </AutoColumn>
-              </Card>
+              <>
+                {Number(tradeBonus) > 0 && (
+                  <TradeBonus>
+                    <RowBetween align="center">
+                      <ClickableText fontWeight={500} fontSize={14} color={theme.text2}>
+                        Trade Bonus
+                      </ClickableText>
+                      <ClickableText fontWeight={500} fontSize={14} color={theme.text2}>
+                        <TradeBonusAmount>{tradeBonus}</TradeBonusAmount> IOS(estimated)
+                      </ClickableText>
+                    </RowBetween>
+                  </TradeBonus>
+                )}
+                <Card padding={showWrap ? '.25rem 1rem 0 1rem' : '0px'} borderRadius={'20px'}>
+                  <AutoColumn gap="8px" style={{ padding: '0 16px' }}>
+                    {Boolean(trade) && (
+                      <>
+                        <RowBetween align="center" marginTop="10px">
+                          <Text fontWeight={500} fontSize={14} color={theme.text2}>
+                            Price
+                          </Text>
+                          <TradePrice
+                            price={trade?.executionPrice}
+                            showInverted={showInverted}
+                            setShowInverted={setShowInverted}
+                          />
+                        </RowBetween>
+                        <RowBetween align="center" marginTop="10px">
+                          <ClickableText fontWeight={500} fontSize={14} color={theme.text2} onClick={toggleSettings}>
+                            Slippage Tolerance
+                          </ClickableText>
+                          <ClickableText fontWeight={500} fontSize={14} color={theme.text2} onClick={toggleSettings}>
+                            {allowedSlippage / 100}%
+                          </ClickableText>
+                        </RowBetween>
+                      </>
+                    )}
+                  </AutoColumn>
+                </Card>
+              </>
             )}
           </AutoColumn>
           <BottomGrouping>
