@@ -488,12 +488,12 @@ export default function Swap({ history }: RouteComponentProps) {
                 {Number(tradeBonus) > 0 && (
                   <TradeBonus>
                     <RowBetween align="center">
-                      <ClickableText fontWeight={500} fontSize={14} color={theme.text2}>
+                      <Text fontWeight={500} fontSize={14} color={theme.text2}>
                         Trade Bonus
-                      </ClickableText>
-                      <ClickableText fontWeight={500} fontSize={14} color={theme.text2}>
+                      </Text>
+                      <Text fontWeight={500} fontSize={14} color={theme.text2}>
                         <TradeBonusAmount>{tradeBonus}</TradeBonusAmount> IOS(estimated)
-                      </ClickableText>
+                      </Text>
                     </RowBetween>
                   </TradeBonus>
                 )}
