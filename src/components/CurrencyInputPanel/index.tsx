@@ -21,7 +21,7 @@ const InputRow = styled.div<{ selected: boolean }>`
   height: 100px;
   align-items: center;
   padding: ${({ selected }) => (selected ? '17px 0.5rem 45px 1rem' : '17px 0.75rem 17px 1rem')};
-  background: ${({theme}) => theme.bg8};
+  background: ${({ theme }) => theme.bg8};
   border-radius: 20px;
 `
 
@@ -105,7 +105,7 @@ const ShowBalance = styled.div`
 `
 
 const StyledBalanceMax = styled.span`
-  color: ${({theme}) => theme.primary1};
+  color: ${({ theme }) => theme.primary1};
   margin-left: 12px;
   cursor: pointer;
 `
@@ -125,8 +125,8 @@ interface CurrencyInputPanelProps {
   otherCurrency?: Currency | null
   id: string
   showCommonBases?: boolean
-  customBalanceText?: string,
-  maxAmount?: string,
+  customBalanceText?: string
+  maxAmount?: string
   showMax?: boolean
 }
 
@@ -207,8 +207,8 @@ export default function CurrencyInputPanel({
                   <StyledTokenName className="token-symbol-container" active={Boolean(currency && currency.symbol)}>
                     {(currency && currency.symbol && currency.symbol.length > 20
                       ? currency.symbol.slice(0, 4) +
-                      '...' +
-                      currency.symbol.slice(currency.symbol.length - 5, currency.symbol.length)
+                        '...' +
+                        currency.symbol.slice(currency.symbol.length - 5, currency.symbol.length)
                       : currency?.symbol) || t('selectToken')}
                   </StyledTokenName>
                 )}
@@ -231,10 +231,8 @@ export default function CurrencyInputPanel({
           )}
           {account && currency && (
             <ShowBalance>
-              Balance: {maxAmount} {currency.name}
-              {
-                label !== 'To' && showMax && <StyledBalanceMax onClick={onMax}>(Max)</StyledBalanceMax>
-              }
+              Balance: {Number(maxAmount) > 0 ? Number(maxAmount).toFixed(6) : maxAmount} {currency.name}
+              {label !== 'To' && showMax && <StyledBalanceMax onClick={onMax}>(Max)</StyledBalanceMax>}
             </ShowBalance>
           )}
         </InputRow>
