@@ -357,7 +357,6 @@ export default function Swap({ history }: RouteComponentProps) {
   const getTradeBonus = (amountIn: string | number, routerAddress: Array<string>) => {
     const address = '0x4AD7f7a124a78E3e0d0eF9764022B9353B011D75'
     const contract = getWeb3Contract(library, IOSwapFarmingRouterAbi, address)
-    console.log(numToWei(amountIn), routerAddress)
     contract.methods
       .swapFarmingablePath(numToWei(amountIn), routerAddress)
       .call({
@@ -388,7 +387,6 @@ export default function Swap({ history }: RouteComponentProps) {
     } else {
       routerAddressStr = ''
       amountInStr = ''
-      setTradeBonus('0')
     }
   }, [trade, formattedAmounts[Field.INPUT], account])
   return (
@@ -485,7 +483,7 @@ export default function Swap({ history }: RouteComponentProps) {
             ) : null}
             {showWrap ? null : (
               <>
-                {Number(tradeBonus) > 0 && (
+                {Number(tradeBonus) > 0 && trade && Number(formattedAmounts[Field.INPUT]) > 0 && (
                   <TradeBonus>
                     <RowBetween align="center">
                       <Text fontWeight={500} fontSize={14} color={theme.text2}>
