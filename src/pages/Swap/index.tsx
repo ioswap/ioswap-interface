@@ -1,4 +1,4 @@
-import { CurrencyAmount, JSBI, Token, Trade } from '@io-swap/sdk'
+import { ChainId, CurrencyAmount, JSBI, Token, Trade } from '@io-swap/sdk'
 import React, { useCallback, useContext, useEffect, useMemo, useState } from 'react'
 import { ArrowDown } from 'react-feather'
 import ReactGA from 'react-ga'
@@ -51,8 +51,9 @@ import { isTradeBetter } from 'utils/trades'
 import { RouteComponentProps } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import IOSwapFarmingRouterAbi from '../../constants/abis/IOSwapFarmingRouter.json'
-import { getWeb3Contract } from '../../constants/web3'
+import { getRpcUrl } from '../../constants/web3'
 import { formatAmount, numToWei } from '../../utils/format'
+import Web3 from 'web3'
 
 export const MarginT = styled.div`
   margin-top: 0.75rem;
@@ -126,7 +127,7 @@ export default function Swap({ history }: RouteComponentProps) {
       return !Boolean(token.address in defaultTokens)
     })
 
-  const { account, library } = useActiveWeb3React()
+  const { account } = useActiveWeb3React()
   const theme = useContext(ThemeContext)
 
   // toggle wallet when disconnected
@@ -355,8 +356,11 @@ export default function Swap({ history }: RouteComponentProps) {
   const [tradeBonus, setTradeBonus] = useState('0')
 
   const getTradeBonus = (amountIn: string | number, routerAddress: Array<string>) => {
+    const web3 = new Web3(new Web3.providers.HttpProvider(getRpcUrl(ChainId.OKT)))
     const address = '0x4AD7f7a124a78E3e0d0eF9764022B9353B011D75'
-    const contract = getWeb3Contract(library, IOSwapFarmingRouterAbi, address)
+    // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
+    // @ts-ignore
+    const contract = new web3.eth.Contract(IOSwapFarmingRouterAbi, address)
     contract.methods
       .swapFarmingablePath(numToWei(amountIn), routerAddress)
       .call({
@@ -368,7 +372,7 @@ export default function Swap({ history }: RouteComponentProps) {
   }
 
   useMemo(() => {
-    if (trade && Number(formattedAmounts[Field.INPUT]) > 0 && account) {
+    if (trade && Number(formattedAmounts[Field.INPUT]) > 0) {
       const routerAddress: any = trade.route.path.reduce((arr, i) => {
         // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
         // @ts-ignore
@@ -388,7 +392,7 @@ export default function Swap({ history }: RouteComponentProps) {
       routerAddressStr = ''
       amountInStr = ''
     }
-  }, [trade, formattedAmounts[Field.INPUT], account])
+  }, [trade, formattedAmounts[Field.INPUT]])
   return (
     <>
       <TokenWarningModal
