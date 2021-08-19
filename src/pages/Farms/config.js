@@ -57,6 +57,7 @@ export const farmPools = [
     mlpDecimal: 18,
     address0: WOKT_ADDRESS, // LP组合其中的一个，用于计算价值*2
     address1: IOS_ADDRESS,
+    stakeAddress0: 'OKT', // 用于跳转创建流动性页面，OKT的地址有所不同
     settleToken: USDT_ADDRESS, // 转换价值的地址 现在都以USDT
     settleTokenDecimal: 18
   },
@@ -76,6 +77,7 @@ export const farmPools = [
     mlpDecimal: 18,
     address0: USDT_ADDRESS, // LP组合其中的一个，用于计算价值*2
     address1: WOKT_ADDRESS,
+    stakeAddress1: 'OKT', // 用于跳转创建流动性页面，OKT的地址有所不同
     settleToken: USDT_ADDRESS, // 转换价值的地址 现在都以USDT
     settleTokenDecimal: 18
   },
@@ -171,6 +173,7 @@ export const farmPools = [
     mlpDecimal: 18,
     address0: WOKT_ADDRESS, // LP组合其中的一个，用于计算价值*2
     address1: OKB_ADDRESS,
+    stakeAddress0: 'OKT', // 用于跳转创建流动性页面，OKT的地址有所不同
     settleToken: USDT_ADDRESS, // 转换价值的地址 现在都以USDT
     settleTokenDecimal: 18
   },

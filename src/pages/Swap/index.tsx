@@ -30,7 +30,7 @@ import useENSAddress from '../../hooks/useENSAddress'
 import { useSwapCallback } from '../../hooks/useSwapCallback'
 import useToggledVersion, { DEFAULT_VERSION, Version } from '../../hooks/useToggledVersion'
 import useWrapCallback, { WrapType } from '../../hooks/useWrapCallback'
-import { useToggleSettingsMenu, useWalletModalToggle } from '../../state/application/hooks'
+import { useBlockNumber, useToggleSettingsMenu, useWalletModalToggle } from '../../state/application/hooks'
 import { Field } from '../../state/swap/actions'
 import {
   useDefaultsFromURLSearch,
@@ -58,8 +58,7 @@ import Web3 from 'web3'
 export const MarginT = styled.div`
   margin-top: 0.75rem;
 `
-let routerAddressStr = ''
-let amountInStr = ''
+
 export const ArrowDownBox = styled.div`
   position: absolute;
   left: 50%;
@@ -370,29 +369,20 @@ export default function Swap({ history }: RouteComponentProps) {
         setTradeBonus(formatAmount(res))
       })
   }
-
-  useMemo(() => {
-    if (trade && Number(formattedAmounts[Field.INPUT]) > 0) {
-      const routerAddress: any = trade.route.path.reduce((arr, i) => {
+  const blockNumber = useBlockNumber()
+  const routerAddress: any = trade
+    ? trade.route.path.reduce((arr, i) => {
         // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
         // @ts-ignore
         arr.push(i.address)
         return arr
       }, [])
-      const routerAddressStr_ = JSON.stringify(routerAddress)
-      if (
-        routerAddress.length >= 2 &&
-        (amountInStr !== formattedAmounts[Field.INPUT] || routerAddressStr_ !== routerAddressStr)
-      ) {
-        routerAddressStr = routerAddressStr_
-        amountInStr = formattedAmounts[Field.INPUT]
-        getTradeBonus(formattedAmounts[Field.INPUT], routerAddress)
-      }
-    } else {
-      routerAddressStr = ''
-      amountInStr = ''
+    : []
+  useMemo(() => {
+    if (routerAddress.length >= 2 && Number(formattedAmounts[Field.INPUT]) > 0) {
+      getTradeBonus(formattedAmounts[Field.INPUT], routerAddress)
     }
-  }, [trade, formattedAmounts[Field.INPUT]])
+  }, [trade, formattedAmounts[Field.INPUT], blockNumber])
   return (
     <>
       <TokenWarningModal
@@ -487,7 +477,7 @@ export default function Swap({ history }: RouteComponentProps) {
             ) : null}
             {showWrap ? null : (
               <>
-                {Number(tradeBonus) > 0 && trade && Number(formattedAmounts[Field.INPUT]) > 0 && (
+                {Number(tradeBonus) > 0 && routerAddress.length >= 2 && Number(formattedAmounts[Field.INPUT]) > 0 && (
                   <TradeBonus>
                     <RowBetween align="center">
                       <Text fontWeight={500} fontSize={14} color={theme.text2}>

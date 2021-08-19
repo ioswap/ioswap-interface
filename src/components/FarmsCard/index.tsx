@@ -309,7 +309,11 @@ export default function PoolsCard({ pool, updateBannerData }: any) {
             <CardFooterLine>
               <LineView>
                 <LineViewText>Stake</LineViewText>
-                <LinkArrowBox as={Link} to={`/add/${poolData.address0}/${poolData.address1}`}>
+                <LinkArrowBox
+                  as={Link}
+                  to={`/add/${poolData.stakeAddress0 || poolData.address0}/${poolData.stakeAddress1 ||
+                    poolData.address1}`}
+                >
                   <LineViewValue>
                     <span>{poolData.coin.replace('/', '-')}</span>
                     <LinkArrow>
