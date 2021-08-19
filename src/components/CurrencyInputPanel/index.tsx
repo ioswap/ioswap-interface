@@ -182,7 +182,7 @@ export default function CurrencyInputPanel({
             </RowBetween>
           </LabelRow>
         )}
-        <InputRow style={hideInput ? { padding: '0', borderRadius: '8px' } : {}} selected={!!currency}>
+        <InputRow style={hideInput ? { padding: '0', borderRadius: '8px' } : {}} selected={!!currency && !!account}>
           {
             <CurrencySelect
               selected={!!currency}
