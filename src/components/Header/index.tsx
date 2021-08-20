@@ -7,9 +7,9 @@ import { darken } from 'polished'
 import styled from 'styled-components'
 
 import Logo from '../../assets/images/logo.svg'
-import LogoDark from '../../assets/images/logo_white.svg'
+import LogoWhite from '../../assets/images/logo_white.svg'
+import LogoSmall from '../../assets/images/logo_small.svg'
 import { useActiveWeb3React } from '../../hooks'
-import { useDarkModeManager } from '../../state/user/hooks'
 import { useContractBalances, useAggregateUniBalance } from '../../state/wallet/hooks'
 import { CardNoise } from '../earn/styled'
 import { CountUp } from 'use-count-up'
@@ -28,6 +28,7 @@ import { Dots } from '../swap/styleds'
 import Modal from '../Modal'
 import UniBalanceContent from './UniBalanceContent'
 import usePrevious from '../../hooks/usePrevious'
+import { useDarkModeManager } from '../../state/user/hooks'
 
 const HeaderFrame = styled.div`
   position: fixed;
@@ -52,13 +53,17 @@ const HeaderFrame = styled.div`
   `};
 
   ${({ theme }) => theme.mediaWidth.upToExtraSmall`
-        padding: 0.5rem 1rem;
+  grid-template-columns: 30px 1fr;
+        padding: 7px  16px;
   `}
 `
 const HeaderFrameBlock = styled.div`
   position: relative;
   background: transparent;
   height: 80px;
+  ${({ theme }) => theme.mediaWidth.upToExtraSmall`
+        height: 30px
+  `}
 `
 const HeaderControls = styled.div`
   display: flex;
@@ -66,20 +71,7 @@ const HeaderControls = styled.div`
   align-items: center;
 
   ${({ theme }) => theme.mediaWidth.upToMedium`
-    flex-direction: row;
-    justify-content: space-between;
-    justify-self: center;
-    width: 100%;
-    max-width: 960px;
-    padding: 1rem;
-    position: fixed;
-    bottom: 0px;
-    left: 0px;
-    width: 100%;
-    z-index: 99;
-    min-height: 72px;
-    border-radius: 12px 12px 0 0;
-    background-color: ${({ theme }) => theme.bg1};
+    display: none;
   `};
 `
 
@@ -143,11 +135,18 @@ const AccountElement = styled.div<{ active: boolean }>`
   border-radius: 12px;
   white-space: nowrap;
   width: 100%;
+  height: 38px;
   cursor: pointer;
 
   :focus {
     border: 1px solid blue;
   }
+
+  ${({ theme }) => theme.mediaWidth.upToExtraSmall`
+   height: 30px;
+  display: flex;
+  align-items: center;
+  `}
 `
 
 const UNIAmount = styled(AccountElement)`
@@ -192,15 +191,27 @@ const NetworkCard = styled(YellowCard)`
   `};
 `
 
-const BalanceText = styled.div`
+const BalanceText = styled.p`
   background: ${({ theme }) => theme.bg1};
   border-radius: 12px;
   height: 38px;
   line-height: 38px;
+  font-size: 1rem;
   padding-left: 0.75rem;
-  ${({ theme }) => theme.mediaWidth.upToSmall`
-    display: none;
-  `};
+  color: ${({ theme }) => theme.text1};
+  ${({ theme }) => theme.mediaWidth.upToExtraSmall`
+        height: 30px;
+        font-size: 14px;
+        line-height: 30px;
+        display: flex;
+          flex-wrap: wrap;
+          word-wrap:break-word;
+        word-break:break-all;
+        line-height:0;
+        align-items: center;
+        font-weight: 600;
+        max-width: 200px;
+  `}
 `
 
 const Title = styled.a`
@@ -224,6 +235,21 @@ const UniIcon = styled.div`
   :hover {
     transform: rotate(-5deg);
   }
+  display: block;
+  ${({ theme }) => theme.mediaWidth.upToSmall`
+        display: none;
+  `}
+`
+const UniIconSmall = styled.div`
+  transition: transform 0.3s ease;
+
+  :hover {
+    transform: rotate(-5deg);
+  }
+  display: none;
+  ${({ theme }) => theme.mediaWidth.upToSmall`
+        display: block;
+  `}
 `
 
 const activeClassName = 'ACTIVE'
@@ -336,10 +362,8 @@ const NETWORK_LABELS: { [chainId in ChainId]?: string } = {
 export default function Header() {
   const { account, chainId } = useActiveWeb3React()
   // const { t } = useTranslation()
-
   const userEthBalance = useContractBalances(account ? [account] : [])?.[account ?? '']
   // const [isDark] = useDarkModeManager()
-  const [darkMode] = useDarkModeManager()
 
   const toggleClaimModal = useToggleSelfClaimModal()
 
@@ -355,6 +379,8 @@ export default function Header() {
   const countUpValue = aggregateBalance?.toFixed(0) ?? '0'
   const countUpValuePrevious = usePrevious(countUpValue) ?? '0'
 
+  const [isDark] = useDarkModeManager()
+
   return (
     <>
       <HeaderFrameBlock></HeaderFrameBlock>
@@ -366,8 +392,11 @@ export default function Header() {
         <HeaderRow>
           <Title>
             <UniIcon>
-              <img width={'107px'} src={darkMode ? LogoDark : Logo} alt="logo" />
+              <img width={'107px'} src={isDark ? LogoWhite : Logo} alt="logo" />
             </UniIcon>
+            <UniIconSmall>
+              <img width={'26px'} src={LogoSmall} alt="logo" />
+            </UniIconSmall>
           </Title>
         </HeaderRow>
         <HeaderControls>

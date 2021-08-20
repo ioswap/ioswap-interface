@@ -66,7 +66,7 @@ const Web3StatusConnect = styled(Web3StatusGeneric)<{ faded?: boolean }>`
   ${({ faded }) =>
     faded &&
     css`
-      background: linear-gradient(90deg, ${({ theme }) => theme.gradual3} 0%, ${({ theme }) => theme.gradual4 } 100%);
+      background: linear-gradient(90deg, ${({ theme }) => theme.gradual3} 0%, ${({ theme }) => theme.gradual4} 100%);
       color: ${({ theme }) => theme.text6};
     `}
   &:focus {
@@ -91,9 +91,16 @@ const Web3StatusConnected = styled.div<{ pending?: boolean }>`
   align-items: center;
   color: ${({ pending, theme }) => (pending ? theme.white : theme.text1)};
   font-weight: 500;
-  background: ${({ theme, pending }) => pending ? ('linear-gradient(90deg, ' + theme.gradual8 + ' 0%,' + theme.gradual9 + ' 100%)') : theme.bg1};
+  background: ${({ theme, pending }) =>
+    pending ? 'linear-gradient(90deg, ' + theme.gradual8 + ' 0%,' + theme.gradual9 + ' 100%)' : theme.bg1};
   border-radius: 12px;
   padding: 0 0.75rem;
+  ${({ theme }) => theme.mediaWidth.upToExtraSmall`
+        height: 30px;
+        font-size: 14px;
+        line-height: 30px;
+        font-weight: 600;
+  `}
 `
 
 const Text = styled.p`
@@ -106,7 +113,17 @@ const Text = styled.p`
   width: fit-content;
   font-weight: 500;
 `
-
+const TextPc = styled(Text)`
+  ${({ theme }) => theme.mediaWidth.upToExtraSmall`
+        display: none;
+  `}
+`
+const TextH5 = styled(Text)`
+  display: none;
+  ${({ theme }) => theme.mediaWidth.upToExtraSmall`
+        display: inline;
+  `}
+`
 const NetworkIcon = styled(Activity)`
   margin-left: 0.25rem;
   margin-right: 0.5rem;
@@ -184,7 +201,8 @@ function Web3StatusInner() {
         ) : (
           <>
             {hasSocks ? SOCK : null}
-            <Text>{ENSName || shortenAddress(account)}</Text>
+            <TextPc>{ENSName || shortenAddress(account, 4)}</TextPc>
+            <TextH5>{ENSName || shortenAddress(account, 2)}</TextH5>
           </>
         )}
         {!hasPendingTransactions && connector && <StatusIcon connector={connector} />}
