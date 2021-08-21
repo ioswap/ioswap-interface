@@ -11,6 +11,7 @@ import { useBlockNumber } from '../../state/application/hooks'
 import LoadingIcon from '../LoadingIcon/LoadingIcon'
 import { getAprSingle } from '../../pools/apr'
 import { FlexCenter } from '../../pages/Pools'
+import CardLoading from '../CardLoading'
 
 interface ThemeColor {
   light: Color
@@ -21,6 +22,7 @@ const getThemeColor = (themeColor: ThemeColor, isDark: boolean) => {
   return isDark ? themeColor.dark : themeColor.light
 }
 const CardView = styled.div`
+  position: relative;
   background: ${({ theme }) => theme.bg1};
   margin-top: 20px;
   width: 330px;
@@ -175,7 +177,7 @@ export default function PoolsCard({ pool, updateBannerData }: any) {
   const [approveLoading, setApproveLoading] = useState(false)
   const [claimLoading, setClaimLoading] = useState(false)
   const [updateNum, setUpdateNum] = useState(0)
-
+  const [loadLoading, setLoadLoading] = useState(true)
   const [exitLoading, setExitLoading] = useState(false)
 
   const [apr, setApr] = useState('-')
@@ -196,6 +198,7 @@ export default function PoolsCard({ pool, updateBannerData }: any) {
           }
           setPoolData(newPoolData)
           updateBannerData(newPoolData)
+          setLoadLoading(false)
         })
       })
     }
@@ -251,6 +254,7 @@ export default function PoolsCard({ pool, updateBannerData }: any) {
         upUpdateNum={upUpdateNum}
       />
       <CardView>
+        <CardLoading visible={loadLoading} />
         <PaddingLR>
           <CardIcon src={poolData.icon} />
           <CardTitle>{poolData.title}</CardTitle>

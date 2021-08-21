@@ -11,6 +11,7 @@ import { formatTotalPrice } from '../../utils/format'
 import { getTokenPriceValue } from '../../pools/pools'
 import QuestionHelper from '../QuestionHelper'
 import BigNumber from 'bignumber.js'
+import CardLoading from '../CardLoading'
 
 interface ThemeColor {
   light: Color
@@ -21,6 +22,7 @@ const getThemeColor = (themeColor: ThemeColor, isDark: boolean) => {
   return isDark ? themeColor.dark : themeColor.light
 }
 const CardView = styled.div`
+  position: relative;
   background: ${({ theme }) => theme.bg1};
   margin-top: 20px;
   width: 330px;
@@ -136,6 +138,7 @@ export default function PoolsCard({ pool, updateBannerData }: any) {
   const [isDark] = useDarkModeManager()
   const blockNumber = useBlockNumber()
   const [claimLoading, setClaimLoading] = useState(false)
+  const [loadLoading, setLoadLoading] = useState(true)
   const getTradeBonusInfo_ = async () => {
     if (account) {
       const price = await getTokenPriceValue(pool)
@@ -149,6 +152,7 @@ export default function PoolsCard({ pool, updateBannerData }: any) {
         console.log('newPoolData', newPoolData)
         updateBannerData(newPoolData)
         setPoolInfo(newPoolData)
+        setLoadLoading(false)
       })
     }
   }
@@ -168,6 +172,7 @@ export default function PoolsCard({ pool, updateBannerData }: any) {
   }
   return (
     <CardView>
+      <CardLoading visible={loadLoading} />
       <PaddingLR>
         <CardIcon src={poolInfo.icon} />
         <CardTitle>{poolInfo.title}</CardTitle>

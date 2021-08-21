@@ -11,7 +11,7 @@ const DrawerView = styled.div`
   padding: 0;
   background: rgba(0, 0, 0, 0.4);
 `
-const rotate = keyframes`
+const translate = keyframes`
   0% {
     transform: translateX(-100%);
   }
@@ -30,7 +30,7 @@ const DrawerViewPanel = styled.div`
   height: 100%;
   background: ${({ theme }) => theme.bg1};
   padding-top: 50px;
-  animation: ${rotate} 200ms;
+  animation: ${translate} 200ms;
 `
 
 const XStyle = styled.span`

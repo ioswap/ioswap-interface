@@ -11,6 +11,7 @@ import { useBlockNumber } from '../../state/application/hooks'
 import LoadingIcon from '../LoadingIcon/LoadingIcon'
 import { FlexCenter } from '../../pages/Pools'
 import { getTokenPriceValue } from '../../pools/pools'
+import CardLoading from '../CardLoading'
 
 interface ThemeColor {
   light: Color
@@ -21,6 +22,7 @@ const getThemeColor = (themeColor: ThemeColor, isDark: boolean) => {
   return isDark ? themeColor.dark : themeColor.light
 }
 const CardView = styled.div<{ themeColor: ThemeColor; isDark: boolean }>`
+  position: relative;
   background: ${({ themeColor, isDark }) => getThemeColor(themeColor, isDark)};
   color: ${({ theme }) => theme.white};
   margin-top: 20px;
@@ -169,6 +171,7 @@ export default function PoolsCard({ pool, updateBannerData }: any) {
   const [updateNum, setUpdateNum] = useState(0)
 
   const [exitLoading, setExitLoading] = useState(false)
+  const [loadLoading, setLoadLoading] = useState(true)
 
   const upUpdateNum = () => {
     setUpdateNum(updateNum + 1)
@@ -192,6 +195,7 @@ export default function PoolsCard({ pool, updateBannerData }: any) {
         console.log('newPool', newPoolData)
         setPoolData(newPoolData)
         updateBannerData(newPoolData)
+        setLoadLoading(false)
       })
     }
   }
@@ -246,6 +250,7 @@ export default function PoolsCard({ pool, updateBannerData }: any) {
         upUpdateNum={upUpdateNum}
       />
       <CardView themeColor={poolData.themeColor} isDark={isDark}>
+        <CardLoading visible={loadLoading} />
         <PaddingLR>
           <CardIcon src={poolData.icon} />
           <CardTitle>{poolData.title}</CardTitle>

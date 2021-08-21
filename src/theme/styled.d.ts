@@ -42,6 +42,7 @@ export interface Colors {
   shaw1: Color
   disabled: Color
   disabled2: Color
+  mask1: Color
 
   modalBG: Color
   advancedBG: Color

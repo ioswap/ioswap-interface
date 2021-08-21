@@ -105,7 +105,8 @@ export function colors(darkMode: boolean): Colors {
     border2: darkMode ? 'rgba(255, 255, 255, 0.2)' : 'rgba(255, 255, 255, 0.3)',
     shaw1: darkMode ? 'rgba(255, 255, 255, 0.12)' : 'rgba(30, 68, 89, 0.12)',
     disabled: darkMode ? '#6c6c6c' : '#9A9CA4',
-    disabled2: darkMode ? 'rgba(86, 90, 105, 0.6)' : 'rgba(86, 90, 105, 0.6)'
+    disabled2: darkMode ? 'rgba(86, 90, 105, 0.6)' : 'rgba(86, 90, 105, 0.6)',
+    mask1: darkMode ? 'rgba(0,0,0,0.6)' : 'rgba(255,255,255,0.6)'
   }
 }
 
