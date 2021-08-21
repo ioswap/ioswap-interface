@@ -82,7 +82,7 @@ export const getAprSingle = async poolData => {
     .toString()
   return {
     apr,
-    price
+    price: price2
   }
 }
 // LP
