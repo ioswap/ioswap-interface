@@ -43,6 +43,7 @@ export interface Colors {
   disabled: Color
   disabled2: Color
   mask1: Color
+  mask2: Color
 
   modalBG: Color
   advancedBG: Color

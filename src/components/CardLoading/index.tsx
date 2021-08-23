@@ -4,6 +4,8 @@ import LoadingDarkSvg from '../../assets/svg/loading_dark.svg'
 
 import LoadingWhiteSvg from '../../assets/svg/loading_white.svg'
 import { useDarkModeManager } from '../../state/user/hooks'
+import { useActiveWeb3React } from '../../hooks'
+import { useWalletModalToggle } from '../../state/application/hooks'
 
 const rotate360 = keyframes`
   from {
@@ -13,7 +15,7 @@ const rotate360 = keyframes`
     transform: rotate(360deg);
   }
 `
-const Mask = styled.div`
+const Mask = styled.div<any>`
   position: absolute;
   left: 0;
   top: 0;
@@ -22,7 +24,7 @@ const Mask = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  background: ${({ theme }) => theme.mask1};
+  background: ${({ theme, active }) => (active ? theme.mask1 : theme.mask2)};
   img {
     width: 40px;
     height: 40px;
@@ -30,17 +32,33 @@ const Mask = styled.div`
   }
 `
 
+const ConnectNetwork = styled.button`
+  border: 0;
+  padding: 10px;
+  font-size: 16px;
+  color: ${({ theme }) => theme.text6};
+  background: linear-gradient(90deg, ${({ theme }) => theme.gradual3} 0%, ${({ theme }) => theme.gradual4} 100%);
+  cursor: pointer;
+  border-radius: 10px;
+`
+
 interface Props {
   visible: boolean
 }
 export default function CardLoading({ visible = false }: Props) {
   const [isDark] = useDarkModeManager()
+  const { account } = useActiveWeb3React()
+  const toggleWalletModal = useWalletModalToggle()
   if (!visible) {
     return null
   }
   return (
-    <Mask>
-      <img src={isDark ? LoadingWhiteSvg : LoadingDarkSvg} alt="loading..." />
+    <Mask active={account}>
+      {account ? (
+        <img src={isDark ? LoadingWhiteSvg : LoadingDarkSvg} alt="loading..." />
+      ) : (
+        <ConnectNetwork onClick={toggleWalletModal}>Connect to a wall</ConnectNetwork>
+      )}
     </Mask>
   )
 }

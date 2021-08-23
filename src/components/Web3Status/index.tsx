@@ -58,7 +58,7 @@ const Web3StatusError = styled(Web3StatusGeneric)`
   }
 `
 
-const Web3StatusConnect = styled(Web3StatusGeneric)<{ faded?: boolean }>`
+export const Web3StatusConnect = styled(Web3StatusGeneric)<{ faded?: boolean }>`
   background-color: ${({ theme }) => theme.primary4};
   border: none;
   color: ${({ theme }) => theme.primaryText1};
