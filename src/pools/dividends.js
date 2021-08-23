@@ -23,7 +23,8 @@ export const getPoolInfo = (pool, account, price) => {
     poolContract.totalSupply(), // 总抵押
     poolContract.APY(), // apy
     rewardsToken.balanceOf(pool.address), // 池子的余额
-    routerContract.swapTaxs(ZERO_ADDRESS, pool.rewards1Address) // 全部税(手续费)
+    routerContract.swapTaxs(ZERO_ADDRESS, pool.rewards1Address), // 全部税(手续费)
+    poolContract.rewards(ZERO_ADDRESS) // 奖励未发放的量
   ]
   if (account) {
     promiseList.push(
@@ -34,7 +35,17 @@ export const getPoolInfo = (pool, account, price) => {
   }
   return multicallProvider.all(promiseList).then(async data_ => {
     const data = processResult(data_)
-    const [begin, totalSupply, APY = '0', poolBalanceOf, swapTaxs, earned = 0, balanceOf = 0, allowance = 0] = data
+    const [
+      begin,
+      totalSupply,
+      APY = '0',
+      poolBalanceOf,
+      swapTaxs,
+      rewards = 0,
+      earned = 0,
+      balanceOf = 0,
+      allowance = 0
+    ] = data
     const newPool = Object.assign({}, pool, {
       begin,
       totalSupply: formatAmount(totalSupply),
@@ -44,7 +55,9 @@ export const getPoolInfo = (pool, account, price) => {
       poolBalanceOf: formatAmount(poolBalanceOf),
       poolBalanceOfValue: formatAmount(new BigNumber(poolBalanceOf).multipliedBy(price), 18, 2),
       balanceOf: formatAmount(balanceOf, pool.mlpDecimal),
-      allowance: allowance > 0
+      allowance: allowance > 0,
+      rewards: formatAmount(rewards),
+      rewardsValue: formatAmount(new BigNumber(rewards).multipliedBy(price), 18, 2)
     })
 
     return newPool

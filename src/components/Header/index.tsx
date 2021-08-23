@@ -29,6 +29,8 @@ import Modal from '../Modal'
 import UniBalanceContent from './UniBalanceContent'
 import usePrevious from '../../hooks/usePrevious'
 import { useDarkModeManager } from '../../state/user/hooks'
+import BigNumber from 'bignumber.js'
+import { formatLastZero } from '../../utils/format'
 
 const HeaderFrame = styled.div`
   position: fixed;
@@ -363,6 +365,7 @@ export default function Header() {
   const { account, chainId } = useActiveWeb3React()
   // const { t } = useTranslation()
   const userEthBalance = useContractBalances(account ? [account] : [])?.[account ?? '']
+  console.log('userEthBalance', userEthBalance)
   // const [isDark] = useDarkModeManager()
 
   const toggleClaimModal = useToggleSelfClaimModal()
@@ -380,6 +383,11 @@ export default function Header() {
   const countUpValuePrevious = usePrevious(countUpValue) ?? '0'
 
   const [isDark] = useDarkModeManager()
+
+  const prettyBalance = (balance: any) => {
+    const b = formatLastZero(new BigNumber(balance).toFixed(6))
+    return Number(b) < 0.000001 ? 0 : b
+  }
 
   return (
     <>
@@ -493,7 +501,9 @@ export default function Header() {
               </UNIWrapper>
             )}
             <AccountElement active={!!account} style={{ pointerEvents: 'auto' }}>
-              {account && userEthBalance ? <BalanceText>{userEthBalance?.toSignificant(4)} IOS</BalanceText> : null}
+              {account && userEthBalance ? (
+                <BalanceText>{prettyBalance(userEthBalance?.toSignificant(4))} IOS</BalanceText>
+              ) : null}
               <Web3Status />
             </AccountElement>
           </HeaderElement>

@@ -298,7 +298,8 @@ export default function PoolsCard({ pool, updateBannerData }: any) {
               <LineView>
                 <LineViewText>Pool Remaining</LineViewText>
                 <LineViewValue>
-                  {poolData.poolBalanceOf}(${poolData.poolBalanceOfValue})
+                  {/*{poolData.poolBalanceOf}(${poolData.poolBalanceOfValue})*/}
+                  {poolData.rewards}(${poolData.rewardsValue})
                 </LineViewValue>
               </LineView>
             </CardFooterLine>
