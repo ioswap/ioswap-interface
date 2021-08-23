@@ -30,7 +30,6 @@ const PoolsPage = styled.div`
   ${({ theme }) => theme.mediaWidth.upToExtraSmall`
   width: 100%;
   max-width: 100%;
-  padding-bottom: 60px;
   `}
 `
 const PoolsTitle = styled.div`
@@ -61,7 +60,7 @@ const PoolsBannerLeft = styled.div`
   margin-right: 0;
   `}
   ${({ theme }) => theme.mediaWidth.upToExtraSmall`
-   height: 145px;
+   height: 110px;
   `}
 `
 const PoolsBannerLeftF = styled.div`
@@ -82,6 +81,9 @@ const PoolsBannerLeftFT = styled.div`
   align-items: center;
   font-size: 16px;
   line-height: 22px;
+  ${({ theme }) => theme.mediaWidth.upToExtraSmall`
+      font-size: 14px;
+  `}
 `
 const PoolsBannerLeftFB = styled.div`
   flex: 1;
@@ -89,6 +91,9 @@ const PoolsBannerLeftFB = styled.div`
   align-items: center;
   font-size: 26px;
   line-height: 36px;
+  ${({ theme }) => theme.mediaWidth.upToExtraSmall`
+      font-size: 22px;
+  `}
 `
 
 const PoolsBannerRight = styled.div`
@@ -142,6 +147,13 @@ const HarvestBtn = styled(FlexCenter)<any>`
   :hover {
     color: ${({ theme }) => theme.gradual2};
   }
+  ${({ theme }) => theme.mediaWidth.upToExtraSmall`
+      width: 120px;
+      height: 38px;
+      font-size: 16px;
+      margin-top: 20px;
+      border-radius: 6px;
+  `}
 `
 const PoolsCards = styled.div`
   display: grid;

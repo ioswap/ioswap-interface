@@ -30,7 +30,6 @@ const FarmsPage = styled.div`
   ${({ theme }) => theme.mediaWidth.upToExtraSmall`
   width: 100%;
   max-width: 100%;
-  padding-bottom: 60px;
   `}
 `
 const FarmsTitle = styled.div`
@@ -60,7 +59,7 @@ const FarmsBannerLeft = styled.div`
   margin-right: 0;
   `}
   ${({ theme }) => theme.mediaWidth.upToExtraSmall`
-   height: 145px;
+   height: 110px;
   `}
 `
 const FarmsBannerLeftF = styled.div`
@@ -81,6 +80,9 @@ const FarmsBannerLeftFT = styled.div`
   align-items: center;
   font-size: 16px;
   line-height: 22px;
+  ${({ theme }) => theme.mediaWidth.upToExtraSmall`
+      font-size: 14px;
+  `}
 `
 const FarmsBannerLeftFB = styled.div`
   flex: 1;
@@ -89,6 +91,9 @@ const FarmsBannerLeftFB = styled.div`
   font-size: 26px;
   font-weight: 600;
   line-height: 36px;
+  ${({ theme }) => theme.mediaWidth.upToExtraSmall`
+      font-size: 22px;
+  `}
 `
 
 const FarmsBannerRight = styled.div`
@@ -139,10 +144,16 @@ const HarvestBtn = styled(FlexCenter)<any>`
   font-weight: 600;
   cursor: ${({ disabled }) => (disabled ? 'default' : 'pointer')};
   color: ${({ theme, disabled }) => (disabled ? theme.disabled : theme.text6)};
-
   :hover {
     color: ${({ theme }) => theme.gradual2};
   }
+  ${({ theme }) => theme.mediaWidth.upToExtraSmall`
+      width: 120px;
+      height: 38px;
+      font-size: 16px;
+      margin-top: 20px;
+      border-radius: 6px;
+  `}
 `
 const FarmsCards = styled.div`
   display: grid;

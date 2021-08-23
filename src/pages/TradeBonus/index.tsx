@@ -28,7 +28,6 @@ const PoolsPage = styled.div`
   ${({ theme }) => theme.mediaWidth.upToExtraSmall`
   width: 100%;
   max-width: 100%;
-  padding-bottom: 60px;
   `}
 `
 const PoolsTitle = styled.div`
@@ -52,12 +51,14 @@ const PoolsBanner = styled.div`
   `}
   ${({ theme }) => theme.mediaWidth.upToExtraSmall`
     grid-template-columns: 1fr;
+    padding-bottom: 0;
   `}
 `
 
 const PoolsBannerItem = styled(FlexCenter)`
   ${({ theme }) => theme.mediaWidth.upToExtraSmall`
     justify-content: flex-start;
+    border-top: 1px solid rgba(218, 227, 235, 0.3);
   `}
 `
 const PoolsBannerItemTitle = styled.div`
@@ -66,6 +67,10 @@ const PoolsBannerItemTitle = styled.div`
   font-size: 16px;
   line-height: 22px;
   margin-top: 20px;
+  ${({ theme }) => theme.mediaWidth.upToExtraSmall`
+     font-size: 14px;
+     margin-top: 12px;
+  `}
 `
 const PoolsBannerItemValue = styled.div`
   color: ${({ theme }) => theme.white};
@@ -73,6 +78,10 @@ const PoolsBannerItemValue = styled.div`
   font-size: 26px;
   line-height: 36px;
   margin-top: 12px;
+  ${({ theme }) => theme.mediaWidth.upToExtraSmall`
+     font-size: 22px;
+     margin: 6px 0 12px 0;
+  `}
 `
 
 const PoolsCards = styled.div`
@@ -100,7 +109,7 @@ const RecommendedPairs = styled.div`
       justify-items: center;
   `}
   ${({ theme }) => theme.mediaWidth.upToExtraSmall`
-      grid-template-columns: 1fr;
+      grid-template-columns: 1fr 1fr;
       justify-items: center;
   `}
 `
@@ -116,6 +125,11 @@ const RecommendedPair = styled.div`
   img {
     height: 36px;
   }
+  ${({ theme }) => theme.mediaWidth.upToExtraSmall`
+      width: calc((100vw - 32px - 14px) / 2);
+      margin-top: 12px;
+      padding: 24px 0 20px 14;
+  `}
 `
 const RecommendedPairTitle = styled.div`
   font-weight: 600;
@@ -134,6 +148,10 @@ const RecommendedPairButton = styled.button`
   color: ${({ theme }) => theme.primary1};
   border-radius: 12px;
   cursor: pointer;
+  ${({ theme }) => theme.mediaWidth.upToExtraSmall`
+      width: 100%;
+      font-size: 14px;
+  `}
 `
 
 const poolMap: any = {}

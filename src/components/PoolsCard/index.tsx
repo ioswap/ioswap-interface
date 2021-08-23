@@ -30,6 +30,13 @@ const CardView = styled.div`
   box-shadow: 0px 10px 30px rgba(30, 68, 89, 0.12);
   border-radius: 12px;
   padding: 24px 0 16px 0;
+  box-sizing: border-box;
+  max-width: calc(100vw - 32px);
+  ${({ theme }) => theme.mediaWidth.upToExtraSmall`
+      width: 100%;
+      margin-top: 0;
+      margin-bottom: 12px
+  `}
 `
 const CardIcon = styled.img`
   display: block;

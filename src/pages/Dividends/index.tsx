@@ -27,7 +27,6 @@ const PoolsPage = styled.div`
   ${({ theme }) => theme.mediaWidth.upToExtraSmall`
   width: 100%;
   max-width: 100%;
-  padding-bottom: 60px;
   `}
 `
 const PoolsTitle = styled.div`
@@ -57,6 +56,7 @@ const PoolsBanner = styled.div`
 const PoolsBannerItem = styled(FlexCenter)`
   ${({ theme }) => theme.mediaWidth.upToExtraSmall`
     justify-content: flex-start;
+    border-top: 1px solid rgba(218, 227, 235, 0.3);
   `}
 `
 const PoolsBannerItemTitle = styled.div`
@@ -65,6 +65,10 @@ const PoolsBannerItemTitle = styled.div`
   font-size: 16px;
   line-height: 22px;
   margin-top: 20px;
+  ${({ theme }) => theme.mediaWidth.upToExtraSmall`
+     font-size: 14px;
+     margin-top: 12px;
+  `}
 `
 const PoolsBannerItemValue = styled.div`
   color: ${({ theme }) => theme.text1};
@@ -72,6 +76,10 @@ const PoolsBannerItemValue = styled.div`
   font-size: 26px;
   line-height: 36px;
   margin-top: 12px;
+  ${({ theme }) => theme.mediaWidth.upToExtraSmall`
+     font-size: 22px;
+     margin: 6px 0 12px 0;
+  `}
 `
 
 const PoolsCards = styled.div`
