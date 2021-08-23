@@ -24,7 +24,9 @@ const Mask = styled.div<any>`
   display: flex;
   align-items: center;
   justify-content: center;
-  background: ${({ theme, active }) => (active ? theme.mask1 : theme.mask2)};
+  background: ${({ theme }) => theme.mask1};
+  border-radius: 12px;
+  backdrop-filter: blur(10px);
   img {
     width: 40px;
     height: 40px;
@@ -49,7 +51,7 @@ export default function CardLoading({ visible = false }: Props) {
   const [isDark] = useDarkModeManager()
   const { account } = useActiveWeb3React()
   const toggleWalletModal = useWalletModalToggle()
-  if (!visible) {
+  if (!visible && account) {
     return null
   }
   return (
