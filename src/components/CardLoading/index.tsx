@@ -59,7 +59,7 @@ export default function CardLoading({ visible = false }: Props) {
       {account ? (
         <img src={isDark ? LoadingWhiteSvg : LoadingDarkSvg} alt="loading..." />
       ) : (
-        <ConnectNetwork onClick={toggleWalletModal}>Connect to a wall</ConnectNetwork>
+        <ConnectNetwork onClick={toggleWalletModal}>Connect to a wallet</ConnectNetwork>
       )}
     </Mask>
   )
