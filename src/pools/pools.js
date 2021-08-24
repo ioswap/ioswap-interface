@@ -28,6 +28,7 @@ export const getPoolInfo = (pool, account) => {
     const newPool = Object.assign({}, pool, {
       begin,
       totalSupply: formatAmount(totalSupply),
+      totalSupply_: totalSupply,
       earned,
       balanceOf: formatAmount(balanceOf, pool.mlpDecimal),
       allowance: allowance > 0

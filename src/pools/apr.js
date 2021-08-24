@@ -5,6 +5,8 @@ import LPT from '../constants/abis/LPT.json'
 import { Contract } from 'ethers-multicall-x'
 import BigNumber from 'bignumber.js'
 import { getTokenPriceValue } from './pools'
+import { ZERO_ADDRESS } from '../constants'
+import { formatAmount } from '../utils/format'
 
 export const getSpan = poolData => {
   const web3 = new Web3(new Web3.providers.HttpProvider(getRpcUrl(poolData.networkId)))
@@ -44,13 +46,13 @@ export const getLptValue = (poolData, price) => {
       if (poolData.address0.toLowerCase() === token0Address.toLowerCase()) {
         return new BigNumber(reserve0)
           .multipliedBy(new BigNumber(2))
-          .multipliedBy(new BigNumber(poolData.totalSupply).div(new BigNumber(totalSupply)))
+          .multipliedBy(new BigNumber(poolData.totalSupply_).div(new BigNumber(totalSupply)))
           .multipliedBy(price)
       }
       if (poolData.address0.toLowerCase() === token1Address.toLowerCase()) {
         return new BigNumber(reserve1)
           .multipliedBy(new BigNumber(2))
-          .multipliedBy(new BigNumber(poolData.totalSupply).div(new BigNumber(totalSupply)))
+          .multipliedBy(new BigNumber(poolData.totalSupply_).div(new BigNumber(totalSupply)))
           .multipliedBy(price)
       }
       return new BigNumber(0)
@@ -59,6 +61,16 @@ export const getLptValue = (poolData, price) => {
       return new BigNumber(0)
     })
 }
+
+export const getTotalRewards = miningPools => {
+  const web3 = new Web3(new Web3.providers.HttpProvider(getRpcUrl(miningPools.networkId)))
+  const contract = new web3.eth.Contract(miningPools.abi, miningPools.address)
+  return contract.methods
+    .rewards(ZERO_ADDRESS)
+    .call()
+    .then(totalRewards => totalRewards)
+}
+
 // Single
 export const getAprSingle = async poolData => {
   const [span, allowance] = await Promise.all([getSpan(poolData), getAllowance(poolData)])
@@ -87,16 +99,20 @@ export const getAprSingle = async poolData => {
 }
 // LP
 export const getAprLP = async poolData => {
-  const [span, allowance] = await Promise.all([getSpan(poolData), getAllowance(poolData)])
-  const price = await getTokenPriceValue({
-    ...poolData,
-    MLP: poolData.rewards1Address
-  })
   const price2 = await getTokenPriceValue({
     ...poolData,
     MLP: poolData.address0
   })
-  const LPTValue = await getLptValue(poolData, price2)
+  const [span, allowance, unClaimReward, LPTValue, price] = await Promise.all([
+    getSpan(poolData),
+    getAllowance(poolData),
+    getTotalRewards(poolData), // 获取奖励1未发放的量
+    getLptValue(poolData, price2),
+    getTokenPriceValue({
+      ...poolData,
+      MLP: poolData.rewards1Address
+    })
+  ])
   if (isNaN(LPTValue) || LPTValue.toString() === '0') {
     return {
       apr: 'infinity',
@@ -104,23 +120,30 @@ export const getAprLP = async poolData => {
       value: '0'
     }
   }
-  const apr = new BigNumber(allowance)
-    .multipliedBy(
-      new BigNumber(1)
-        .div(span.div(86400))
-        .multipliedBy(365)
-        .multipliedBy(price)
-        .div(LPTValue)
-    )
-    .div(
-      new BigNumber(poolData.totalSupply).multipliedBy(new BigNumber(10).pow(poolData.mlpDecimal)).multipliedBy(price2)
-    )
-    .multipliedBy(100)
-    .toFixed(2, 1)
-    .toString()
+
+  const reward1Vol = new BigNumber(allowance).minus(new BigNumber(unClaimReward)).toString()
+  const rewardsTotalValue = new BigNumber(price).multipliedBy(new BigNumber(reward1Vol)).toString()
+
+  const startAt = poolData.begin
+  const now = parseInt(new Date().getTime() / 1000)
+  const dayRate = new BigNumber(1).div(new BigNumber(Number(startAt) + Number(span) - now).div(new BigNumber(86400)))
+
+  const yearReward = dayRate
+    .multipliedBy(new BigNumber(rewardsTotalValue))
+    .multipliedBy(new BigNumber(365))
+    .toFixed(0, 1)
+  let apr = '0'
+  if (yearReward > 0) {
+    const _arp = new BigNumber(yearReward)
+      .div(new BigNumber(LPTValue))
+      .toFixed(2)
+      .toString()
+    apr = _arp
+  }
+
   return {
     apr,
     price: price2 * 2,
-    value: LPTValue.toString()
+    value: formatAmount(LPTValue.toString(), poolData.mlpDecimal)
   }
 }
