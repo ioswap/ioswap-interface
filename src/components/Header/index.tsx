@@ -148,6 +148,15 @@ const AccountElement = styled.div<{ active: boolean }>`
    height: 30px;
   display: flex;
   align-items: center;
+    max-width: 210px;
+  overflow: hidden;
+  `}
+  ${({ theme }) => theme.mediaWidth.upToVerySmall`
+   height: 30px;
+  display: flex;
+  align-items: center;
+  max-width: 168px;
+  overflow: hidden;
   `}
 `
 
